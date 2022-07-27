@@ -1,0 +1,6 @@
+name: PlayerCrasher
+version: 1.0
+main: com.deathmotion.Crasher
+authors: [ Bram1903 ]
+commands:
+  crash:
