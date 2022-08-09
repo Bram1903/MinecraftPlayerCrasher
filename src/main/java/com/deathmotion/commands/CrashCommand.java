@@ -19,21 +19,24 @@ public class CrashCommand implements CommandExecutor {
         }
 
         if (args.length == 2) {
-            Player player = (Player) sender;
             Player target = Bukkit.getPlayer(args[0]);
 
             if (target == null) {
-                player.sendMessage(Crasher.PREFIX + ChatColor.RED + "The player you specified is offline!");
+                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "The player you specified is offline!");
                 return false;
             }
 
-            if (target.getUniqueId().equals(player.getUniqueId())) {
-                player.sendMessage(Crasher.PREFIX + ChatColor.RED + "You cannot crash yourself!");
-                return false;
+            if ((sender instanceof Player)) {
+                Player player = (Player) sender;
+
+                if (target.getUniqueId().equals(player.getUniqueId())) {
+                    player.sendMessage(Crasher.PREFIX + ChatColor.RED + "You cannot crash yourself!");
+                    return false;
+                }
             }
 
             if (target.hasPermission("crasher.bypass")) {
-                player.sendMessage(Crasher.PREFIX + ChatColor.RED + "This player cannot be crashed!");
+                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This player cannot be crashed!");
                 return false;
             }
 
