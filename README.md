@@ -9,6 +9,7 @@ A simple Minecraft plugin to crash a player using a command.
 - Plugin Hider (The plugin will hide itself from /crash, /plugin and /pl for those without permissions to use the crash command.)
 - Tab Completion (While using /crash you can use tab to auto complete certain options)
 - Options to use all the methods at once (Except the entity method)
+- Configuration file (Enable / Disable certain features within the plugin)
 
 ## Usage/Examples
 

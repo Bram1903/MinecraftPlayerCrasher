@@ -45,6 +45,11 @@ public class CrashCommand implements TabExecutor {
 
             String method = args[1];
 
+            if (method.equalsIgnoreCase("entity") & Crasher.disableEntityMethod) {
+                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This method has been disabled.");
+                return false;
+            }
+
             // Handle crashing with all methods except the ENTITY method
             if (method.equalsIgnoreCase("all")) {
                 for (CrashType crashType : CrashType.values()) {
@@ -73,7 +78,11 @@ public class CrashCommand implements TabExecutor {
             sender.sendMessage(ChatColor.GREEN + "Available methods:");
             for (CrashType crashType : CrashType.values()) {
                 if (crashType.name().equals("ENTITY")) {
-                    sender.sendMessage("▪ " + ChatColor.RED + crashType.name() + ChatColor.WHITE + " (Only use this method if the other methods didn't work.)");
+                    if (Crasher.disableEntityMethod) {
+                        sender.sendMessage("▪ " + ChatColor.DARK_RED + crashType.name() + ChatColor.WHITE + " (This method is disabled in the config file)");
+                    } else {
+                        sender.sendMessage("▪ " + ChatColor.RED + crashType.name() + ChatColor.WHITE + " (Only use this method if the other methods didn't work)");
+                    }
                 } else {
                     sender.sendMessage("▪ " + ChatColor.GRAY + crashType.name());
                 }
