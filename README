@@ -5,9 +5,10 @@ A simple Minecraft plugin to crash a player using a command.
 ## Features
 
 - AntiCrash Bypass (Multiple Methods intented to bypass)
-- Single Packet Crash
-- Multi Packet Crash
-- Option to use all the methods at once
+- Reflections (This plugin makes use of Reflections to make the plugin work on multiple server versions)
+- Plugin Hider (The plugin will hide itself from /crash, /plugin and /pl for those without permissions to use the crash command.)
+- Tab Completion (While using /crash you can use tab to auto complete certain options)
+- Options to use all the methods at once (Except the entity method)
 
 ## Usage/Examples
 
@@ -15,7 +16,10 @@ A simple Minecraft plugin to crash a player using a command.
 
 /crash (player) (method / all)
 
-Methods: Explosion, Position and Entity (makes someone suffer)
+Methods:
+- `Explosion`
+- `Position`
+- `Entity` (Only use this method if the other methods didn't work. It can be quite heavy for the server.)
 
 ## Tested Minecraft Server Versions
 These are the server versions the plugin will work on. You are still able to crash players that joined with other versions through ViaVersion.

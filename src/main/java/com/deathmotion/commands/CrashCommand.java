@@ -6,15 +6,18 @@ import com.deathmotion.crasher.CrashUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-public class CrashCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CrashCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!sender.hasPermission("crasher.use")) {
-            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Insufficient permissions!");
+            sender.sendMessage("Unknown command. Type \"/help\" for help.");
             return false;
         }
 
@@ -42,10 +45,12 @@ public class CrashCommand implements CommandExecutor {
 
             String method = args[1];
 
-            // Handle crashing with all methods
+            // Handle crashing with all methods except the ENTITY method
             if (method.equalsIgnoreCase("all")) {
                 for (CrashType crashType : CrashType.values()) {
-                    CrashUtils.crashPlayer(sender, target, crashType);
+                    if (!crashType.name().equals("ENTITY")) {
+                        CrashUtils.crashPlayer(sender, target, crashType);
+                    }
 
                 }
                 return true;
@@ -64,9 +69,36 @@ public class CrashCommand implements CommandExecutor {
 
 
         } else {
-            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Usage: " + ChatColor.AQUA + "/crash <player> <explosion/position/entity/all>");
+            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Usage: " + ChatColor.AQUA + "/crash <player> <method/all>");
+            sender.sendMessage(ChatColor.GREEN + "Available methods:");
+            for (CrashType crashType : CrashType.values()) {
+                if (crashType.name().equals("ENTITY")) {
+                    sender.sendMessage("▪ " + ChatColor.RED + crashType.name() + ChatColor.WHITE + " (Only use this method if the other methods didn't work.)");
+                } else {
+                    sender.sendMessage("▪ " + ChatColor.GRAY + crashType.name());
+                }
+            }
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!sender.hasPermission("crasher.use")) {
+            return null;
+        }
+
+        if (args.length == 2) {
+            List<String> methods = new ArrayList<>();
+
+            for (CrashType crashType : CrashType.values()) {
+                methods.add(String.valueOf(crashType));
+            }
+            methods.add("ALL");
+
+            return methods;
+        }
+        return null;
     }
 }

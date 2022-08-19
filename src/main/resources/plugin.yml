@@ -1,6 +1,18 @@
 name: PlayerCrasher
-version: 1.0
+description: A simple plugin to crash the bad guys!
+version: 1.1.0
 main: com.deathmotion.Crasher
+load: POSTWORLD
 authors: [ Bram1903 ]
 commands:
   crash:
+    description: A command to crash a player!
+    permission: crasher.use
+    permission-message: Unknown command. Type "/help" for help.
+permissions:
+  crasher.use:
+    description: Allows the player to use the /crash command.
+    default: op
+  crasher.bypass:
+    description: Makes the player invincible for the crasher.
+    default: op

@@ -108,7 +108,7 @@ public class CrashUtils {
                     break;
             }
 
-            crasher.sendMessage(Crasher.PREFIX + "§aCrashed §2" + victim.getName() + " §ausing §3" + crashType.name() + " §amethod!");
+            crasher.sendMessage(Crasher.PREFIX + "§aCrashed §2" + victim.getName() + " §ausing the §3" + crashType.name() + " §amethod!");
 
         } catch (Exception e) {
 
