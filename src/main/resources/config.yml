@@ -6,6 +6,9 @@
 #|_|   |_|\__,_|\__, |\___|_|   \____|_|  \__,_|___/_| |_|\___|_|
 #               |___/
 
+# true will check if the current version is lower than the latest GitHub release. It will only notify you.
+# false will disable checking for new updates.
+check-update: true
 
 # true hides the plugin from /plugins and /pl for everyone that doesn't have the crasher.use permission.
 # false will disable the event that will hide the plugin.
