@@ -2,6 +2,7 @@ package com.deathmotion;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -11,32 +12,29 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class UpdateChecker {
+    @SneakyThrows
     public static void checkForUpdate() {
-        try {
-            String version = Crasher.getInstance().getDescription().getVersion();
-            String parseVersion = version.replace(".", "");
+        String version = Crasher.getInstance().getDescription().getVersion();
+        String parseVersion = version.replace(".", "");
 
-            String tagName;
-            URL api = new URL("https://api.github.com/repos/Bram1903/MinecraftPlayerCrasher/releases/latest");
-            URLConnection con = api.openConnection();
-            con.setConnectTimeout(15000);
-            con.setReadTimeout(15000);
+        String tagName;
+        URL api = new URL("https://api.github.com/repos/Bram1903/MinecraftPlayerCrasher/releases/latest");
+        URLConnection con = api.openConnection();
+        con.setConnectTimeout(15000);
+        con.setReadTimeout(15000);
 
-            JsonObject json = new JsonParser().parse(new InputStreamReader(con.getInputStream())).getAsJsonObject();
-            tagName = json.get("tag_name").getAsString();
+        JsonObject json = new JsonParser().parse(new InputStreamReader(con.getInputStream())).getAsJsonObject();
+        tagName = json.get("tag_name").getAsString();
 
-            String parsedTagName = tagName.replace(".", "");
+        String parsedTagName = tagName.replace(".", "");
 
-            int latestVersion = Integer.parseInt(parsedTagName.substring(1));
+        int latestVersion = Integer.parseInt(parsedTagName.substring(1));
 
-            if (latestVersion > Integer.parseInt(parseVersion)) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] Found a new version " + ChatColor.RED + tagName);
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest");
-            } else if (latestVersion < Integer.parseInt(parseVersion)) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] You are running an unreleased version. You must be someone special! ;-)");
-            }
-        } catch (IOException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[PlayerCrasher] Something went wrong while checking for a new version.");
+        if (latestVersion > Integer.parseInt(parseVersion)) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] Found a new version " + ChatColor.RED + tagName);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest");
+        } else if (latestVersion < Integer.parseInt(parseVersion)) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[PlayerCrasher] You are running an unreleased version. You must be someone special! ;-)");
         }
     }
 }

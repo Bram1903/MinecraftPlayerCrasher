@@ -21,59 +21,7 @@ public class CrashCommand implements TabExecutor {
             return false;
         }
 
-        if (args.length == 2) {
-            Player target = Bukkit.getPlayer(args[0]);
-
-            if (target == null) {
-                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "The player you specified is offline!");
-                return false;
-            }
-
-            if ((sender instanceof Player)) {
-                Player player = (Player) sender;
-
-                if (target.getUniqueId().equals(player.getUniqueId())) {
-                    player.sendMessage(Crasher.PREFIX + ChatColor.RED + "You cannot crash yourself!");
-                    return false;
-                }
-            }
-
-            if (target.hasPermission("crasher.bypass")) {
-                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This player cannot be crashed!");
-                return false;
-            }
-
-            String method = args[1];
-
-            if (method.equalsIgnoreCase("entity") & Crasher.disableEntityMethod) {
-                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This method has been disabled.");
-                return false;
-            }
-
-            // Handle crashing with all methods except the ENTITY method
-            if (method.equalsIgnoreCase("all")) {
-                for (CrashType crashType : CrashType.values()) {
-                    if (!crashType.name().equals("ENTITY")) {
-                        CrashUtils.crashPlayer(sender, target, crashType);
-                    }
-
-                }
-                return true;
-            }
-
-            // Handle crashing with specific method
-            CrashType type = CrashType.getFromString(method.toUpperCase());
-
-            if (type != null) {
-                CrashUtils.crashPlayer(sender, target, type);
-                return true;
-            } else {
-                sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Method " + method + " doesn't exist!");
-                return false;
-            }
-
-
-        } else {
+        if (args.length != 2) {
             sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Usage: " + ChatColor.AQUA + "/crash <player> <method/all>");
             sender.sendMessage(ChatColor.GREEN + "Available methods:");
             for (CrashType crashType : CrashType.values()) {
@@ -87,9 +35,71 @@ public class CrashCommand implements TabExecutor {
                     sender.sendMessage("▪ " + ChatColor.GRAY + crashType.name());
                 }
             }
+            return true;
+        }
+        Player target = Bukkit.getPlayer(args[0]);
+
+        if (target == null) {
+            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "The player you specified is offline!");
+            return false;
         }
 
-        return true;
+        if ((sender instanceof Player)) {
+            Player player = (Player) sender;
+
+            if (target.getUniqueId().equals(player.getUniqueId())) {
+                player.sendMessage(Crasher.PREFIX + ChatColor.RED + "You cannot crash yourself!");
+                return false;
+            }
+        }
+
+        if (target.hasPermission("crasher.bypass")) {
+            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This player cannot be crashed!");
+            return false;
+        }
+
+        String method = args[1];
+
+        if (method.equalsIgnoreCase("entity") & Crasher.disableEntityMethod) {
+            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "This method has been disabled.");
+            return false;
+        }
+
+        // Handle crashing with all methods except the ENTITY method
+        if (method.equalsIgnoreCase("all")) {
+            for (CrashType crashType : CrashType.values()) {
+                if (!crashType.name().equals("ENTITY")) {
+                    try {
+                        CrashUtils.crashPlayer(sender, target, crashType);
+                    } catch (Exception e) {
+                        sender.sendMessage(Crasher.PREFIX + "§cFailed to crash §e" + target.getName() + " §eusing " + crashType.name() + " §cmethod!");
+
+                        System.err.println("[CRASHER] Failed to crash " + target.getName() + " using " + crashType.name() + "!");
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        // Handle crashing with specific method
+        CrashType type = CrashType.getFromString(method.toUpperCase());
+
+        if (type != null) {
+            try {
+                CrashUtils.crashPlayer(sender, target, type);
+            } catch (Exception e) {
+                sender.sendMessage(Crasher.PREFIX + "§cFailed to crash §e" + target.getName() + " §eusing " + type + " §cmethod!");
+
+                System.err.println("[CRASHER] Failed to crash " + target.getName() + " using " + type + "!");
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            sender.sendMessage(Crasher.PREFIX + ChatColor.RED + "Method " + method + " doesn't exist!");
+            return false;
+        }
     }
 
     @Override

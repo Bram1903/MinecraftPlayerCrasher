@@ -10,32 +10,29 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PluginHider implements Listener {
 
 
     @EventHandler()
-    public void PlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
-        {
-            String command = event.getMessage();
-            Player player = event.getPlayer();
+    public void playerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
 
-            if (command.equals("/plugins") || command.equals("/pl")) {
-                if (!player.hasPermission("crasher.use")) {
-                    List<String> pluginNames = new ArrayList<>();
-                    for (Plugin p : Bukkit.getPluginManager().getPlugins()) {
-                        if (!p.getName().equals(Crasher.getInstance().getName())) {
-                            pluginNames.add(ChatColor.GREEN + p.getName() + ChatColor.WHITE);
-                        }
-                    }
-                    player.sendMessage("Plugins " + "(" + pluginNames.size() + ")" + ": " + pluginNames.toString()
-                            .replace("[", "")   //Remove the left bracket
-                            .replace("]", "")); //Remove the right bracket
+        String command = event.getMessage();
+        Player player = event.getPlayer();
 
-                    event.setCancelled(true);
-                }
-            }
-        }
+        if ((!command.equals("/plugins") && !command.equals("/pl")) || player.hasPermission("crasher.use")) return;
+
+        List<String> pluginNames = new ArrayList<>();
+        Arrays.stream(Bukkit.getPluginManager().getPlugins())
+                .filter(p -> !p.getName().equals(Crasher.getInstance().getName()))
+                .forEach(p -> pluginNames.add(ChatColor.GREEN + p.getName() + ChatColor.WHITE));
+
+        player.sendMessage("Plugins " + "(" + pluginNames.size() + ")" + ": " + pluginNames.toString()
+                .replace("[", "")   //Remove the left bracket
+                .replace("]", "")); //Remove the right bracket
+
+        event.setCancelled(true);
     }
 }

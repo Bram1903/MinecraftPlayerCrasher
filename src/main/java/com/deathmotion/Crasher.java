@@ -20,10 +20,6 @@ public class Crasher extends JavaPlugin {
     @Getter
     private static Crasher instance;
 
-    public static Crasher getInstance() {
-        return instance;
-    }
-
     @Override
     public void onEnable() {
         // Setting the instance

