@@ -1,4 +1,4 @@
-package com.deathmotion.crasher;
+package com.deathmotion.crasher.crasher;
 
 public enum CrashType {
     EXPLOSION,

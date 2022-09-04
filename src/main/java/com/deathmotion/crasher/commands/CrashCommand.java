@@ -1,8 +1,8 @@
-package com.deathmotion.commands;
+package com.deathmotion.crasher.commands;
 
-import com.deathmotion.Crasher;
-import com.deathmotion.crasher.CrashType;
-import com.deathmotion.crasher.CrashUtils;
+import com.deathmotion.crasher.Crasher;
+import com.deathmotion.crasher.crasher.CrashType;
+import com.deathmotion.crasher.crasher.CrashUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

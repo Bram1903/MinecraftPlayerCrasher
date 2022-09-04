@@ -1,13 +1,12 @@
-package com.deathmotion.events;
+package com.deathmotion.crasher.events;
 
-import com.deathmotion.Crasher;
+import com.deathmotion.crasher.Crasher;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;

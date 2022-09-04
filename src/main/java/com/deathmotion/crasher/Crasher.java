@@ -1,7 +1,7 @@
-package com.deathmotion;
+package com.deathmotion.crasher;
 
-import com.deathmotion.commands.CrashCommand;
-import com.deathmotion.events.PluginHider;
+import com.deathmotion.crasher.commands.CrashCommand;
+import com.deathmotion.crasher.events.PluginHider;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;

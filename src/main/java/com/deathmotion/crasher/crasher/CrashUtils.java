@@ -1,6 +1,6 @@
-package com.deathmotion.crasher;
+package com.deathmotion.crasher.crasher;
 
-import com.deathmotion.Crasher;
+import com.deathmotion.crasher.Crasher;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
