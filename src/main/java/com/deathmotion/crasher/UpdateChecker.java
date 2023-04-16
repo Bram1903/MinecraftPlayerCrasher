@@ -7,12 +7,13 @@ import org.bukkit.ChatColor;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class UpdateChecker {
-    private static final String prefix = ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Crasher" + ChatColor.GRAY + "] ";
+
+    public static String prefix = ChatColor.DARK_AQUA + String.valueOf(ChatColor.BOLD) + "Crasher " + ChatColor.DARK_GRAY + "> ";
+
     public static void checkForUpdate() {
         Bukkit.getScheduler().runTaskAsynchronously(Crasher.getInstance(), () -> {
             String version = Crasher.getInstance().getDescription().getVersion();

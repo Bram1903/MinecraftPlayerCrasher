@@ -1,6 +1,6 @@
 name: PlayerCrasher
 description: A simple plugin to crash the bad guys!
-version: 1.4.1
+version: ${project.version}
 main: com.deathmotion.crasher.Crasher
 load: POSTWORLD
 authors: [ Bram1903 ]

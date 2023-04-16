@@ -1,19 +1,19 @@
-#
-# _____                           ____              _
-#|  _ \| | __ _ _   _  ___ _ __ / ___|_ __ __ _ ___| |__   ___ _ __
-#| |_) | |/ _` | | | |/ _ \ '__| |   | '__/ _` / __| '_ \ / _ \ '__|
-#|  __/| | (_| | |_| |  __/ |  | |___| | | (_| \__ \ | | |  __/ |
-#|_|   |_|\__,_|\__, |\___|_|   \____|_|  \__,_|___/_| |_|\___|_|
-#               |___/
+#    _____  _                        _____               _
+#   |  __ \| |                      / ____|             | |
+#   | |__) | | __ _ _   _  ___ _ __| |     _ __ __ _ ___| |__   ___ _ __
+#   |  ___/| |/ _` | | | |/ _ \ '__| |    | '__/ _` / __| '_ \ / _ \ '__|
+#   | |    | | (_| | |_| |  __/ |  | |____| | | (_| \__ \ | | |  __/ |
+#   |_|    |_|\__,_|\__, |\___|_|   \_____|_|  \__,_|___/_| |_|\___|_|
+#                    __/ |
+#                   |___/
 
 # true will check if the current version is lower than the latest GitHub release. It will only notify you.
 # false will disable checking for new updates.
 check-update: true
 
-# true hides the plugin from /plugins and /pl for everyone that doesn't have the crasher.use permission.
-# false will disable the event that will hide the plugin.
-plugin-hider: true
+# Changes the plugin prefix.
+prefix: "Crasher"
 
 # true disables the entity method. This method is rather heavy and should only be used if the other methods aren't working.
 # false will keep the entity method enabled.
-disable-entity-method: false
+disable-entity-method: true
