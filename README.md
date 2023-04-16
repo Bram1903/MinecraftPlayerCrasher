@@ -6,8 +6,6 @@ A simple Minecraft plugin to crash a player using a command.
 
 - AntiCrash Bypass (Multiple Methods intended to bypass)
 - Reflections (This plugin makes use of Reflections to make the plugin work on multiple server versions)
-- Plugin Hider (The plugin will hide from /crash, /plugin, and /pl for those without permissions to use the crash
-  command.)
 - Tab Completion (While using /crash you can use tab to auto-complete certain options)
 - Options to use all the methods at once (Except the entity method)
 - Update Checker (Upon the server start the plugin will check if there is a newer release on GitHub.)
