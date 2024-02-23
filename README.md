@@ -5,11 +5,9 @@ A simple Minecraft plugin to crash a player using a command.
 ## Features
 
 - AntiCrash Bypass (Multiple Methods intended to bypass)
-- Reflections (This plugin makes use of Reflections to make the plugin work on multiple server versions)
 - Tab Completion (While using /crash you can use tab to auto-complete certain options)
-- Options to use all the methods at once (Except the entity method)
+- Options to use all the methods at once
 - Update Checker (Upon the server start the plugin will check if there is a newer release on GitHub.)
-- Configuration file (Enable / Disable certain features within the plugin)
 
 ## Usage/Examples
 
@@ -21,7 +19,6 @@ Methods:
 
 - `Explosion`
 - `Position`
-- `Entity` (Only use this method if the other methods didn't work. It can be quite heavy for the server.)
 
 ## Tested Minecraft Server Versions
 
@@ -47,21 +44,17 @@ Players that are OP (Operators) have these permissions by default.
 
 Requirements
 
-- Java 1.8
-- Maven
+- Java 17
+- Gradle
 
 Compile the jar from source by running the following command in the project root's directory (where the pom.xml file is
 located).
 
 ```bash
-mvn clean package
+gradle build
 ```
 
-You can find the compiled jar in the project root's /target/ directory.
-
-## Acknowledgements
-
-- This is a fork of [Marcelektro's](https://github.com/Marcelektro/Minecraft-PlayerCrasher) player crasher.
+You can find the compiled jar in the project root's /build/libs/ directory.
 
 ## License
 
