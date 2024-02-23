@@ -11,12 +11,20 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Main class for the PlayerCrasher plugin.
+ * Handles the setup, starting, and stopping of the plugin.
+ */
 @Getter
 public class PlayerCrasher extends JavaPlugin {
     private BukkitAudiences adventure;
     private PaperCommandManager commandManager;
     private CrashManager crashManager;
 
+    /**
+     * Called when the plugin is loaded.
+     * This method initializes the PacketEvents API.
+     */
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
@@ -27,6 +35,12 @@ public class PlayerCrasher extends JavaPlugin {
         PacketEvents.getAPI().load();
     }
 
+    /**
+     * Called when the plugin is enabled.
+     * This method initializes the BukkitAudiences instance, the PaperCommandManager, the CrashManager,
+     * and starts the UpdateManager and StartupManager.
+     * Finally, it enables bStats.
+     */
     @Override
     public void onEnable() {
         adventure = BukkitAudiences.create(this);
@@ -39,6 +53,10 @@ public class PlayerCrasher extends JavaPlugin {
         enableBStats();
     }
 
+    /**
+     * Called when the plugin is disabled.
+     * This method terminates the PacketEvents API and closes the BukkitAudiences instance.
+     */
     @Override
     public void onDisable() {
         PacketEvents.getAPI().terminate();
@@ -46,6 +64,10 @@ public class PlayerCrasher extends JavaPlugin {
         getLogger().info("Plugin has been uninitialized!");
     }
 
+    /**
+     * Enable the bStats plugin statistics system.
+     * This method catches and logs any exceptions that might be thrown during the enabling process.
+     */
     private void enableBStats() {
         try {
             new Metrics(this, 16190);

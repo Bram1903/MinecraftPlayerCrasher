@@ -14,6 +14,10 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Main command executor for the PlayerCrasher plugin.
+ * This class handles setup, command registration and execution of all PlayerCrasher plugin commands.
+ */
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 @CommandAlias("pc|playercrasher|crasher")
 @CommandPermission("PlayerCrasher.Crash")
@@ -23,6 +27,11 @@ public class PCCommand extends BaseCommand {
     private final BukkitAudiences adventure;
     private Component pcComponent;
 
+    /**
+     * Constructor for main command executor.
+     *
+     * @param plugin The instance of main plugin class to use.
+     */
     public PCCommand(PlayerCrasher plugin) {
         this.plugin = plugin;
         this.crashManager = plugin.getCrashManager();
@@ -31,12 +40,24 @@ public class PCCommand extends BaseCommand {
         initPcComponent();
     }
 
+    /**
+     * Default command for PlayerCrasher.
+     *
+     * @param sender The sender of the command.
+     */
     @Default
     @Description("Base command for PlayerCrasher.")
     public void pc(CommandSender sender) {
         adventure.sender(sender).sendMessage(pcComponent);
     }
 
+    /**
+     * Command to crash a player.
+     *
+     * @param sender  The sender of the command.
+     * @param toCrash The player to crash.
+     * @param method  Optional crash method to use, defaults to POSITION.
+     */
     @CommandAlias("crash")
     @Subcommand("crash")
     @Description("Crash a player.")
@@ -46,6 +67,13 @@ public class PCCommand extends BaseCommand {
         executeCrashCommand(sender, toCrash, method, false);
     }
 
+    /**
+     * Command to scare crash a player.
+     *
+     * @param sender  The sender of the command.
+     * @param toCrash The player to troll crash.
+     * @param method  Optional crash method to use, defaults to POSITION.
+     */
     @CommandAlias("scarecrash|trollcrash")
     @Subcommand("scarecrash|trollcrash")
     @Description("Crash a player while making them think they are receiving a virus.")
@@ -55,6 +83,14 @@ public class PCCommand extends BaseCommand {
         executeCrashCommand(sender, toCrash, method, true);
     }
 
+    /**
+     * Command execution for crash commands.
+     *
+     * @param sender     The sender of the command.
+     * @param toCrash    The player to crash.
+     * @param method     The crash method to use.
+     * @param scareCrash If true, a scare crash will be performed.
+     */
     private void executeCrashCommand(CommandSender sender, OnlinePlayer toCrash, CrashMethod method, boolean scareCrash) {
         FoliaCompatUtil.runTaskAsync(this.plugin, () -> {
             Player target = toCrash.getPlayer();
@@ -82,6 +118,11 @@ public class PCCommand extends BaseCommand {
         });
     }
 
+    /**
+     * Scare target player by sending them spoof virus install messages.
+     *
+     * @param target The player to scare.
+     */
     private void scareTarget(Player target) {
         for (int i = 1; i < 4; i++) {
             adventure.sender(target).sendMessage(Component.text("Trying to inject Virus... Attempt " + i, NamedTextColor.RED));
@@ -100,6 +141,9 @@ public class PCCommand extends BaseCommand {
         }
     }
 
+    /**
+     * Initialises the PlayerCrasher plugin message component.
+     */
     private void initPcComponent() {
         pcComponent = Component.text()
                 .append(Component.text("\u25cf", NamedTextColor.GREEN)

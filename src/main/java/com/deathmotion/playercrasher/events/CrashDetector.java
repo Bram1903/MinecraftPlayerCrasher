@@ -14,6 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+/**
+ * Detects when a player quits the game and checks if a crash has occurred.
+ */
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 public class CrashDetector implements Listener {
 
@@ -21,12 +24,22 @@ public class CrashDetector implements Listener {
     private final CrashManager crashManager;
     private final BukkitAudiences adventure;
 
+    /**
+     * Creates a CrashDetector instance.
+     *
+     * @param plugin an instance of the plugin
+     */
     public CrashDetector(PlayerCrasher plugin) {
         this.plugin = plugin;
         this.crashManager = plugin.getCrashManager();
         this.adventure = plugin.getAdventure();
     }
 
+    /**
+     * Handler method for PlayerQuitEvent. Checks if the player who has quit was crashed.
+     *
+     * @param event An event representing a player quitting the game.
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         FoliaCompatUtil.runTaskAsync(this.plugin, () -> {
@@ -41,6 +54,12 @@ public class CrashDetector implements Listener {
         });
     }
 
+    /**
+     * Notifies the crasher that the target player has been successfully crashed
+     * and sends the crash details to other players with the "PlayerCrasher.Notify" permission.
+     *
+     * @param crashData A data model containing details about the crash
+     */
     private void notifyCrash(CrashData crashData) {
         Component crashComponent = createCrashComponent(crashData);
 
@@ -51,6 +70,12 @@ public class CrashDetector implements Listener {
                 .sendMessage(crashComponent);
     }
 
+    /**
+     * Creates a Component containing detailed information about the crash that can be used in a message.
+     *
+     * @param crashData A data model containing details about the crash
+     * @return A Component with a detailed breakdown of the crash
+     */
     private Component createCrashComponent(CrashData crashData) {
         Component hoveredComponent = Component.text()
                 .append(Component.text("\u25cf"))
