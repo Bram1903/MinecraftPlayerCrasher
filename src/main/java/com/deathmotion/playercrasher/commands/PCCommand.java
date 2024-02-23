@@ -53,6 +53,11 @@ public class PCCommand extends BaseCommand {
                 }
             }
 
+            if (target.hasPermission("PlayerCrasher.Bypass")) {
+                adventure.sender(sender).sendMessage(Component.text("You cannot crash this player.", NamedTextColor.RED));
+                return;
+            }
+
             CrashMethod crashMethod;
             try {
                 crashMethod = CrashMethod.valueOf(method.toUpperCase());
