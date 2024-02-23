@@ -4,6 +4,7 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.services.CrashService;
+import io.github.retrooper.packetevents.util.FoliaCompatUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,9 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CrashManager {
     private final ConcurrentHashMap<UUID, CrashData> crashedPlayers = new ConcurrentHashMap<>();
 
+    private final PlayerCrasher plugin;
     private final CrashService crashService;
 
     public CrashManager(PlayerCrasher plugin) {
+        this.plugin = plugin;
         this.crashService = new CrashService(plugin);
     }
 
@@ -24,7 +27,11 @@ public class CrashManager {
         crashData.setCrasher(sender);
         crashData.setTarget(target);
         crashData.setMethod(method);
+
         crashedPlayers.put(target.getUniqueId(), crashData);
+        FoliaCompatUtil.runTaskTimerAsync(this.plugin, object -> {
+            handleCrashState(target);
+        }, 2L * 60 * 20, 0);
 
         crashService.crashPlayer(target, method);
     }
@@ -39,5 +46,11 @@ public class CrashManager {
 
     public void removeCrashedPlayer(Player player) {
         crashedPlayers.remove(player.getUniqueId());
+    }
+
+    private void handleCrashState(Player target) {
+        if (isCrashed(target)) {
+            removeCrashedPlayer(target);
+        }
     }
 }

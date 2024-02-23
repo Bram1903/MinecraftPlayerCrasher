@@ -58,7 +58,7 @@ public class UpdateNotifier implements Listener {
         if (player.hasPermission("PlayerCrasher.UpdateNotify")) {
             FoliaCompatUtil.runTaskTimerAsync(this.plugin, object -> {
                 adventure.player(player).sendMessage(updateComponent);
-            }, 40L, 20L * 60 * 60);
+            }, 40L, 0);
         }
     }
 }

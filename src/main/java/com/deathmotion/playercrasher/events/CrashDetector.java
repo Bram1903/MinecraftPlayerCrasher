@@ -73,7 +73,7 @@ public class CrashDetector implements Listener {
                         .decorate(TextDecoration.BOLD))
                 .append(Component.text(
                         crashData.getMethod().toString().substring(0, 1).toUpperCase() +
-                        crashData.getMethod().toString().substring(1).toLowerCase(), NamedTextColor.GREEN))
+                                crashData.getMethod().toString().substring(1).toLowerCase(), NamedTextColor.GREEN))
                 .appendNewline()
                 .append(Component.text("Time", NamedTextColor.BLUE))
                 .append(Component.text("      > ", NamedTextColor.GRAY)
