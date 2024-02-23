@@ -41,7 +41,7 @@ public class PCCommand extends BaseCommand {
     @Subcommand("crash")
     @Description("Crash a player.")
     public void crash(CommandSender sender, OnlinePlayer toCrash, @Optional @Single CrashMethod method) {
-        if (method == null) method = CrashMethod.EXPLOSION;
+        if (method == null) method = CrashMethod.POSITION;
 
         executeCrashCommand(sender, toCrash, method, false);
     }
@@ -50,7 +50,7 @@ public class PCCommand extends BaseCommand {
     @Subcommand("scarecrash|trollcrash")
     @Description("Crash a player while making them think they are receiving a virus.")
     public void scareCrash(CommandSender sender, OnlinePlayer toCrash, @Optional @Single CrashMethod method) {
-        if (method == null) method = CrashMethod.EXPLOSION;
+        if (method == null) method = CrashMethod.POSITION;
 
         executeCrashCommand(sender, toCrash, method, true);
     }
