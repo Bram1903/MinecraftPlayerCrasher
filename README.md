@@ -2,36 +2,56 @@
 
 A simple Minecraft plugin to crash a player using a command.
 
+## Supported Versions
+
+This plugin supports every Minecraft version from 1.8.8 to 1.20.4.
+Besides that, the plugin also supports Spigot, Paper, and Folia.
+
+Technically, it should also work on any Spigot or Paper fork, but I can't guarantee that statement.
+
 ## Features
 
-- AntiCrash Bypass (Multiple Methods intended to bypass)
-- Tab Completion (While using /crash you can use tab to auto-complete certain options)
-- Options to use all the methods at once
-- Update Checker (Upon the server start the plugin will check if there is a newer release on GitHub.)
+- **Completely Asynchronous** - The plugin is designed to be as lightweight as possible.
+  All packet modifications are done asynchronously, so the main thread is never blocked.
+- **Folia Support** - The plugin integrates with [Folia](https://papermc.io/software/folia), which is a Paper fork that
+  adds regionised multithreading to the server.
+- **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
+- **Update Checker** - The plugin automatically checks for updates on startup.
+  If a new version is available, a message will be sent to the console.
+- **Stand Alone** - The plugin is completely stand alone, meaning it doesn't require any other plugins to function.
+- **Permission Bypass** - The bypass permission  (`PlayerCrasher.Bypass`), prevents a player from being crashed.
 
 ## Usage/Examples
 
-/crash (The main command that shows which methods are available)
-
-/crash (player) (method / all)
+/crash (player) [Method]
+/scarecrash (player) [Method]
 
 Methods:
 
-- `Explosion`
 - `Position`
+- `Explosion`
 
-## Tested Minecraft Server Versions
+## Permission Nodes
 
-These are the server versions the plugin will work on. You are still able to crash players that joined with other
-versions through ViaVersion.
+Players that are OP (Operators) have these permissions by default.
 
-1.8.9, 1.12.2, 1.16, 1.16.4 and 1.16.5
+- `PlayerCrasher.Crash` Allows the player to use the /crash command.
+- `PlayerCrasher.Bypass` Exempts the player from being crashed when the /crash command is used on them.
+- `PlayerCrasher.Alerts` Allows the player to use the /scarecrash command.
+- `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
 
-Any server version from 1.17 or above will not work, since they reworked the way their classes/packages work.
+## Installation Guide
 
-## Installation
+1. [Download the latest release](https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest) from the release
+   page.
 
-Using this plugin is as simple as downloading the latest release, and placing the jar into your server plugins folder.
+2. Move the downloaded plugin to the plugins directory of your server.
+
+3. Restart your server for the changes to be implemented.
+
+4. Adjust the presets in the `config.yml` file to match your preferences. (Restart required)
+
+5. You're good to go!
 
 ## Permission Nodes
 
@@ -42,19 +62,19 @@ Players that are OP (Operators) have these permissions by default.
 
 ## Compiling Jar From Source
 
-Requirements
+> Prerequisites
 
-- Java 17
+- Java 17 or higher
 - Gradle
 
-Compile the jar from source by running the following command in the project root's directory (where the pom.xml file is
-located).
+To compile the jar from source, run the following command in the directory of your project root (i.e., where the
+build.gradle file resides).
 
 ```bash
 gradle build
 ```
 
-You can find the compiled jar in the project root's /build/libs/ directory.
+The produced jar can be located in the /build/libs/ directory within your project root.
 
 ## License
 
