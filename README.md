@@ -23,8 +23,8 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 
 ## Usage/Examples
 
-/crash (player) [Method]
-/scarecrash (player) [Method]
+- `/crash (player) [Method]`
+- `/scarecrash (player) [Method]`
 
 Methods:
 
