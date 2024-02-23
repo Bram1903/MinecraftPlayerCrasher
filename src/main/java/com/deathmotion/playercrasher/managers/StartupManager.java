@@ -3,6 +3,7 @@ package com.deathmotion.playercrasher.managers;
 import co.aikar.commands.PaperCommandManager;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.commands.PCCommand;
+import com.deathmotion.playercrasher.events.CrashDetector;
 
 public class StartupManager {
 
@@ -26,6 +27,6 @@ public class StartupManager {
     }
 
     private void registerEvents() {
-
+        plugin.getServer().getPluginManager().registerEvents(new CrashDetector(this.plugin), this.plugin);
     }
 }

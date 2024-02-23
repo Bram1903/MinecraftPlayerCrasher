@@ -1,9 +1,9 @@
 package com.deathmotion.playercrasher;
 
 import co.aikar.commands.PaperCommandManager;
+import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.StartupManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
-import com.deathmotion.playercrasher.services.CrashService;
 import com.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PlayerCrasher extends JavaPlugin {
     private BukkitAudiences adventure;
     private PaperCommandManager commandManager;
-    private CrashService crashService;
+    private CrashManager crashManager;
 
     @Override
     public void onLoad() {
@@ -31,7 +31,7 @@ public class PlayerCrasher extends JavaPlugin {
     public void onEnable() {
         adventure = BukkitAudiences.create(this);
         commandManager = new PaperCommandManager(this);
-        crashService = new CrashService(this);
+        crashManager = new CrashManager(this);
 
         new UpdateManager(this);
         new StartupManager(this);

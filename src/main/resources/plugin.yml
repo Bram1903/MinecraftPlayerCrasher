@@ -14,3 +14,14 @@ softdepend:
   - ViaBackwards
   - ViaRewind
   - Geyser-Spigot
+permissions:
+  PlayerCrasher.Crash:
+    description: Allows the player to use the /crash command.
+    default: true
+  PlayerCrasher.Notify:
+    description: Allows the player to receive a notification when a player crashes.
+    default: op
+  PlayerCrasher.Bypass:
+    description: Allows the player to bypass a crash.
+    default: op
+

@@ -8,9 +8,6 @@ import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -32,11 +29,9 @@ public class CrashService {
         this.explosionPacket = initExplosionPacket();
     }
 
-    public void crashPlayer(CommandSender sender, Player target, CrashMethod method) {
+    public void crashPlayer(Player target, CrashMethod method) {
         Consumer<Player> action = crashMethodActions.get(method);
         action.accept(target);
-
-        adventure.sender(sender).sendMessage(Component.text("Successfully crashed " + target.getName(), NamedTextColor.GREEN));
     }
 
     private void sendPositionPacket(Player target) {
