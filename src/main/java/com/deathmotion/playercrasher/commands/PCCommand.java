@@ -21,24 +21,15 @@ public class PCCommand extends BaseCommand {
     private final PlayerCrasher plugin;
     private final CrashManager crashManager;
     private final BukkitAudiences adventure;
-    private final Component pcComponent;
+    private Component pcComponent;
+    private Component invalidMethodComponent;
 
     public PCCommand(PlayerCrasher plugin) {
         this.plugin = plugin;
         this.crashManager = plugin.getCrashManager();
 
         this.adventure = plugin.getAdventure();
-        this.pcComponent = Component.text()
-                .append(Component.text("\u25cf", NamedTextColor.GREEN)
-                        .decoration(TextDecoration.BOLD, true))
-                .append(Component.text(" Running ", NamedTextColor.GRAY))
-                .append(Component.text("PlayerCrasher", NamedTextColor.GREEN)
-                        .decoration(TextDecoration.BOLD, true))
-                .append(Component.text(" v" + plugin.getDescription().getVersion(), NamedTextColor.GREEN)
-                        .decoration(TextDecoration.BOLD, true))
-                .append(Component.text(" by ", NamedTextColor.GRAY))
-                .append(Component.text("Bram", NamedTextColor.GREEN))
-                .build();
+        initComponents();
     }
 
     @Default
@@ -66,12 +57,50 @@ public class PCCommand extends BaseCommand {
             try {
                 crashMethod = CrashMethod.valueOf(method.toUpperCase());
             } catch (IllegalArgumentException e) {
-                sender.sendMessage("Invalid crash method provided. Choose from POSITION, EXPLOSION");
+                adventure.sender(sender).sendMessage(invalidMethodComponent);
                 return;
             }
 
             adventure.sender(sender).sendMessage(Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
             crashManager.crashPlayer(sender, target, crashMethod);
         });
+    }
+
+    private void initComponents() {
+        initPcComponent();
+        initInvalidMethodComponent();
+    }
+
+    private void initPcComponent() {
+        pcComponent = Component.text()
+                .append(Component.text("\u25cf", NamedTextColor.GREEN)
+                        .decoration(TextDecoration.BOLD, true))
+                .append(Component.text(" Running ", NamedTextColor.GRAY))
+                .append(Component.text("PlayerCrasher", NamedTextColor.GREEN)
+                        .decoration(TextDecoration.BOLD, true))
+                .append(Component.text(" v" + plugin.getDescription().getVersion(), NamedTextColor.GREEN)
+                        .decoration(TextDecoration.BOLD, true))
+                .append(Component.text(" by ", NamedTextColor.GRAY))
+                .append(Component.text("Bram", NamedTextColor.GREEN))
+                .build();
+    }
+
+    private void initInvalidMethodComponent() {
+        invalidMethodComponent = Component.text()
+                .append(Component.text("Please choose one of the following methods:", NamedTextColor.RED))
+                .append(Component.newline())
+                .append(Component.newline())
+                .build();
+
+        for (CrashMethod value : CrashMethod.values()) {
+            Component options = Component.text()
+                    .append(Component.text("\u25cf", NamedTextColor.RED)
+                            .decoration(TextDecoration.BOLD, true))
+                    .append(Component.text(" " + value.name().substring(0, 1).toUpperCase() + value.name().substring(1).toLowerCase(), NamedTextColor.RED))
+                    .append(Component.newline())
+                    .build();
+
+            invalidMethodComponent = invalidMethodComponent.append(options);
+        }
     }
 }

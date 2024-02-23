@@ -34,11 +34,21 @@ public class CrashDetector implements Listener {
 
             if (crashManager.isCrashed(player)) {
                 CrashData crashData = crashManager.getCrashData(player);
+                notifyCrash(crashData);
 
-                adventure.permission("PlayerCrasher.Notify").sendMessage(createCrashComponent(crashData));
                 crashManager.removeCrashedPlayer(player);
             }
         });
+    }
+
+    private void notifyCrash(CrashData crashData) {
+        Component crashComponent = createCrashComponent(crashData);
+
+        adventure.sender(crashData.getCrasher()).sendMessage(crashComponent);
+        adventure
+                .permission("PlayerCrasher.Notify")
+                .filterAudience(p -> !p.equals(adventure.sender(crashData.getCrasher())))
+                .sendMessage(crashComponent);
     }
 
     private Component createCrashComponent(CrashData crashData) {
