@@ -19,7 +19,7 @@ public class CrashManager {
 
     public CrashManager(PlayerCrasher plugin) {
         this.plugin = plugin;
-        this.crashService = new CrashService(plugin);
+        this.crashService = new CrashService();
     }
 
     public void crashPlayer(CommandSender sender, Player target, CrashMethod method) {

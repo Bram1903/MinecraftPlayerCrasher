@@ -1,13 +1,11 @@
 package com.deathmotion.playercrasher.services;
 
-import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -16,13 +14,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CrashService {
-    private final BukkitAudiences adventure;
     private final WrapperPlayClientPlayerPosition positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
-    public CrashService(PlayerCrasher plugin) {
-        this.adventure = plugin.getAdventure();
+    public CrashService() {
         this.initCrashMethodActions();
 
         this.positionPacket = initPositionPacket();
