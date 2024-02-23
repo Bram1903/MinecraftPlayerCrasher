@@ -75,18 +75,29 @@ public class PCCommand extends BaseCommand {
             adventure.sender(sender).sendMessage(Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
 
             if (scareCrash) {
-                for (int i = 1; i < 4; i++) {
-                    adventure.sender(target).sendMessage(Component.text("Trying to inject Virus... Attempt " + i, NamedTextColor.RED));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-                adventure.sender(target).sendMessage(Component.text("VIRUS INSTALLED", NamedTextColor.RED).decorate(TextDecoration.BOLD));
+                scareTarget(target);
             }
 
             crashManager.crashPlayer(sender, target, method);
         });
+    }
+
+    private void scareTarget(Player target) {
+        for (int i = 1; i < 4; i++) {
+            adventure.sender(target).sendMessage(Component.text("Trying to inject Virus... Attempt " + i, NamedTextColor.RED));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+        adventure.sender(target).sendMessage(Component.text("VIRUS INSTALLED", NamedTextColor.RED).decorate(TextDecoration.BOLD));
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void initPcComponent() {
