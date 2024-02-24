@@ -21,7 +21,7 @@ public enum CrashMethod {
     /**
      * Method of crashing by sending an invalid block change packet.
      *
-     * @see <a href="https://wiki.vg/Protocol">Block Update (Packet ID: 0x09)</a>
+     * @see <a href="https://wiki.vg/Protocol">Particle (Packet ID: 0x27)</a>
      */
-    BLOCK
+    PARTICLE
 }

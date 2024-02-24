@@ -11,7 +11,7 @@ public class ScareService {
     private final BukkitAudiences adventure;
 
     private final Component titleMessage = createComponent("Virus Injection Started");
-    private final Component actionBarMessage = createComponent("VIRUS INJECTION IN PROGRESS");
+    //private final Component actionBarMessage = createComponent("VIRUS INJECTION IN PROGRESS");
     private final Component finishedMessage = createComponent("VIRUS INSTALLED");
     private final Component finishedTitleMessage = createComponent("VIRUS INSTALLED");
     private final Component finishedTitleSubMessage = createComponent("You have been infected with a virus");
@@ -42,7 +42,7 @@ public class ScareService {
      */
     private void showInjectionStart(Player target) {
         showTitle(target, titleMessage, Component.empty());
-        sendActionBar(target, actionBarMessage);
+        //sendActionBar(target, actionBarMessage);
         pauseExecution();
     }
 
@@ -57,7 +57,7 @@ public class ScareService {
         final Component message = createComponent("Injecting Virus... Step " + stepNumber);
 
         sendMessage(target, message);
-        sendActionBar(target, actionBarMessage);
+        //sendActionBar(target, actionBarMessage);
         showTitle(target, titleMessage, titleSubMessage);
         pauseExecution();
     }

