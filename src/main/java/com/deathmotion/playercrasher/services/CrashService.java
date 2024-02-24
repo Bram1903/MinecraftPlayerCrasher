@@ -79,8 +79,14 @@ public class CrashService {
      * @param method the crash method to be used
      */
     public void crashPlayer(Player target, CrashMethod method) {
-        Consumer<Player> action = crashMethodActions.get(method);
-        action.accept(target);
+        if (method == CrashMethod.ALL) {
+            for (Consumer<Player> action : crashMethodActions.values()) {
+                action.accept(target);
+            }
+        } else {
+            Consumer<Player> action = crashMethodActions.get(method);
+            action.accept(target);
+        }
     }
 
     /**

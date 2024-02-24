@@ -5,6 +5,11 @@ package com.deathmotion.playercrasher.enums;
  */
 public enum CrashMethod {
     /**
+     * Method of crashing by sending all available crash methods
+     */
+    ALL,
+
+    /**
      * Method of crashing by sending an invalid position packet.
      *
      * @see <a href="https://wiki.vg/Protocol">Synchronize Player Position (Packet ID: 0x3E)</a>
