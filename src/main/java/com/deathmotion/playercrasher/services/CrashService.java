@@ -23,6 +23,7 @@ public class CrashService {
     private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private final WrapperPlayServerParticle particlePacket;
+
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
     /**
@@ -141,7 +142,7 @@ public class CrashService {
     }
 
     /**
-     * @return a new ParticlePacket packet with invalid values.
+     * @return a new Particle packet with invalid values.
      */
     private WrapperPlayServerParticle initParticlePacket() {
         return new WrapperPlayServerParticle(new Particle(ParticleTypes.DRAGON_BREATH), true, new Vector3d(d(), d(), d()), new Vector3f(f(), f(), f()), f(), i());
