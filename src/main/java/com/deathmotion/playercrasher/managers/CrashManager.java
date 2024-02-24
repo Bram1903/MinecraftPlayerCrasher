@@ -4,7 +4,6 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.services.CrashService;
-import io.github.retrooper.packetevents.util.FoliaCompatUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,10 +43,6 @@ public class CrashManager {
         crashData.setMethod(method);
 
         crashedPlayers.put(target.getUniqueId(), crashData);
-        FoliaCompatUtil.runTaskTimerAsync(this.plugin, object -> {
-            handleCrashState(target);
-        }, 2L * 60 * 20, 0);
-
         crashService.crashPlayer(target, method);
     }
 
@@ -79,17 +74,5 @@ public class CrashManager {
      */
     public void removeCrashedPlayer(Player player) {
         crashedPlayers.remove(player.getUniqueId());
-    }
-
-    /**
-     * Handles the state of a crashed player. If a player is registered as crashed,
-     * they are removed from the list of crashed players.
-     *
-     * @param target the player whose crash status to handle
-     */
-    private void handleCrashState(Player target) {
-        if (isCrashed(target)) {
-            removeCrashedPlayer(target);
-        }
     }
 }
