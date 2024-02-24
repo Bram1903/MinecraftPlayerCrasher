@@ -1,6 +1,5 @@
 package com.deathmotion.playercrasher.managers;
 
-import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.services.CrashService;
@@ -15,17 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CrashManager {
     private final ConcurrentHashMap<UUID, CrashData> crashedPlayers = new ConcurrentHashMap<>();
-
-    private final PlayerCrasher plugin;
     private final CrashService crashService;
 
     /**
      * Creates a CrashManager instance.
-     *
-     * @param plugin an instance of the plugin
      */
-    public CrashManager(PlayerCrasher plugin) {
-        this.plugin = plugin;
+    public CrashManager() {
         this.crashService = new CrashService();
     }
 

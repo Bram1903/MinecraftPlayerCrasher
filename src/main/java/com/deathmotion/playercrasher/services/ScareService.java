@@ -11,7 +11,6 @@ public class ScareService {
     private final BukkitAudiences adventure;
 
     private final Component titleMessage = createComponent("Virus Injection Started");
-    //private final Component actionBarMessage = createComponent("VIRUS INJECTION IN PROGRESS");
     private final Component finishedMessage = createComponent("VIRUS INSTALLED");
     private final Component finishedTitleMessage = createComponent("VIRUS INSTALLED");
     private final Component finishedTitleSubMessage = createComponent("You have been infected with a virus");
@@ -42,7 +41,6 @@ public class ScareService {
      */
     private void showInjectionStart(Player target) {
         showTitle(target, titleMessage, Component.empty());
-        //sendActionBar(target, actionBarMessage);
         pauseExecution();
     }
 
@@ -57,7 +55,6 @@ public class ScareService {
         final Component message = createComponent("Injecting Virus... Step " + stepNumber);
 
         sendMessage(target, message);
-        //sendActionBar(target, actionBarMessage);
         showTitle(target, titleMessage, titleSubMessage);
         pauseExecution();
     }
@@ -69,7 +66,6 @@ public class ScareService {
      */
     private void showInjectionFinished(Player target) {
         sendMessage(target, finishedMessage);
-        sendActionBar(target, finishedMessage);
         showTitle(target, finishedTitleMessage, finishedTitleSubMessage);
         pauseExecution();
     }
@@ -97,16 +93,6 @@ public class ScareService {
      */
     private void showTitle(Player target, Component mainTitle, Component subTitle) {
         adventure.sender(target).showTitle(Title.title(mainTitle, subTitle));
-    }
-
-    /**
-     * Send an action bar message to the player.
-     *
-     * @param target  The player.
-     * @param message The message.
-     */
-    private void sendActionBar(Player target, Component message) {
-        adventure.sender(target).sendActionBar(message);
     }
 
     /**

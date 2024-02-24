@@ -48,7 +48,7 @@ public class PlayerCrasher extends JavaPlugin {
         configManager = new ConfigManager(this);
         adventure = BukkitAudiences.create(this);
         commandManager = new PaperCommandManager(this);
-        crashManager = new CrashManager(this);
+        crashManager = new CrashManager();
 
         new UpdateManager(this);
         new StartupManager(this);
