@@ -8,6 +8,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -61,13 +63,21 @@ public class CrashDetector implements Listener {
      * @param crashData A data model containing details about the crash
      */
     private void notifyCrash(CrashData crashData) {
-        Component crashComponent = createCrashComponent(crashData);
+        Component notifyComponent = createCrashComponent(crashData);
 
-        adventure.sender(crashData.getCrasher()).sendMessage(crashComponent);
-        adventure
-                .permission("PlayerCrasher.Notify")
-                .filterAudience(p -> !p.equals(adventure.sender(crashData.getCrasher())))
-                .sendMessage(crashComponent);
+        adventure.sender(crashData.getCrasher()).sendMessage(notifyComponent);
+
+        if (crashData.getCrasher() instanceof ConsoleCommandSender) {
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(p -> p.hasPermission("PlayerCrasher.Alerts"))
+                    .forEach(p -> adventure.sender(p).sendMessage(notifyComponent));
+        }
+        else {
+            adventure
+                    .permission("PlayerCrasher.Alerts")
+                    .filterAudience(p -> !p.equals(adventure.sender(crashData.getCrasher())))
+                    .sendMessage(notifyComponent);
+        }
     }
 
     /**
