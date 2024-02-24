@@ -53,13 +53,6 @@ Players that are OP (Operators) have these permissions by default.
 
 5. You're good to go!
 
-## Permission Nodes
-
-Players that are OP (Operators) have these permissions by default.
-
-- `crasher.use` Allows the player to use the /crash command.
-- `crasher.bypass` Makes the player invincible to the crasher.
-
 ## Compiling Jar From Source
 
 > Prerequisites
