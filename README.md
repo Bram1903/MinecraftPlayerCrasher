@@ -17,6 +17,9 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
   All packet modifications are done asynchronously, so the main thread is never blocked.
 - **Folia Support** - The plugin integrates with [Folia](https://papermc.io/software/folia), which is a Paper fork that
   adds regionised multithreading to the server.
+- **Scare Command** - The plugin includes a scare command, which makes the target think they are receiving a virus. 
+After sending a few messages to the target, the target will be crashed like normal
+  (See the picture in the top of this README).
 - **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
 - **Update Checker** - The plugin automatically checks for updates on startup.
   If a new version is available, a message will be sent to the console.
@@ -28,10 +31,15 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - `/crash (player) [Method]`
 - `/scarecrash (player) [Method]`
 
-Methods:
+> **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is all.
+
+**Methods:**
 
 - `Position`
 - `Explosion`
+- `Particle`
+
+**Note:** When providing `All` as the method, the plugin will use all methods to crash the player. This is also the default method used when no method is provided.
 
 ## Permission Nodes
 
