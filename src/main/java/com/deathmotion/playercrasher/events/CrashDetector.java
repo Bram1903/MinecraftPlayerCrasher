@@ -4,11 +4,12 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.models.CrashData;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,18 +65,23 @@ public class CrashDetector implements Listener {
      */
     private void notifyCrash(CrashData crashData) {
         Component notifyComponent = createCrashComponent(crashData);
+        CommandSender crasher = crashData.getCrasher();
+        Audience audienceCrasher = adventure.sender(crasher);
 
-        adventure.sender(crashData.getCrasher()).sendMessage(notifyComponent);
-
-        if (crashData.getCrasher() instanceof ConsoleCommandSender) {
-            Bukkit.getOnlinePlayers().stream()
-                    .filter(p -> p.hasPermission("PlayerCrasher.Alerts"))
-                    .forEach(p -> adventure.sender(p).sendMessage(notifyComponent));
-        }
-        else {
+        if (crasher instanceof ConsoleCommandSender) {
+            // If the crasher is the console, only send the global message,
+            // as the console will always have the required permission
             adventure
                     .permission("PlayerCrasher.Alerts")
-                    .filterAudience(p -> !p.equals(adventure.sender(crashData.getCrasher())))
+                    .sendMessage(notifyComponent);
+        } else {
+            // Notify the (crasher) of the crash, but filter him out from the global message,
+            // as he might have both permissions and would receive the message twice
+            audienceCrasher.sendMessage(notifyComponent);
+
+            adventure
+                    .permission("PlayerCrasher.Alerts")
+                    .filterAudience(p -> !p.equals(audienceCrasher))
                     .sendMessage(notifyComponent);
         }
     }
