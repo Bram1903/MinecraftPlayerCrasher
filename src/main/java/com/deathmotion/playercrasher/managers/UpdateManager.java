@@ -1,6 +1,7 @@
 package com.deathmotion.playercrasher.managers;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
+import com.deathmotion.playercrasher.enums.ConfigOption;
 import com.deathmotion.playercrasher.events.UpdateNotifier;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,9 +20,11 @@ public class UpdateManager {
     private final static String GITHUB_RELEASES_URL = "https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest";
 
     private final PlayerCrasher plugin;
+    private final ConfigManager configManager;
 
     public UpdateManager(PlayerCrasher plugin) {
         this.plugin = plugin;
+        this.configManager = plugin.getConfigManager();
 
         initializeUpdateCheck();
     }
@@ -33,18 +36,15 @@ public class UpdateManager {
     }
 
     private boolean isUpdateCheckerEnabled() {
-        //return configManager.getConfigurationOption(ConfigOption.UPDATE_CHECKER_ENABLED);
-        return true;
+        return configManager.getConfigurationOption(ConfigOption.UPDATE_CHECKER_ENABLED);
     }
 
     private boolean shouldPrintUpdateToConsole() {
-        //return configManager.getConfigurationOption(ConfigOption.UPDATE_CHECKER_PRINT_TO_CONSOLE);
-        return true;
+        return configManager.getConfigurationOption(ConfigOption.UPDATE_CHECKER_PRINT_TO_CONSOLE);
     }
 
     private boolean shouldNotifyInGame() {
-        //return configManager.getConfigurationOption(ConfigOption.NOTIFY_IN_GAME);
-        return true;
+        return configManager.getConfigurationOption(ConfigOption.NOTIFY_IN_GAME);
     }
 
     public void checkForUpdate(boolean printToConsole) {

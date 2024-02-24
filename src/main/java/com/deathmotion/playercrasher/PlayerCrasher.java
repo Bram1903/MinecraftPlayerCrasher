@@ -1,6 +1,7 @@
 package com.deathmotion.playercrasher;
 
 import co.aikar.commands.PaperCommandManager;
+import com.deathmotion.playercrasher.managers.ConfigManager;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.StartupManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 @Getter
 public class PlayerCrasher extends JavaPlugin {
+    private ConfigManager configManager;
     private BukkitAudiences adventure;
     private PaperCommandManager commandManager;
     private CrashManager crashManager;
@@ -43,6 +45,7 @@ public class PlayerCrasher extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        configManager = new ConfigManager(this);
         adventure = BukkitAudiences.create(this);
         commandManager = new PaperCommandManager(this);
         crashManager = new CrashManager(this);
