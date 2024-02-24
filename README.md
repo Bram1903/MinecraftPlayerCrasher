@@ -2,66 +2,84 @@
 
 A simple Minecraft plugin to crash a player using a command.
 
+<img src="showcase/img.png" alt="alt text" height="520">
+
+## Supported Versions
+
+This plugin supports every Minecraft version from 1.8.8 to 1.20.4.
+Besides that, the plugin also supports Spigot, Paper, and Folia.
+
+Technically, it should also work on any Spigot or Paper fork, but I can't guarantee that statement.
+
 ## Features
 
-- AntiCrash Bypass (Multiple Methods intended to bypass)
-- Reflections (This plugin makes use of Reflections to make the plugin work on multiple server versions)
-- Tab Completion (While using /crash you can use tab to auto-complete certain options)
-- Options to use all the methods at once (Except the entity method)
-- Update Checker (Upon the server start the plugin will check if there is a newer release on GitHub.)
-- Configuration file (Enable / Disable certain features within the plugin)
+- **Completely Asynchronous** - The plugin is designed to be as lightweight as possible.
+  All packet modifications are done asynchronously, so the main thread is never blocked.
+- **Folia Support** - The plugin integrates with [Folia](https://papermc.io/software/folia), which is a Paper fork that
+  adds regionised multithreading to the server.
+- **Scare Command** - The plugin includes a scare command, which makes the target think they are receiving a virus. 
+After sending a few messages to the target, the target will be crashed like normal
+  (See the picture in the top of this README).
+- **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
+- **Update Checker** - The plugin automatically checks for updates on startup.
+  If a new version is available, a message will be sent to the console.
+- **Stand Alone** - The plugin is completely stand alone, meaning it doesn't require any other plugins to function.
+- **Permission Bypass** - The bypass permission  (`PlayerCrasher.Bypass`), prevents a player from being crashed.
 
 ## Usage/Examples
 
-/crash (The main command that shows which methods are available)
+- `/crash (player) [Method]`
+- `/scarecrash (player) [Method]`
 
-/crash (player) (method / all)
+> **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is all.
 
-Methods:
+**Methods:**
 
-- `Explosion`
 - `Position`
-- `Entity` (Only use this method if the other methods didn't work. It can be quite heavy for the server.)
+- `Explosion`
+- `Particle`
 
-## Tested Minecraft Server Versions
-
-These are the server versions the plugin will work on. You are still able to crash players that joined with other
-versions through ViaVersion.
-
-1.8.9, 1.12.2, 1.16, 1.16.4 and 1.16.5
-
-Any server version from 1.17 or above will not work, since they reworked the way their classes/packages work.
-
-## Installation
-
-Using this plugin is as simple as downloading the latest release, and placing the jar into your server plugins folder.
+**Note:** When providing `All` as the method, the plugin will use all methods to crash the player. This is also the default method used when no method is provided.
 
 ## Permission Nodes
 
 Players that are OP (Operators) have these permissions by default.
 
-- `crasher.use` Allows the player to use the /crash command.
-- `crasher.bypass` Makes the player invincible to the crasher.
+- `PlayerCrasher.Crash` Allows the player to use the /crash command.
+- `PlayerCrasher.Crash.Scare` Allows the player to use the /scarecrash command, which makes the target think they are
+  receiving a virus.
+- `PlayerCrasher.Bypass` Exempts the player from being crashed when the /crash command is used on them.
+- `PlayerCrasher.Alerts` Allows the player to use the /scarecrash command.
+- `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
+
+## Installation Guide
+
+1. [Download the latest release](https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest) from the release
+   page.
+
+2. Move the downloaded plugin to the plugins directory of your server.
+
+3. Restart your server for the changes to be implemented.
+
+4. Adjust the presets in the `config.yml` file to match your preferences. (Restart required)
+
+5. You're good to go!
 
 ## Compiling Jar From Source
 
-Requirements
+> Prerequisites
 
-- Java 1.8
-- Maven
+- Java 17 or higher
+- Gradle
 
-Compile the jar from source by running the following command in the project root's directory (where the pom.xml file is
-located).
+To compile the jar from source, run the following command in the directory of your project root (i.e., where the
+build.gradle file resides).
 
 ```bash
-mvn clean package
+gradle build
 ```
 
-You can find the compiled jar in the project root's /target/ directory.
-
-## Acknowledgements
-
-- This is a fork of [Marcelektro's](https://github.com/Marcelektro/Minecraft-PlayerCrasher) player crasher.
+The produced jar can be located in the /build/libs/ directory within your project root.
 
 ## License
 

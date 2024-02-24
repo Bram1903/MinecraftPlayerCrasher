@@ -1,18 +1,32 @@
 name: PlayerCrasher
-description: A simple plugin to crash the bad guys!
-version: ${project.version}
-main: com.deathmotion.crasher.Crasher
+author: Bram
+description: Crashes players' clients by sending them funny packets.
+website: https://github.com/Bram1903/MinecraftPlayerCrasher
+main: com.deathmotion.playercrasher.PlayerCrasher
+version: '2.0.0'
+api-version: '1.13'
+folia-supported: true
 load: POSTWORLD
-authors: [ Bram1903 ]
-commands:
-  crash:
-    description: A command to crash a player!
-    permission: crasher.use
-    permission-message: Unknown command. Type "/help" for help.
+softdepend:
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - ViaBackwards
+  - ViaRewind
+  - Geyser-Spigot
 permissions:
-  crasher.use:
+  PlayerCrasher.Crash:
     description: Allows the player to use the /crash command.
+    default: true
+  PlayerCrasher.Crash.Scare:
+    description: Allows the player to use the /scarecrash command, which makes the target think they are receiving a virus.
+    default: true
+  PlayerCrasher.Bypass:
+    description: Allows the player to bypass a crash.
     default: op
-  crasher.bypass:
-    description: Makes the player invincible for the crasher.
+  PlayerCrasher.Alerts:
+    description: Allows the player to receive a notification when a player crashes.
+    default: op
+  PlayerCrasher.UpdateNotify:
+    description: Allows the player to receive a notification when an update is found.
     default: op

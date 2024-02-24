@@ -7,13 +7,12 @@
 #                    __/ |
 #                   |___/
 
-# true will check if the current version is lower than the latest GitHub release. It will only notify you.
-# false will disable checking for new updates.
-check-update: true
+# This option determines whether the plugin will check for an update on startup.
+update-checker:
+  enabled: true
 
-# Changes the plugin prefix.
-prefix: "Crasher"
+  # When an update is found, should it be printed to the console?
+  print-to-console: true
 
-# true disables the entity method. This method is rather heavy and should only be used if the other methods aren't working.
-# false will keep the entity method enabled.
-disable-entity-method: true
+  # When an update is found, should players with the permission "PlayerCrasher.UpdateNotify" be notified?
+  notify-in-game: true
