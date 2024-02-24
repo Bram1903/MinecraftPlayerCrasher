@@ -2,6 +2,8 @@
 
 A simple Minecraft plugin to crash a player using a command.
 
+<img src="showcase/img.png" alt="alt text" height="520">
+
 ## Supported Versions
 
 This plugin supports every Minecraft version from 1.8.8 to 1.20.4.
