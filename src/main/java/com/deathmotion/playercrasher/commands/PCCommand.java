@@ -9,11 +9,9 @@ import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.services.ScareService;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

@@ -11,6 +11,10 @@ public class ScareService {
     private final BukkitAudiences adventure;
 
     private final Component titleMessage = createComponent("Virus Injection Started");
+    private final Component actionBarMessage = createComponent("VIRUS INJECTION IN PROGRESS");
+    private final Component finishedMessage = createComponent("VIRUS INSTALLED");
+    private final Component finishedTitleMessage = createComponent("VIRUS INSTALLED");
+    private final Component finishedTitleSubMessage = createComponent("You have been infected with a virus");
 
     public ScareService(BukkitAudiences adventure) {
         this.adventure = adventure;
@@ -37,8 +41,6 @@ public class ScareService {
      * @param target The player to receive the notifications.
      */
     private void showInjectionStart(Player target) {
-        final Component actionBarMessage = createComponent("VIRUS INJECTION IN PROGRESS");
-
         showTitle(target, titleMessage, Component.empty());
         sendActionBar(target, actionBarMessage);
         pauseExecution();
@@ -47,14 +49,15 @@ public class ScareService {
     /**
      * Handle virus injection steps and send updates to the player.
      *
-     * @param target      The player to receive the updates.
-     * @param stepNumber  The step number of the injection process.
+     * @param target     The player to receive the updates.
+     * @param stepNumber The step number of the injection process.
      */
     private void executeInjectionStep(Player target, int stepNumber) {
         final Component titleSubMessage = createComponent("Step " + stepNumber);
         final Component message = createComponent("Injecting Virus... Step " + stepNumber);
 
         sendMessage(target, message);
+        sendActionBar(target, actionBarMessage);
         showTitle(target, titleMessage, titleSubMessage);
         pauseExecution();
     }
@@ -65,10 +68,6 @@ public class ScareService {
      * @param target The player to receive the notifications.
      */
     private void showInjectionFinished(Player target) {
-        final Component finishedMessage = createComponent("VIRUS INSTALLED");
-        final Component finishedTitleMessage = createComponent("VIRUS INSTALLED");
-        final Component finishedTitleSubMessage = createComponent("You have been infected with a virus");
-
         sendMessage(target, finishedMessage);
         sendActionBar(target, finishedMessage);
         showTitle(target, finishedTitleMessage, finishedTitleSubMessage);
