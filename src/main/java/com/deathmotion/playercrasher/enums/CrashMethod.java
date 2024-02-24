@@ -5,12 +5,17 @@ package com.deathmotion.playercrasher.enums;
  */
 public enum CrashMethod {
     /**
-     * Method of crashing by sending a huge position packet.
+     * Method of crashing by sending an invalid position packet.
      */
     POSITION,
 
     /**
-     * Method of crashing by sending a huge explosion packet.
+     * Method of crashing by sending an invalid explosion packet.
      */
-    EXPLOSION
+    EXPLOSION,
+
+    /**
+     * Method of crashing by sending an invalid block change packet.
+     */
+    BLOCK
 }
