@@ -6,11 +6,14 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.managers.CrashManager;
+import com.deathmotion.playercrasher.services.ScareService;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,6 +28,7 @@ public class PCCommand extends BaseCommand {
     private final PlayerCrasher plugin;
     private final CrashManager crashManager;
     private final BukkitAudiences adventure;
+    private final ScareService scareService;
     private Component pcComponent;
 
     /**
@@ -37,6 +41,7 @@ public class PCCommand extends BaseCommand {
         this.crashManager = plugin.getCrashManager();
 
         this.adventure = plugin.getAdventure();
+        this.scareService = new ScareService(adventure);
         initPcComponent();
     }
 
@@ -76,6 +81,7 @@ public class PCCommand extends BaseCommand {
      */
     @CommandAlias("scarecrash|trollcrash")
     @Subcommand("scarecrash|trollcrash")
+    @CommandPermission("PlayerCrasher.Crash.Scare")
     @Description("Crash a player while making them think they are receiving a virus.")
     public void scareCrash(CommandSender sender, OnlinePlayer toCrash, @Optional @Single CrashMethod method) {
         if (method == null) method = CrashMethod.POSITION;
@@ -111,34 +117,11 @@ public class PCCommand extends BaseCommand {
             adventure.sender(sender).sendMessage(Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
 
             if (scareCrash) {
-                scareTarget(target);
+                scareService.scareTarget(target);
             }
 
             crashManager.crashPlayer(sender, target, method);
         });
-    }
-
-    /**
-     * Scare target player by sending them spoof virus install messages.
-     *
-     * @param target The player to scare.
-     */
-    private void scareTarget(Player target) {
-        for (int i = 1; i < 4; i++) {
-            adventure.sender(target).sendMessage(Component.text("Trying to inject Virus... Attempt " + i, NamedTextColor.RED));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-            }
-        }
-
-        adventure.sender(target).sendMessage(Component.text("VIRUS INSTALLED", NamedTextColor.RED).decorate(TextDecoration.BOLD));
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**

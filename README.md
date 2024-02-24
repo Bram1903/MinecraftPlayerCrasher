@@ -36,6 +36,8 @@ Methods:
 Players that are OP (Operators) have these permissions by default.
 
 - `PlayerCrasher.Crash` Allows the player to use the /crash command.
+- `PlayerCrasher.Crash.Scare` Allows the player to use the /scarecrash command, which makes the target think they are
+  receiving a virus.
 - `PlayerCrasher.Bypass` Exempts the player from being crashed when the /crash command is used on them.
 - `PlayerCrasher.Alerts` Allows the player to use the /scarecrash command.
 - `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
