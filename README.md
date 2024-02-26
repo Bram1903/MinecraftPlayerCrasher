@@ -3,7 +3,7 @@
 ![GitHub Release](https://img.shields.io/github/release/Bram1903/MinecraftPlayerCrasher.svg)
 # Minecraft Player Crasher Plugin
 
-A simple Minecraft plugin to crash a player using a command.
+An easy-to-use Minecraft plugin that enables the crashing of a player's game through the use of a command.
 
 <img src="showcase/img.png" alt="alt text" height="520">
 
