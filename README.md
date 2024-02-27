@@ -1,6 +1,7 @@
 [![Build](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/gradle.yml/badge.svg)](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/gradle.yml)
 [![CodeQL](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml/badge.svg)](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml)
 ![GitHub Release](https://img.shields.io/github/release/Bram1903/MinecraftPlayerCrasher.svg)
+
 # Minecraft Player Crasher Plugin
 
 A simple Minecraft plugin to crash a player using a command.
@@ -20,9 +21,6 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
   All packet modifications are done asynchronously, so the main thread is never blocked.
 - **Folia Support** - The plugin integrates with [Folia](https://papermc.io/software/folia), which is a Paper fork that
   adds regionised multithreading to the server.
-- **Scare Command** - The plugin includes a scare command, which makes the target think they are receiving a virus. 
-After sending a few messages to the target, the target will be crashed like normal
-  (See the picture in the top of this README).
 - **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
 - **Update Checker** - The plugin automatically checks for updates on startup.
   If a new version is available, a message will be sent to the console.
@@ -32,9 +30,9 @@ After sending a few messages to the target, the target will be crashed like norm
 ## Usage/Examples
 
 - `/crash (player) [Method]`
-- `/scarecrash (player) [Method]`
 
-> **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is all.
+> **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is
+> all.
 
 **Methods:**
 
@@ -42,15 +40,14 @@ After sending a few messages to the target, the target will be crashed like norm
 - `Explosion`
 - `Particle`
 
-**Note:** When providing `All` as the method, the plugin will use all methods to crash the player. This is also the default method used when no method is provided.
+**Note:** When providing `All` as the method, the plugin will use all methods to crash the player. This is also the
+default method used when no method is provided.
 
 ## Permission Nodes
 
 Players that are OP (Operators) have these permissions by default.
 
 - `PlayerCrasher.Crash` Allows the player to use the /crash command.
-- `PlayerCrasher.Crash.Scare` Allows the player to use the /scarecrash command, which makes the target think they are
-  receiving a virus.
 - `PlayerCrasher.Bypass` Exempts the player from being crashed when the /crash command is used on them.
 - `PlayerCrasher.Alerts` Makes the player receive alerts when a player is being crashed by another player.
 - `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.

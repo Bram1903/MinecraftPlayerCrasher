@@ -6,7 +6,6 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.managers.CrashManager;
-import com.deathmotion.playercrasher.services.ScareService;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -26,7 +25,6 @@ public class PCCommand extends BaseCommand {
     private final PlayerCrasher plugin;
     private final CrashManager crashManager;
     private final BukkitAudiences adventure;
-    private final ScareService scareService;
     private Component pcComponent;
 
     /**
@@ -39,7 +37,6 @@ public class PCCommand extends BaseCommand {
         this.crashManager = plugin.getCrashManager();
 
         this.adventure = plugin.getAdventure();
-        this.scareService = new ScareService(adventure);
         initPcComponent();
     }
 
@@ -67,35 +64,7 @@ public class PCCommand extends BaseCommand {
     public void crash(CommandSender sender, OnlinePlayer toCrash, @Optional @Single CrashMethod method) {
         if (method == null) method = CrashMethod.ALL;
 
-        executeCrashCommand(sender, toCrash, method, false);
-    }
-
-    /**
-     * Command to scare crash a player.
-     *
-     * @param sender  The sender of the command.
-     * @param toCrash The player to troll crash.
-     * @param method  Optional crash method to use, defaults to POSITION.
-     */
-    @CommandAlias("scarecrash|trollcrash")
-    @Subcommand("scarecrash|trollcrash")
-    @CommandPermission("PlayerCrasher.Crash.Scare")
-    @Description("Crash a player while making them think they are receiving a virus.")
-    public void scareCrash(CommandSender sender, OnlinePlayer toCrash, @Optional @Single CrashMethod method) {
-        if (method == null) method = CrashMethod.ALL;
-
-        executeCrashCommand(sender, toCrash, method, true);
-    }
-
-    /**
-     * Command execution for crash commands.
-     *
-     * @param sender     The sender of the command.
-     * @param toCrash    The player to crash.
-     * @param method     The crash method to use.
-     * @param scareCrash If true, a scare crash will be performed.
-     */
-    private void executeCrashCommand(CommandSender sender, OnlinePlayer toCrash, CrashMethod method, boolean scareCrash) {
+        final CrashMethod finalMethod = method;
         FoliaCompatUtil.runTaskAsync(this.plugin, () -> {
             Player target = toCrash.getPlayer();
 
@@ -113,12 +82,7 @@ public class PCCommand extends BaseCommand {
             }
 
             adventure.sender(sender).sendMessage(Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
-
-            if (scareCrash) {
-                scareService.scareTarget(target);
-            }
-
-            crashManager.crashPlayer(sender, target, method);
+            crashManager.crashPlayer(sender, target, finalMethod);
         });
     }
 
