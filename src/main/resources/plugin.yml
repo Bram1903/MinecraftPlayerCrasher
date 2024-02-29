@@ -3,7 +3,7 @@ author: Bram
 description: Crashes players' clients by sending them funny packets.
 website: https://github.com/Bram1903/MinecraftPlayerCrasher
 main: com.deathmotion.playercrasher.PlayerCrasher
-version: '2.0.0'
+version: '2.1.0'
 api-version: '1.13'
 folia-supported: true
 load: POSTWORLD
