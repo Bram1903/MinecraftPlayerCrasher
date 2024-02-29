@@ -4,7 +4,11 @@
 
 # Minecraft Player Crasher Plugin
 
-An easy-to-use Minecraft plugin that enables the crashing of a player's game through the use of a command.
+A simple Minecraft plugin to crash a player using a command.
+
+## Scare Crash Command / Functionality
+This branch will keep the scare crash command, which will make players think they have a virus on their computer.
+This is a fun way to scare your friends, but it is not recommended to use this on a public server.
 
 <img src="showcase/img.png" alt="alt text" height="520">
 
