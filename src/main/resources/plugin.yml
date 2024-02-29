@@ -18,9 +18,6 @@ permissions:
   PlayerCrasher.Crash:
     description: Allows the player to use the /crash command.
     default: true
-  PlayerCrasher.Crash.Scare:
-    description: Allows the player to use the /scarecrash command, which makes the target think they are receiving a virus.
-    default: true
   PlayerCrasher.Bypass:
     description: Allows the player to bypass a crash.
     default: op
