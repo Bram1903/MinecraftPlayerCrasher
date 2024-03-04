@@ -2,6 +2,8 @@
 [![CodeQL](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml/badge.svg)](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml)
 ![GitHub Release](https://img.shields.io/github/release/Bram1903/MinecraftPlayerCrasher.svg)
 
+[Modrinth Page](https://modrinth.com/plugin/playercrasher)
+
 # Minecraft Player Crasher Plugin
 
 An easy-to-use Minecraft plugin that enables the crashing of a player's game through the use of a command.
