@@ -1,7 +1,7 @@
 package com.deathmotion.playercrasher.events;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
-import io.github.retrooper.packetevents.util.FoliaCompatUtil;
+import com.deathmotion.playercrasher.util.folia.FoliaCompatUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -13,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class is responsible for notifying when an update is available.
@@ -56,9 +58,9 @@ public class UpdateNotifier implements Listener {
         Player player = event.getPlayer();
 
         if (player.hasPermission("PlayerCrasher.UpdateNotify")) {
-            FoliaCompatUtil.runTaskTimerAsync(this.plugin, object -> {
+            FoliaCompatUtil.getAsyncScheduler().runDelayed(plugin, (o) -> {
                 adventure.player(player).sendMessage(updateComponent);
-            }, 40L, 0);
+            }, 2, TimeUnit.SECONDS);
         }
     }
 }

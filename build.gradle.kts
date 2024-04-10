@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.1.0"
+version = "2.2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,7 +27,6 @@ dependencies {
     implementation("net.kyori:adventure-platform-bukkit:4.3.2")
     implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.bstats:bstats-bukkit:3.0.2")
 }
 
 tasks {
@@ -49,12 +48,11 @@ tasks {
         relocate("co.aikar.commands", "com.deathmotion.playercrasher.shaded.acf")
         relocate("co.aikar.locales", "com.deathmotion.playercrasher.shaded.locales")
         relocate("com.google.gson", "com.deathmotion.playercrasher.shaded.gson")
-        relocate("org.bstats", "com.deathmotion.playercrasher")
     }
 
     runServer {
         // The version of the server to run
-        val version = "1.20.4"
+        val version = "1.8.8"
 
         minecraftVersion(version)
         runDirectory.set(file("server/$version"))
@@ -63,7 +61,7 @@ tasks {
         // 1.17           = Java 16
         // 1.18 - 1.20.4  = Java 17
         javaLauncher.set(project.javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(8))
         })
 
         downloadPlugins {

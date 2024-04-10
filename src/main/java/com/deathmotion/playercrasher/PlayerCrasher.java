@@ -6,10 +6,10 @@ import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.StartupManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
 import com.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.bstats.Metrics;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
