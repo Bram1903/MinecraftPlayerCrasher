@@ -14,12 +14,15 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 /**
  * Service responsible for handling crashes.
  */
 public class CrashService {
+    private static final Random RANDOM = new Random();
+
     private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private final WrapperPlayServerParticle particlePacket;
@@ -37,40 +40,24 @@ public class CrashService {
         this.particlePacket = initParticlePacket();
     }
 
-    /**
-     * Using half the MAX_VALUE helps to bypass some anti-crasher protections that flag maximum values as suspicious.
-     *
-     * @return half of maximum double value.
-     */
-    private static double d() {
-        return Double.MAX_VALUE / 2;
+    private double d() {
+        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
+        return RANDOM.nextDouble() * (Double.MAX_VALUE * (1 - lowerBound)) + Double.MAX_VALUE * RANDOM.nextDouble() * 0.1 + 0.4;
     }
 
-    /**
-     * Using half the MAX_VALUE helps to bypass some anti-crasher protections that flag maximum values as suspicious.
-     *
-     * @return half of the maximum float value.
-     */
-    private static float f() {
-        return Float.MAX_VALUE / 2;
+    private float f() {
+        float lowerBound = RANDOM.nextFloat() * 0.1f + 0.4f;
+        return RANDOM.nextFloat() * (Float.MAX_VALUE * (1 - lowerBound)) + Float.MAX_VALUE * RANDOM.nextFloat() * 0.1f + 0.4f;
     }
 
-    /**
-     * Using half the MAX_VALUE helps to bypass some anti-crasher protections that flag maximum values as suspicious.
-     *
-     * @return half of the maximum byte value.
-     */
-    private static byte b() {
-        return Byte.MAX_VALUE / 2;
+    private byte b() {
+        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
+        return (byte) (RANDOM.nextInt((int) (Byte.MAX_VALUE * (1 - lowerBound))) + Byte.MAX_VALUE * lowerBound);
     }
 
-    /**
-     * Using half the MAX_VALUE helps to bypass some anti-crasher protections that flag maximum values as suspicious.
-     *
-     * @return half of the maximum integer value.
-     */
-    private static int i() {
-        return Integer.MAX_VALUE / 2;
+    private int i() {
+        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
+        return RANDOM.nextInt((int) (Integer.MAX_VALUE * (1 - lowerBound))) + (int) (Integer.MAX_VALUE * lowerBound);
     }
 
     /**
