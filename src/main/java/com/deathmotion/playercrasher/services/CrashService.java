@@ -9,6 +9,7 @@ import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerExplosion;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerParticle;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerPositionAndLook;
+import lombok.NonNull;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -66,7 +67,7 @@ public class CrashService {
      * @param target the player to be crashed
      * @param method the crash method to be used
      */
-    public void crashPlayer(Player target, CrashMethod method) {
+    public void crashPlayer(@NonNull Player target, @NonNull CrashMethod method) {
         if (method == CrashMethod.ALL) {
             for (Consumer<Player> action : crashMethodActions.values()) {
                 action.accept(target);

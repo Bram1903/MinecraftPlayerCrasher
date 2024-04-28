@@ -24,7 +24,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     compileOnly("com.github.retrooper.packetevents:spigot:2.2.1")
-    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 }
 
 tasks {
@@ -39,9 +38,6 @@ tasks {
     shadowJar {
         minimize()
         archiveFileName.set("${project.name}-${project.version}.jar")
-
-        relocate("co.aikar.commands", "com.deathmotion.playercrasher.shaded.acf")
-        relocate("co.aikar.locales", "com.deathmotion.playercrasher.shaded.locales")
     }
 
     runServer {

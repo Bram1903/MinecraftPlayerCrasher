@@ -9,6 +9,17 @@ folia-supported: true
 load: POSTWORLD
 softdepend:
   - packetevents
+commands:
+  PlayerCrasher:
+    description: Base command for PlayerCrasher.
+    permission: PlayerCrasher.Crash
+    permission-message: Unknown command. Type "/help" for help
+    aliases:
+      - pc
+  Crash:
+    description: Crashes a player's client.
+    permission: PlayerCrasher.Crash
+    permission-message: Unknown command. Type "/help" for help
 permissions:
   PlayerCrasher.Crash:
     description: Allows the player to use the /crash command.

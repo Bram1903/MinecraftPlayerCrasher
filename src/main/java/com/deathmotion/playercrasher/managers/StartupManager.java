@@ -1,7 +1,7 @@
 package com.deathmotion.playercrasher.managers;
 
-import co.aikar.commands.PaperCommandManager;
 import com.deathmotion.playercrasher.PlayerCrasher;
+import com.deathmotion.playercrasher.commands.CrashCommand;
 import com.deathmotion.playercrasher.commands.PCCommand;
 import com.deathmotion.playercrasher.events.CrashDetector;
 
@@ -11,7 +11,6 @@ import com.deathmotion.playercrasher.events.CrashDetector;
 public class StartupManager {
 
     private final PlayerCrasher plugin;
-    private final PaperCommandManager manager;
 
     /**
      * Creates a new StartUpManager instance.
@@ -20,7 +19,6 @@ public class StartupManager {
      */
     public StartupManager(PlayerCrasher plugin) {
         this.plugin = plugin;
-        this.manager = plugin.getCommandManager();
 
         load();
     }
@@ -37,7 +35,8 @@ public class StartupManager {
      * Registers commands related to the plugin.
      */
     private void registerCommands() {
-        manager.registerCommand(new PCCommand(this.plugin));
+        plugin.getCommand("playercrasher").setExecutor(new PCCommand(plugin));
+        plugin.getCommand("crash").setExecutor(new CrashCommand(plugin));
     }
 
     /**
