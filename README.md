@@ -10,6 +10,11 @@ An easy-to-use Minecraft plugin that enables the crashing of a player's game thr
 
 <img src="docs/showcase/img.png" alt="alt text" height="520">
 
+## Dependency
+
+PacketEvents is a required dependency for this plugin to function. You can download the latest version of PacketEvents from the following link:
+https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.2.1.jar
+
 ## Supported Versions
 
 This plugin supports every Minecraft version from 1.8.8 to 1.20.4.
@@ -67,22 +72,43 @@ Players that are OP (Operators) have these permissions by default.
 
 5. You're good to go!
 
-## Compiling Jar From Source
+## Compiling From Source
 
-> Prerequisites
+### Prerequisites
 
-- Java 17 or higher
-- Gradle
+- Java Development Kit (JDK) version 8 or higher
 
-To compile the jar from source, run the following command in the directory of your project root (i.e., where the
-build.gradle file resides).
+### Steps:
 
-```bash
-gradle build
-```
+1. **Clone the Repository**:
+   Clone the repository containing the MinecraftPlayerCrasher source code to your local machine using Git:
+   ```bash
+   git clone https://github.com/Bram1903/MinecraftPlayerCrasher.git
+   ```
 
-The produced jar can be located in the /build/libs/ directory within your project root.
+2. **Navigate to Project Directory**:
+   Change your current directory to the root directory of the cloned project:
+   ```bash
+   cd MinecraftPlayerCrasher
+   ```
+
+3. **Compile the Source Code**:
+   Use the Gradle wrapper to compile the source code and generate the plugin JAR file:
+   <details>
+   <summary><strong>Linux / macOS</strong></summary>
+
+   ```bash
+   ./gradlew build
+   ```
+   </details>
+   <details>
+   <summary><strong>Windows</strong></summary>
+
+   ```cmd
+   .\gradlew build
+   ```
+   </details>
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+This project is licensed under the [GPL3 License](LICENSE).
