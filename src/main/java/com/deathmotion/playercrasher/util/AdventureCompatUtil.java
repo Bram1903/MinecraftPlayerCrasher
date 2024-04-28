@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public final class AdventureCompatUtil {
                     .map(player -> PacketEvents.getAPI().getPlayerManager().getUser(player))
                     .forEach(user -> user.sendMessage(component));
         } else {
-            PacketEvents.getAPI().getProtocolManager().getUsers().forEach(user -> user.sendMessage(component));
+            getUsers().forEach(user -> user.sendMessage(component));
         }
     }
 
@@ -64,6 +65,15 @@ public final class AdventureCompatUtil {
                 .matcher(LegacyComponentSerializer.legacyAmpersand().serialize(component))
                 .replaceAll("")
                 .trim());
+    }
+
+    /**
+     * Retrieves a list of Users from the PacketEvents API.
+     *
+     * @return a Collection of Users.
+     */
+    private Collection<User> getUsers() {
+        return PacketEvents.getAPI().getProtocolManager().getUsers();
     }
 
     /**
