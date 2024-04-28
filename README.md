@@ -8,7 +8,7 @@
 
 An easy-to-use Minecraft plugin that enables the crashing of a player's game through the use of a command.
 
-<img src="showcase/img.png" alt="alt text" height="520">
+<img src="docs/showcase/img.png" alt="alt text" height="520">
 
 ## Supported Versions
 
