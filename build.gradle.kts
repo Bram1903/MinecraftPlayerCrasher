@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.2.0"
+version = "2.3.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -21,9 +21,9 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("com.github.retrooper.packetevents:spigot:2.2.1")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
-    compileOnly("com.github.retrooper.packetevents:spigot:2.2.1")
 }
 
 tasks {
