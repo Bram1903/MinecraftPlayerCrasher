@@ -22,12 +22,6 @@ public class PlayerCrasher extends JavaPlugin {
     private CrashManager crashManager;
     private AdventureCompatUtil adventureCompatUtil;
 
-    /**
-     * Called when the plugin is enabled.
-     * This method initializes the BukkitAudiences instance, the PaperCommandManager, the CrashManager,
-     * and starts the com.deathmotion.playercrasher.managers.UpdateManager and StartupManager.
-     * Finally, it enables bStats.
-     */
     @Override
     public void onEnable() {
         configManager = new ConfigManager(this);
@@ -41,10 +35,6 @@ public class PlayerCrasher extends JavaPlugin {
         enableBStats();
     }
 
-    /**
-     * Called when the plugin is disabled.
-     * This method terminates the PacketEvents API and closes the BukkitAudiences instance.
-     */
     @Override
     public void onDisable() {
         PacketEvents.getAPI().terminate();
