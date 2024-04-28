@@ -72,9 +72,7 @@ public class CrashDetector implements Listener {
                     .filter(player -> player.hasPermission("PlayerCrasher.Alerts") || player.getUniqueId().equals(((Player) crasher).getUniqueId()))
                     .map(player -> PacketEvents.getAPI().getPlayerManager().getUser(player))
                     .forEach(user -> user.sendMessage(notifyComponent));
-        }
-        else
-        {
+        } else {
             adventure.broadcastComponent(notifyComponent, "PlayerCrasher.Alerts");
             adventure.sendPlainMessage(crasher, notifyComponent);
         }

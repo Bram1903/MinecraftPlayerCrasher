@@ -4,9 +4,10 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.ConfigOption;
 import com.deathmotion.playercrasher.events.UpdateNotifier;
 import com.deathmotion.playercrasher.util.folia.FoliaCompatUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -48,9 +49,9 @@ public class UpdateManager {
     }
 
     public void checkForUpdate(boolean printToConsole) {
-        FoliaCompatUtil.getAsyncScheduler().runNow(this.plugin, (o) -> {
+        FoliaCompatUtil.getAsyncScheduler().runNow(plugin, (o) -> {
             try {
-                List<Integer> currentVersion = parseVersion(this.plugin.getDescription().getVersion());
+                List<Integer> currentVersion = parseVersion(plugin.getDescription().getVersion());
                 List<Integer> latestVersion = getLatestGitHubVersion();
 
                 compareVersions(currentVersion, latestVersion, printToConsole);
@@ -67,19 +68,14 @@ public class UpdateManager {
     }
 
     private List<Integer> getLatestGitHubVersion() throws IOException {
-        URL api = new URL(GITHUB_API_URL);
-        URLConnection con = getConnection(api);
+        URLConnection connection = new URL(GITHUB_API_URL).openConnection();
+        connection.addRequestProperty("User-Agent", "Mozilla/4.0");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String jsonResponse = reader.readLine();
+        reader.close();
+        JsonObject jsonObject = new Gson().fromJson(jsonResponse, JsonObject.class);
 
-        JsonObject json = JsonParser.parseReader(new InputStreamReader(con.getInputStream())).getAsJsonObject();
-
-        return parseVersion(json.get("tag_name").getAsString().replaceFirst("^[vV]", ""));
-    }
-
-    private URLConnection getConnection(URL api) throws IOException {
-        URLConnection con = api.openConnection();
-        con.setConnectTimeout(15000);
-        con.setReadTimeout(15000);
-        return con;
+        return parseVersion(jsonObject.get("tag_name").getAsString().replaceFirst("^[vV]", ""));
     }
 
     private void compareVersions(List<Integer> currentVersion, List<Integer> latestVersion, boolean printToConsole) {
@@ -109,8 +105,8 @@ public class UpdateManager {
 
     private void printUpdateInfo(boolean printToConsole, String formattedVersion) {
         if (printToConsole) {
-            this.plugin.getLogger().info("Found a new version " + formattedVersion);
-            this.plugin.getLogger().info(GITHUB_RELEASES_URL);
+            plugin.getLogger().info("Found a new version " + formattedVersion);
+            plugin.getLogger().info(GITHUB_RELEASES_URL);
         }
 
         if (shouldNotifyInGame()) {
@@ -126,10 +122,10 @@ public class UpdateManager {
      * @param e An instance of IOException representing the occurred error.
      */
     private void LogUpdateError(IOException e) {
-        this.plugin.getLogger().severe("<--------------------------------------------------------------->");
-        this.plugin.getLogger().severe("Failed to check for a new release!");
-        this.plugin.getLogger().severe("Error message:\n" + e.getMessage());
-        this.plugin.getLogger().info(GITHUB_RELEASES_URL);
-        this.plugin.getLogger().severe("<--------------------------------------------------------------->");
+        plugin.getLogger().warning("<--------------------------------------------------------------->");
+        plugin.getLogger().warning("Failed to check for a new release!");
+        plugin.getLogger().warning("Error message:\n" + e.getMessage());
+        plugin.getLogger().warning(GITHUB_RELEASES_URL);
+        plugin.getLogger().warning("<--------------------------------------------------------------->");
     }
 }

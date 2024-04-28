@@ -25,7 +25,7 @@ public class PlayerCrasher extends JavaPlugin {
     /**
      * Called when the plugin is enabled.
      * This method initializes the BukkitAudiences instance, the PaperCommandManager, the CrashManager,
-     * and starts the UpdateManager and StartupManager.
+     * and starts the com.deathmotion.playercrasher.managers.UpdateManager and StartupManager.
      * Finally, it enables bStats.
      */
     @Override
