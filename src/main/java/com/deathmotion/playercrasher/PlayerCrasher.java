@@ -5,11 +5,10 @@ import com.deathmotion.playercrasher.managers.ConfigManager;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.StartupManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
+import com.deathmotion.playercrasher.util.AdventureCompatUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.bstats.Metrics;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -19,23 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class PlayerCrasher extends JavaPlugin {
     private ConfigManager configManager;
-    private BukkitAudiences adventure;
     private PaperCommandManager commandManager;
     private CrashManager crashManager;
-
-    /**
-     * Called when the plugin is loaded.
-     * This method initializes the PacketEvents API.
-     */
-    @Override
-    public void onLoad() {
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
-                .checkForUpdates(false)
-                .bStats(true);
-
-        PacketEvents.getAPI().load();
-    }
+    private AdventureCompatUtil adventureCompatUtil;
 
     /**
      * Called when the plugin is enabled.
@@ -46,9 +31,9 @@ public class PlayerCrasher extends JavaPlugin {
     @Override
     public void onEnable() {
         configManager = new ConfigManager(this);
-        adventure = BukkitAudiences.create(this);
         commandManager = new PaperCommandManager(this);
         crashManager = new CrashManager();
+        adventureCompatUtil = new AdventureCompatUtil();
 
         new UpdateManager(this);
         new StartupManager(this);
@@ -63,7 +48,6 @@ public class PlayerCrasher extends JavaPlugin {
     @Override
     public void onDisable() {
         PacketEvents.getAPI().terminate();
-        adventure.close();
         getLogger().info("Plugin has been uninitialized!");
     }
 

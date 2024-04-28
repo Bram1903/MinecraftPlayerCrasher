@@ -6,8 +6,8 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.managers.CrashManager;
+import com.deathmotion.playercrasher.util.AdventureCompatUtil;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -24,7 +24,8 @@ import org.bukkit.entity.Player;
 public class PCCommand extends BaseCommand {
     private final PlayerCrasher plugin;
     private final CrashManager crashManager;
-    private final BukkitAudiences adventure;
+    private final AdventureCompatUtil adventure;
+
     private Component pcComponent;
 
     /**
@@ -35,8 +36,8 @@ public class PCCommand extends BaseCommand {
     public PCCommand(PlayerCrasher plugin) {
         this.plugin = plugin;
         this.crashManager = plugin.getCrashManager();
+        this.adventure = plugin.getAdventureCompatUtil();
 
-        this.adventure = plugin.getAdventure();
         initPcComponent();
     }
 
@@ -48,7 +49,7 @@ public class PCCommand extends BaseCommand {
     @Default
     @Description("Base command for PlayerCrasher.")
     public void pc(CommandSender sender) {
-        adventure.sender(sender).sendMessage(pcComponent);
+        adventure.sendComponent(sender, pcComponent);
     }
 
     /**
@@ -71,17 +72,17 @@ public class PCCommand extends BaseCommand {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (target.equals(player)) {
-                    adventure.sender(sender).sendMessage(Component.text("You cannot crash yourself.", NamedTextColor.RED));
+                    adventure.sendComponent(sender, (Component.text("You cannot crash yourself.", NamedTextColor.RED)));
                     return;
                 }
             }
 
             if (target.hasPermission("PlayerCrasher.Bypass")) {
-                adventure.sender(sender).sendMessage(Component.text("You cannot crash this player.", NamedTextColor.RED));
+                adventure.sendComponent(target, Component.text("You cannot crash this player.", NamedTextColor.RED));
                 return;
             }
 
-            adventure.sender(sender).sendMessage(Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
+            adventure.sendComponent(sender, Component.text("Attempting to crash " + target.getName(), NamedTextColor.GREEN));
             crashManager.crashPlayer(sender, target, finalMethod);
         });
     }

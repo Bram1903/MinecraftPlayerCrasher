@@ -1,8 +1,8 @@
 package com.deathmotion.playercrasher.events;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
+import com.deathmotion.playercrasher.util.AdventureCompatUtil;
 import com.deathmotion.playercrasher.util.folia.FoliaCompatUtil;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class UpdateNotifier implements Listener {
 
     private final PlayerCrasher plugin;
-    private final BukkitAudiences adventure;
+    private final AdventureCompatUtil adventure;
     private final Component updateComponent;
 
     /**
@@ -33,7 +33,7 @@ public class UpdateNotifier implements Listener {
      */
     public UpdateNotifier(PlayerCrasher plugin, String latestVersion) {
         this.plugin = plugin;
-        this.adventure = plugin.getAdventure();
+        this.adventure = plugin.getAdventureCompatUtil();
 
         // preparing the update notification message
         this.updateComponent = Component.text()
@@ -59,7 +59,7 @@ public class UpdateNotifier implements Listener {
 
         if (player.hasPermission("PlayerCrasher.UpdateNotify")) {
             FoliaCompatUtil.getAsyncScheduler().runDelayed(plugin, (o) -> {
-                adventure.player(player).sendMessage(updateComponent);
+                adventure.sendComponent(player, updateComponent);
             }, 2, TimeUnit.SECONDS);
         }
     }

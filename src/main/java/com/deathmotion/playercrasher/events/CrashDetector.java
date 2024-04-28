@@ -3,14 +3,14 @@ package com.deathmotion.playercrasher.events;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.models.CrashData;
+import com.deathmotion.playercrasher.util.AdventureCompatUtil;
+import com.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.util.FoliaCompatUtil;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,7 +25,7 @@ public class CrashDetector implements Listener {
 
     private final PlayerCrasher plugin;
     private final CrashManager crashManager;
-    private final BukkitAudiences adventure;
+    private final AdventureCompatUtil adventure;
 
     /**
      * Creates a CrashDetector instance.
@@ -35,7 +35,7 @@ public class CrashDetector implements Listener {
     public CrashDetector(PlayerCrasher plugin) {
         this.plugin = plugin;
         this.crashManager = plugin.getCrashManager();
-        this.adventure = plugin.getAdventure();
+        this.adventure = plugin.getAdventureCompatUtil();
     }
 
     /**
@@ -66,23 +66,17 @@ public class CrashDetector implements Listener {
     private void notifyCrash(CrashData crashData) {
         Component notifyComponent = createCrashComponent(crashData);
         CommandSender crasher = crashData.getCrasher();
-        Audience audienceCrasher = adventure.sender(crasher);
 
-        if (crasher instanceof ConsoleCommandSender) {
-            // If the crasher is the console, only send the global message,
-            // as the console will always have the required permission
-            adventure
-                    .permission("PlayerCrasher.Alerts")
-                    .sendMessage(notifyComponent);
-        } else {
-            // Notify the (crasher) of the crash, but filter him out from the global message,
-            // as he might have both permissions and would receive the message twice
-            audienceCrasher.sendMessage(notifyComponent);
-
-            adventure
-                    .permission("PlayerCrasher.Alerts")
-                    .filterAudience(p -> !p.equals(audienceCrasher))
-                    .sendMessage(notifyComponent);
+        if (crasher instanceof Player) {
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.hasPermission("PlayerCrasher.Alerts") || player.getUniqueId().equals(((Player) crasher).getUniqueId()))
+                    .map(player -> PacketEvents.getAPI().getPlayerManager().getUser(player))
+                    .forEach(user -> user.sendMessage(notifyComponent));
+        }
+        else
+        {
+            adventure.broadcastComponent(notifyComponent, "PlayerCrasher.Alerts");
+            adventure.sendPlainMessage(crasher, notifyComponent);
         }
     }
 
