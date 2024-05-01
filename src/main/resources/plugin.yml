@@ -23,7 +23,7 @@ commands:
 permissions:
   PlayerCrasher.Crash:
     description: Allows the player to use the /crash command.
-    default: true
+    default: op
   PlayerCrasher.Bypass:
     description: Allows the player to bypass a crash.
     default: op

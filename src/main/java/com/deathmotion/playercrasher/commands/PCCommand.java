@@ -35,6 +35,11 @@ public class PCCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!sender.hasPermission("PlayerCrasher.Crash")) {
+            sender.sendMessage("Unknown command. Type \"/help\" for help.");
+            return false;
+        }
+
         adventure.sendComponent(sender, pcComponent);
         return true;
     }

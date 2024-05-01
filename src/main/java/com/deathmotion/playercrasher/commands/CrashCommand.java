@@ -31,7 +31,7 @@ public class CrashCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            adventure.sendComponent(sender, Component.text("You do not have permission to use this command.", NamedTextColor.RED));
+            sender.sendMessage("Unknown command. Type \"/help\" for help.");
             return false;
         }
 
