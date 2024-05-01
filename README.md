@@ -31,7 +31,6 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
 - **Update Checker** - The plugin automatically checks for updates on startup.
   If a new version is available, a message will be sent to the console.
-- **Stand Alone** - The plugin is completely stand alone, meaning it doesn't require any other plugins to function.
 - **Permission Bypass** - The bypass permission  (`PlayerCrasher.Bypass`), prevents a player from being crashed.
 
 ## Usage/Examples
