@@ -2,10 +2,12 @@ package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
-import com.deathmotion.playercrasher.managers.CrashManager;
+import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
+import com.github.retrooper.packetevents.PacketEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +21,12 @@ import java.util.List;
 
 public class CrashCommand implements CommandExecutor, TabExecutor {
     private final PlayerCrasher plugin;
-    private final CrashManager crashManager;
+    private final CrashService crashService;
     private final AdventureCompatUtil adventure;
 
     public CrashCommand(PlayerCrasher plugin) {
         this.plugin = plugin;
-        this.crashManager = plugin.getCrashManager();
+        this.crashService = new CrashService();
         this.adventure = plugin.getAdventureCompatUtil();
     }
 
@@ -66,7 +68,26 @@ public class CrashCommand implements CommandExecutor, TabExecutor {
             }
         }
 
-        crashManager.crashPlayer(sender, target, method);
+        crashService.crashPlayer(target, method);
+
+        Component crasherComponent = Component.text()
+                .append(Component.text("Attempting to crash " + target.getName() + "...", NamedTextColor.GREEN))
+                .build();
+
+        Component announcementComponent = Component.text()
+                .append(Component.text(sender.getName() + " has attempted to crash " + target.getName() + ".", NamedTextColor.GREEN))
+                .build();
+
+        if (sender instanceof Player) {
+            adventure.sendComponent(sender, crasherComponent);
+
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.hasPermission("PlayerCrasher.Alerts") && !player.getUniqueId().equals(((Player) sender).getUniqueId()))
+                    .map(player -> PacketEvents.getAPI().getPlayerManager().getUser(player))
+                    .forEach(user -> user.sendMessage(announcementComponent));
+        } else {
+            adventure.sendPlainMessage(sender, crasherComponent);
+        }
         return true;
     }
 

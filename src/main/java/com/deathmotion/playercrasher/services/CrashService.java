@@ -42,23 +42,19 @@ public class CrashService {
     }
 
     private double d() {
-        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
-        return RANDOM.nextDouble() * (Double.MAX_VALUE * (1 - lowerBound)) + Double.MAX_VALUE * RANDOM.nextDouble() * 0.1 + 0.4;
+        return Double.MAX_VALUE * 0.75;
     }
 
     private float f() {
-        float lowerBound = RANDOM.nextFloat() * 0.1f + 0.4f;
-        return RANDOM.nextFloat() * (Float.MAX_VALUE * (1 - lowerBound)) + Float.MAX_VALUE * RANDOM.nextFloat() * 0.1f + 0.4f;
+        return Float.MAX_VALUE * 0.75f;
     }
 
     private byte b() {
-        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
-        return (byte) (RANDOM.nextInt((int) (Byte.MAX_VALUE * (1 - lowerBound))) + Byte.MAX_VALUE * lowerBound);
+        return (byte)(Byte.MAX_VALUE * 0.75);
     }
 
     private int i() {
-        double lowerBound = RANDOM.nextDouble() * 0.1 + 0.4;
-        return RANDOM.nextInt((int) (Integer.MAX_VALUE * (1 - lowerBound))) + (int) (Integer.MAX_VALUE * lowerBound);
+        return (int)(Integer.MAX_VALUE * 0.75);
     }
 
     /**

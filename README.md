@@ -12,12 +12,13 @@ An easy-to-use Minecraft plugin that enables the crashing of a player's game thr
 
 ## Dependency
 
-PacketEvents is a required dependency for this plugin to function. You can download the latest version of PacketEvents from the following link:
+PacketEvents is a required dependency for this plugin to function. You can download the latest version of PacketEvents
+from the following link:
 https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.2.1.jar
 
 ## Supported Versions
 
-This plugin supports every Minecraft version from 1.8.8 to 1.20.4.
+This plugin supports every Minecraft version from 1.8.8 to 1.20.6.
 Besides that, the plugin also supports Spigot, Paper, and Folia.
 
 Technically, it should also work on any Spigot or Paper fork, but I can't guarantee that statement.

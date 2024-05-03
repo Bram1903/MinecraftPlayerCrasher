@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.3.1"
+version = "2.4.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,8 +39,14 @@ tasks {
         minimize()
         archiveFileName.set("${project.name}-${project.version}.jar")
 
-        relocate("net.kyori.adventure.text.serializer.gson", "io.github.retrooper.packetevents.adventure.serializer.gson")
-        relocate("net.kyori.adventure.text.serializer.legacy", "io.github.retrooper.packetevents.adventure.serializer.legacy")
+        relocate(
+            "net.kyori.adventure.text.serializer.gson",
+            "io.github.retrooper.packetevents.adventure.serializer.gson"
+        )
+        relocate(
+            "net.kyori.adventure.text.serializer.legacy",
+            "io.github.retrooper.packetevents.adventure.serializer.legacy"
+        )
     }
 
     runServer {

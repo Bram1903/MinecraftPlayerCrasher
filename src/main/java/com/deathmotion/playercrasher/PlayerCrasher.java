@@ -1,7 +1,6 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.managers.ConfigManager;
-import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.StartupManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
@@ -17,13 +16,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class PlayerCrasher extends JavaPlugin {
     private ConfigManager configManager;
-    private CrashManager crashManager;
     private AdventureCompatUtil adventureCompatUtil;
 
     @Override
     public void onEnable() {
         configManager = new ConfigManager(this);
-        crashManager = new CrashManager();
         adventureCompatUtil = new AdventureCompatUtil();
 
         new UpdateManager(this);
