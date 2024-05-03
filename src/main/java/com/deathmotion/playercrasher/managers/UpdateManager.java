@@ -3,9 +3,9 @@ package com.deathmotion.playercrasher.managers;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.ConfigOption;
 import com.deathmotion.playercrasher.events.UpdateNotifier;
-import com.deathmotion.playercrasher.util.folia.FoliaCompatUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.github.retrooper.packetevents.util.folia.FoliaScheduler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class UpdateManager {
     }
 
     public void checkForUpdate(boolean printToConsole) {
-        FoliaCompatUtil.getAsyncScheduler().runNow(plugin, (o) -> {
+        FoliaScheduler.getAsyncScheduler().runNow(plugin, (o) -> {
             try {
                 List<Integer> currentVersion = parseVersion(plugin.getDescription().getVersion());
                 List<Integer> latestVersion = getLatestGitHubVersion();
@@ -110,7 +110,7 @@ public class UpdateManager {
         }
 
         if (shouldNotifyInGame()) {
-            FoliaCompatUtil.getGlobalRegionScheduler().run(this.plugin, (o) -> {
+            FoliaScheduler.getGlobalRegionScheduler().run(this.plugin, (o) -> {
                 plugin.getServer().getPluginManager().registerEvents(new UpdateNotifier(this.plugin, formattedVersion), this.plugin);
             });
         }

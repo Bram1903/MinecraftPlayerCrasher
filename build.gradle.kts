@@ -39,6 +39,7 @@ tasks {
         minimize()
         archiveFileName.set("${project.name}-${project.version}.jar")
 
+        relocate("net.kyori.adventure.text.serializer.gson", "io.github.retrooper.packetevents.adventure.serializer.gson")
         relocate("net.kyori.adventure.text.serializer.legacy", "io.github.retrooper.packetevents.adventure.serializer.legacy")
     }
 

@@ -2,7 +2,7 @@ package com.deathmotion.playercrasher.events;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
-import com.deathmotion.playercrasher.util.folia.FoliaCompatUtil;
+import io.github.retrooper.packetevents.util.folia.FoliaScheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -58,7 +58,7 @@ public class UpdateNotifier implements Listener {
         Player player = event.getPlayer();
 
         if (player.hasPermission("PlayerCrasher.UpdateNotify")) {
-            FoliaCompatUtil.getAsyncScheduler().runDelayed(plugin, (o) -> {
+            FoliaScheduler.getAsyncScheduler().runDelayed(plugin, (o) -> {
                 adventure.sendComponent(player, updateComponent);
             }, 2, TimeUnit.SECONDS);
         }

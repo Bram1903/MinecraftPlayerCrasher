@@ -5,7 +5,7 @@ import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
 import com.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.util.FoliaCompatUtil;
+import io.github.retrooper.packetevents.util.folia.FoliaScheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -45,7 +45,7 @@ public class CrashDetector implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        FoliaCompatUtil.runTaskAsync(this.plugin, () -> {
+        FoliaScheduler.getAsyncScheduler().runNow(plugin, (o) -> {
             Player player = event.getPlayer();
 
             if (crashManager.isCrashed(player)) {
