@@ -59,6 +59,7 @@ tasks {
         // 1.8.8 - 1.16.5 = Java 8
         // 1.17           = Java 16
         // 1.18 - 1.20.4  = Java 17
+        // 1-20.5+        = Java 21
         javaLauncher.set(project.javaToolchains.launcherFor {
             languageVersion.set(JavaLanguageVersion.of(21))
         })
