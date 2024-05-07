@@ -103,9 +103,9 @@ public class CrashService {
      */
     private void initCrashMethodActions() {
         this.crashMethodActions = new HashMap<>();
-        this.crashMethodActions.put(CrashMethod.POSITION, this::sendPositionPacket);
         this.crashMethodActions.put(CrashMethod.EXPLOSION, this::sendExplosionPacket);
         this.crashMethodActions.put(CrashMethod.PARTICLE, this::sendParticlePacket);
+        this.crashMethodActions.put(CrashMethod.POSITION, this::sendPositionPacket);
     }
 
     /**
