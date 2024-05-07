@@ -15,15 +15,12 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Consumer;
 
 /**
  * Service responsible for handling crashes.
  */
 public class CrashService {
-    private static final Random RANDOM = new Random();
-
     private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private final WrapperPlayServerParticle particlePacket;

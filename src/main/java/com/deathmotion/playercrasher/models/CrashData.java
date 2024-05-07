@@ -18,12 +18,18 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 public class CrashData {
-    // The sender of the crash command
+
     private CommandSender crasher;
-    // The target player who is expected to be crashed
+
     private Player target;
-    // The method used for the crash
+
     private CrashMethod method;
+
+    private long keepAliveId;
+
+    private boolean keepAliveConfirmed;
+
+    private boolean transactionConfirmed;
 
     // The time and date when the crash was initiated
     private ZonedDateTime crashDateTime = ZonedDateTime.now(ZoneId.systemDefault());
