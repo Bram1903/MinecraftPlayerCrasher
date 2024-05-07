@@ -40,16 +40,13 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - `/crash (player) [Method]`
 
 > **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is
-> all.
+> explosion.
 
 **Methods:**
 
 - `Explosion`
 - `Particle`
 - `Position`
-
-**Note:** When providing `All` as the method, the plugin will use all methods to crash the player. This is also the
-default method used when no method is provided.
 
 ## Permission Nodes
 

@@ -3,12 +3,9 @@ package com.deathmotion.playercrasher.commands;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.managers.CrashManager;
-import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
-import com.github.retrooper.packetevents.PacketEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -59,7 +56,7 @@ public class CrashCommand implements CommandExecutor, TabExecutor {
             return false;
         }
 
-        CrashMethod method = CrashMethod.ALL;
+        CrashMethod method = CrashMethod.EXPLOSION;
         if (args.length > 1) {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());

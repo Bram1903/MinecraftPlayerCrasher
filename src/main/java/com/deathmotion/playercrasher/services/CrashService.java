@@ -21,9 +21,9 @@ import java.util.function.Consumer;
  * Service responsible for handling crashes.
  */
 public class CrashService {
-    private final WrapperPlayServerPlayerPositionAndLook positionPacket;
     private final WrapperPlayServerExplosion explosionPacket;
     private final WrapperPlayServerParticle particlePacket;
+    private final WrapperPlayServerPlayerPositionAndLook positionPacket;
 
     private Map<CrashMethod, Consumer<Player>> crashMethodActions;
 
@@ -33,9 +33,9 @@ public class CrashService {
     public CrashService() {
         this.initCrashMethodActions();
 
-        this.positionPacket = initPositionPacket();
         this.explosionPacket = initExplosionPacket();
         this.particlePacket = initParticlePacket();
+        this.positionPacket = initPositionPacket();
     }
 
     private double d() {
@@ -47,11 +47,11 @@ public class CrashService {
     }
 
     private byte b() {
-        return (byte)(Byte.MAX_VALUE * 0.75);
+        return (byte) (Byte.MAX_VALUE * 0.75);
     }
 
     private int i() {
-        return (int)(Integer.MAX_VALUE * 0.75);
+        return (int) (Integer.MAX_VALUE * 0.75);
     }
 
     /**
@@ -61,14 +61,8 @@ public class CrashService {
      * @param method the crash method to be used
      */
     public void crashPlayer(@NonNull Player target, @NonNull CrashMethod method) {
-        if (method == CrashMethod.ALL) {
-            for (Consumer<Player> action : crashMethodActions.values()) {
-                action.accept(target);
-            }
-        } else {
-            Consumer<Player> action = crashMethodActions.get(method);
-            action.accept(target);
-        }
+        Consumer<Player> action = crashMethodActions.get(method);
+        action.accept(target);
     }
 
     /**
