@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,22 +76,12 @@ public class CrashManager {
         return crashedPlayers.containsKey(uuid);
     }
 
-    public CrashData getCrashData(UUID uuid) {
-        return crashedPlayers.get(uuid);
+    public Optional<CrashData> getCrashData(UUID uuid) {
+        return Optional.ofNullable(crashedPlayers.get(uuid));
     }
 
     public void removeCrashedPlayer(Player player) {
         crashedPlayers.remove(player.getUniqueId());
-    }
-
-    public void connectionUpdate(UUID uuid) {
-        CrashData crashData = getCrashData(uuid);
-
-        if (crashData == null) return;
-
-        if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
-            adventure.sendComponent(crashData.getCrasher(), Component.text("Failed to crash " + crashData.getTarget().getName() + "!"));
-        }
     }
 
     private void sendConnectionPackets(Player target, long transactionId) {
@@ -109,7 +100,7 @@ public class CrashManager {
 
     private void checkConnectionPackets(UUID uuid) {
         FoliaScheduler.getAsyncScheduler().runDelayed(plugin, (o) -> {
-            CrashData crashData = getCrashData(uuid);
+            CrashData crashData = getCrashData(uuid).orElse(null);
 
             if (crashData == null) return;
 
@@ -117,7 +108,7 @@ public class CrashManager {
                 notifyCrashers(crashData);
                 removeCrashedPlayer(crashData.getTarget());
             }
-        }, 1, TimeUnit.SECONDS);
+        }, 200, TimeUnit.MILLISECONDS);
     }
 
     private void notifyCrashers(CrashData crashData) {
