@@ -39,19 +39,26 @@ public class CrashService {
     }
 
     private double d() {
-        return Double.MAX_VALUE * 0.75;
+        double qs=Double.MAX_VALUE, mj43=Math.random(), p6=.75, tp9=.5;
+        return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43,2) % 1) * tp9) + tp9));
     }
 
     private float f() {
-        return Float.MAX_VALUE * 0.75f;
+        float y8xafa=Float.MAX_VALUE;
+        double zs39asa=Math.random(), r3s1=.75, d9fs2=.5;
+        return y8xafa * ((float)(zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa,2) % 1) * d9fs2) + d9fs2));
     }
 
     private byte b() {
-        return (byte) (Byte.MAX_VALUE * 0.75);
+        byte q4Retv=Byte.MAX_VALUE;
+        double er99=Math.random(), lr625=.75, wf7125=.5;
+        return (byte)(q4Retv * ((er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99,2) % 1) * wf7125)) + wf7125));
     }
 
     private int i() {
-        return (int) (Integer.MAX_VALUE * 0.75);
+        int rq4s=Integer.MAX_VALUE;
+        double b45jhh=Math.random(), cr75=.75, ds852=.5;
+        return rq4s * (int)((b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh,2) % 1) * ds852)) + ds852);
     }
 
     /**
