@@ -33,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PlayerCrasher
-          path: ${{ github.workspace }}/builds/libs/PlayerCrasher*.jar
+          path: MinecraftPlayerCrasher/builds/libs/PlayerCrasher*.jar
           if-no-files-found: error
