@@ -24,14 +24,9 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-  upload:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
           name: PlayerCrasher
-          path: MinecraftPlayerCrasher/build/libs/PlayerCrasher*.jar
+          path: ${{ github.workspace }}/build/libs/PlayerCrasher*.jar
           if-no-files-found: error
