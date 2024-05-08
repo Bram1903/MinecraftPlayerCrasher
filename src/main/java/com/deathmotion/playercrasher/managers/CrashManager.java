@@ -80,8 +80,8 @@ public class CrashManager {
         return Optional.ofNullable(crashedPlayers.get(uuid));
     }
 
-    public void removeCrashedPlayer(Player player) {
-        crashedPlayers.remove(player.getUniqueId());
+    public void removeCrashedPlayer(UUID uuid) {
+        crashedPlayers.remove(uuid);
     }
 
     private void sendConnectionPackets(Player target, long transactionId) {
@@ -106,8 +106,9 @@ public class CrashManager {
 
             if (!crashData.isKeepAliveConfirmed() || !crashData.isTransactionConfirmed()) {
                 notifyCrashers(crashData);
-                removeCrashedPlayer(crashData.getTarget());
             }
+
+            removeCrashedPlayer(crashData.getTarget().getUniqueId());
         }, 200, TimeUnit.MILLISECONDS);
     }
 
