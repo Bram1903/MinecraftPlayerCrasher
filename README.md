@@ -10,11 +10,11 @@ An easy-to-use Minecraft plugin that enables the crashing of a player's game thr
 
 <img src="docs/showcase/img.png" alt="alt text" height="520">
 
-## Dependency
+### Requires PacketEvents
+The plugin doesn't shade PacketEvents anymore because of performance considerations,
+so you will need to install the latest version of PacketEvents on your server.
 
-PacketEvents is a required dependency for this plugin to function. You can download the latest version of PacketEvents
-from the following link:
-https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.2.1.jar
+[PacketEvents on Modrinth](https://modrinth.com/plugin/packetevents)
 
 ## Supported Versions
 
