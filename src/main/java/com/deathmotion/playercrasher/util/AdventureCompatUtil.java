@@ -87,6 +87,7 @@ public final class AdventureCompatUtil {
                 .getProtocolManager()
                 .getUsers()
                 .stream()
+                .filter(user -> user != null && user.getUUID() != null)
                 .filter(user -> user.getUUID().equals(playerUUID))
                 .findFirst();
     }
