@@ -1,3 +1,21 @@
+/*
+ * This file is part of PlayerCrasher - https://github.com/Bram1903/MinecraftPlayerCrasher
+ * Copyright (C) 2024 Bram and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.deathmotion.playercrasher.listeners;
 
 import com.deathmotion.playercrasher.PlayerCrasher;
@@ -18,17 +36,19 @@ public class BrandHandler extends PacketListenerAbstract {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() != PacketType.Configuration.Client.PLUGIN_MESSAGE) return;
-        WrapperPlayClientPluginMessage wrapper = new WrapperPlayClientPluginMessage(event);
+        WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
 
-        String channelName = wrapper.getChannelName();
-        byte[] data = wrapper.getData();
-
+        String channelName = packet.getChannelName();
         if (!channelName.equalsIgnoreCase("minecraft:brand") && !channelName.equals("MC|Brand")) return;
+
+        byte[] data = packet.getData();
+
+        // Thanks for GrimAC for this fix - Prevents the server from being crashed by a client with a brand name that is too long
         if (data.length > 64 || data.length == 0) return;
 
         byte[] minusLength = new byte[data.length - 1];
         System.arraycopy(data, 1, minusLength, 0, minusLength.length);
-        String brand = new String(minusLength).replace(" (Velocity)", ""); // removes velocity's brand suffix
+        String brand = new String(minusLength).replace(" (Velocity)", "");
 
         crashManager.addClientBrand(event.getUser().getUUID(), prettyBrandName(brand));
     }

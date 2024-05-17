@@ -50,6 +50,12 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - `Particle`
 - `Position`
 
+
+## Commands
+- `/pc` - Displays the plugin's version and author.
+- `/crash (player) [Method]` - Crashes the specified player's game.
+- `/crashinfo [player]` - Displays the client brand and version of the specified player.
+
 ## Permission Nodes
 
 Players that are OP (Operators) have these permissions by default.
@@ -57,6 +63,7 @@ Players that are OP (Operators) have these permissions by default.
 - `PlayerCrasher.Crash` Allows the player to use the /crash command.
 - `PlayerCrasher.Bypass` Exempts the player from being crashed when the /crash command is used on them.
 - `PlayerCrasher.Alerts` Makes the player receive alerts when a player is being crashed by another player.
+- `PlayerCrasher.CrashInfo` - Allows the player to use the /crashinfo command.
 - `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
 
 ## Installation Guide

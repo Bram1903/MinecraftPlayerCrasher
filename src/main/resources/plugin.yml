@@ -20,6 +20,12 @@ commands:
     description: Crashes a player's client.
     permission: PlayerCrasher.Crash
     permission-message: Unknown command. Type "/help" for help
+  CrashInfo:
+    description: Checks the brand and version of a player's client.
+    permission: PlayerCrasher.CrashInfo
+    permission-message: Unknown command. Type "/help" for help
+    aliases:
+      - brand
 permissions:
   PlayerCrasher.Crash:
     description: Allows the player to use the /crash command.
@@ -29,6 +35,9 @@ permissions:
     default: op
   PlayerCrasher.Alerts:
     description: Allows the player to receive a notification when a player crashes.
+    default: op
+  PlayerCrasher.CrashInfo:
+    description: Allows the player to use the /crashinfo command.
     default: op
   PlayerCrasher.UpdateNotify:
     description: Allows the player to receive a notification when an update is found.
