@@ -54,8 +54,8 @@ tasks {
     // 1.17           = Java 16
     // 1.18 - 1.20.4  = Java 17
     // 1-20.5+        = Java 21
-    val version = "1.8.8"
-    val javaVersion = 8
+    val version = "1.20.6"
+    val javaVersion = 21
 
     val requiredPlugins = runPaper.downloadPluginsSpec {
         url("https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
