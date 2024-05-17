@@ -11,6 +11,7 @@ An easy-to-use Minecraft plugin that enables the crashing of a player's game thr
 <img src="docs/showcase/img.png" alt="alt text" height="520">
 
 ### Requires PacketEvents
+
 The plugin doesn't shade PacketEvents anymore because of performance considerations,
 so you will need to install the latest version of PacketEvents on your server.
 
@@ -29,7 +30,8 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
   All packet modifications are done asynchronously, so the main thread is never blocked.
 - **Folia Support** - The plugin integrates with [Folia](https://papermc.io/software/folia), which is a Paper fork that
   adds regionised multithreading to the server.
-- **Crash Detector** - By sending both a keep alive and transaction packet, the plugin can detect if a player has crashed, even if the player is still connected.
+- **Crash Detector** - By sending both a keep alive and transaction packet, the plugin can detect if a player has
+  crashed, even if the player is still connected.
 - **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
 - **Update Checker** - The plugin automatically checks for updates on startup.
   If a new version is available, a message will be sent to the console.

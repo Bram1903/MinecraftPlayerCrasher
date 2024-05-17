@@ -4,6 +4,7 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
+import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -12,10 +13,6 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientKeepAlive;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPong;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWindowConfirmation;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
-import java.util.UUID;
 
 public class TransactionHandler extends PacketListenerAbstract {
     private final CrashManager crashManager;
@@ -56,7 +53,7 @@ public class TransactionHandler extends PacketListenerAbstract {
         if (crashData.getKeepAliveId() != packet.getId()) return;
 
         crashData.setKeepAliveConfirmed(true);
-        connectionUpdate(event.getUser().getUUID());
+        connectionUpdate(event.getUser());
 
         event.setCancelled(true);
     }
@@ -66,7 +63,7 @@ public class TransactionHandler extends PacketListenerAbstract {
         if (crashData.getKeepAliveId() != packet.getId()) return;
 
         crashData.setTransactionConfirmed(true);
-        connectionUpdate(event.getUser().getUUID());
+        connectionUpdate(event.getUser());
 
         event.setCancelled(true);
     }
@@ -76,18 +73,18 @@ public class TransactionHandler extends PacketListenerAbstract {
         if (!packet.isAccepted()) return;
 
         crashData.setTransactionConfirmed(true);
-        connectionUpdate(event.getUser().getUUID());
+        connectionUpdate(event.getUser());
 
         event.setCancelled(true);
     }
 
-    private void connectionUpdate(UUID uuid) {
-        CrashData crashData = crashManager.getCrashData(uuid).orElse(null);
-
+    private void connectionUpdate(User user) {
+        CrashData crashData = crashManager.getCrashData(user.getUUID()).orElse(null);
         if (crashData == null) return;
 
+        String brand = crashManager.getClientBrand(user.getUUID()).orElse("Unknown Brand");
         if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
-            adventure.sendComponent(crashData.getCrasher(), Component.text("Failed to crash " + crashData.getTarget().getName() + "!", NamedTextColor.RED));
+            adventure.sendComponent(crashData.getCrasher(), ComponentCreator.createFailedCrashComponent(crashData, brand, user.getClientVersion()));
         }
     }
 }

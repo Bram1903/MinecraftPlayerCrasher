@@ -4,6 +4,9 @@ import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -57,7 +60,14 @@ public class CrashCommand implements CommandExecutor, TabExecutor {
         }
 
         CrashMethod method = CrashMethod.EXPLOSION;
-        if (args.length > 1) {
+
+        if (args.length == 1) {
+            User user = PacketEvents.getAPI().getPlayerManager().getUser(target);
+            if (user.getClientVersion().isOlderThan(ClientVersion.V_1_12)) {
+                method = CrashMethod.POSITION;
+            }
+        }
+        else {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {

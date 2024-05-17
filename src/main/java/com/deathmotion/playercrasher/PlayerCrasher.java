@@ -1,5 +1,6 @@
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.listeners.BrandHandler;
 import com.deathmotion.playercrasher.listeners.TransactionHandler;
 import com.deathmotion.playercrasher.managers.ConfigManager;
 import com.deathmotion.playercrasher.managers.CrashManager;
@@ -29,6 +30,7 @@ public class PlayerCrasher extends JavaPlugin {
         crashManager = new CrashManager(this);
 
         PacketEvents.getAPI().getEventManager().registerListener(new TransactionHandler(this));
+        PacketEvents.getAPI().getEventManager().registerListener(new BrandHandler(this));
         PacketEvents.getAPI().init();
 
         new UpdateManager(this);

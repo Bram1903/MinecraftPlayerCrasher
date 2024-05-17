@@ -3,6 +3,7 @@ package com.deathmotion.playercrasher.managers;
 import com.deathmotion.playercrasher.PlayerCrasher;
 import com.deathmotion.playercrasher.commands.CrashCommand;
 import com.deathmotion.playercrasher.commands.PCCommand;
+import com.deathmotion.playercrasher.events.PlayerQuit;
 
 /**
  * Manages the start-up processes of the plugin, including the registration of commands and events.
@@ -26,7 +27,15 @@ public class StartupManager {
      * Calls methods to register commands and events.
      */
     private void load() {
+        registerEvents();
         registerCommands();
+    }
+
+    /**
+     * Registers events related to the plugin.
+     */
+    private void registerEvents() {
+        plugin.getServer().getPluginManager().registerEvents(new PlayerQuit(plugin), plugin);
     }
 
     /**

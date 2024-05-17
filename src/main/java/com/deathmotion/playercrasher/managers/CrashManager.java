@@ -5,6 +5,7 @@ import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.models.CrashData;
 import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.util.AdventureCompatUtil;
+import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -13,8 +14,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPi
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowConfirmation;
 import io.github.retrooper.packetevents.util.folia.FoliaScheduler;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,6 +35,8 @@ public class CrashManager {
     private final boolean useLegacyWindowConfirmation;
 
     private final ConcurrentHashMap<UUID, CrashData> crashedPlayers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, String> clientBrand = new ConcurrentHashMap<>();
+
     private final Random random = new Random();
 
     /**
@@ -72,6 +73,10 @@ public class CrashManager {
         checkConnectionPackets(target.getUniqueId());
     }
 
+    public void addClientBrand(UUID uuid, String brand) {
+        clientBrand.put(uuid, brand);
+    }
+
     public boolean isCrashed(UUID uuid) {
         return crashedPlayers.containsKey(uuid);
     }
@@ -80,8 +85,16 @@ public class CrashManager {
         return Optional.ofNullable(crashedPlayers.get(uuid));
     }
 
+    public Optional<String> getClientBrand(UUID uuid) {
+        return Optional.ofNullable(clientBrand.get(uuid));
+    }
+
     public void removeCrashedPlayer(UUID uuid) {
         crashedPlayers.remove(uuid);
+    }
+
+    public void removeClientBrand(UUID uuid) {
+        clientBrand.remove(uuid);
     }
 
     private void sendConnectionPackets(Player target, long transactionId) {
@@ -95,7 +108,7 @@ public class CrashManager {
             } else {
                 user.sendPacket(new WrapperPlayServerPing((int) transactionId));
             }
-        }, 100, TimeUnit.MILLISECONDS);
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
     private void checkConnectionPackets(UUID uuid) {
@@ -109,66 +122,23 @@ public class CrashManager {
             }
 
             removeCrashedPlayer(crashData.getTarget().getUniqueId());
-        }, 200, TimeUnit.MILLISECONDS);
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
     private void notifyCrashers(CrashData crashData) {
-        Component notifyComponent = createCrashComponent(crashData);
-        CommandSender crasher = crashData.getCrasher();
+        User user = PacketEvents.getAPI().getPlayerManager().getUser(crashData.getTarget());
+        String brand = getClientBrand(crashData.getTarget().getUniqueId()).orElse("Unknown Brand");
+        Component notifyComponent = ComponentCreator.createCrashComponent(crashData, brand, user.getClientVersion());
 
+        CommandSender crasher = crashData.getCrasher();
         if (crasher instanceof Player) {
             Bukkit.getOnlinePlayers().stream()
                     .filter(player -> player.hasPermission("PlayerCrasher.Alerts") || player.getUniqueId().equals(((Player) crasher).getUniqueId()))
                     .map(player -> PacketEvents.getAPI().getPlayerManager().getUser(player))
-                    .forEach(user -> user.sendMessage(notifyComponent));
+                    .forEach(userStream -> userStream.sendMessage(notifyComponent));
         } else {
             adventure.broadcastComponent(notifyComponent, "PlayerCrasher.Alerts");
             adventure.sendPlainMessage(crasher, notifyComponent);
         }
-    }
-
-    /**
-     * Creates a Component containing detailed information about the crash that can be used in a message.
-     *
-     * @param crashData A data model containing details about the crash
-     * @return A Component with a detailed breakdown of the crash
-     */
-    private Component createCrashComponent(CrashData crashData) {
-        Component hoveredComponent = Component.text()
-                .append(Component.text("\u25cf"))
-                .append(Component.text(" Crash Information", NamedTextColor.GREEN)
-                        .decorate(TextDecoration.BOLD))
-                .appendNewline()
-                .appendNewline()
-                .append(Component.text("Crasher", NamedTextColor.BLUE))
-                .append(Component.text(" > ", NamedTextColor.GRAY)
-                        .decorate(TextDecoration.BOLD))
-                .append(Component.text(crashData.getCrasher().getName(), NamedTextColor.GREEN))
-                .appendNewline()
-                .append(Component.text("Target", NamedTextColor.BLUE))
-                .append(Component.text("   > ", NamedTextColor.GRAY)
-                        .decorate(TextDecoration.BOLD))
-                .append(Component.text(crashData.getTarget().getName(), NamedTextColor.GREEN))
-                .appendNewline()
-                .append(Component.text("Method", NamedTextColor.BLUE))
-                .append(Component.text("   > ", NamedTextColor.GRAY)
-                        .decorate(TextDecoration.BOLD))
-                .append(Component.text(
-                        crashData.getMethod().toString().substring(0, 1).toUpperCase() +
-                                crashData.getMethod().toString().substring(1).toLowerCase(), NamedTextColor.GREEN))
-                .appendNewline()
-                .append(Component.text("Time", NamedTextColor.BLUE))
-                .append(Component.text("      > ", NamedTextColor.GRAY)
-                        .decorate(TextDecoration.BOLD))
-                .append(Component.text(crashData.getFormattedDateTime(), NamedTextColor.GREEN))
-                .appendNewline()
-                .build();
-
-        return Component.text()
-                .append(Component.text(crashData.getTarget().getName()))
-                .append(Component.text(" has successfully been crashed!"))
-                .color(NamedTextColor.GREEN)
-                .hoverEvent(hoveredComponent)
-                .build();
     }
 }
