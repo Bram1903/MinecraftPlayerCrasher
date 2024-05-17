@@ -41,8 +41,8 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 
 - `/crash (player) [Method]`
 
-> **Note:** The method parameter is optional. If no method is provided, the plugin will use the default method, which is
-> explosion.
+> **Note:** The method parameter is optional. If no method is provided, the plugin will use the most appropriate method
+> based on the player's version.
 
 **Methods:**
 
