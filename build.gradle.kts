@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.4.0"
+version = "2.5.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
