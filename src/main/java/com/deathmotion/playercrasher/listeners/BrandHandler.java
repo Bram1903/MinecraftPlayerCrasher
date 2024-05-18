@@ -35,7 +35,9 @@ public class BrandHandler extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (event.getPacketType() != PacketType.Configuration.Client.PLUGIN_MESSAGE) return;
+        if (event.getPacketType() != PacketType.Play.Client.PLUGIN_MESSAGE && event.getPacketType() != PacketType.Configuration.Client.PLUGIN_MESSAGE)
+            return;
+
         WrapperPlayClientPluginMessage packet = new WrapperPlayClientPluginMessage(event);
 
         String channelName = packet.getChannelName();
@@ -43,7 +45,6 @@ public class BrandHandler extends PacketListenerAbstract {
 
         byte[] data = packet.getData();
 
-        // Thanks for GrimAC for this fix - Prevents the server from being crashed by a client with a brand name that is too long
         if (data.length > 64 || data.length == 0) return;
 
         byte[] minusLength = new byte[data.length - 1];
@@ -54,7 +55,7 @@ public class BrandHandler extends PacketListenerAbstract {
     }
 
     private String prettyBrandName(String brand) {
-        if (brand.toLowerCase().contains("lunarclient")) {
+        if (brand.equalsIgnoreCase("lunarclient")) {
             return "Lunar Client";
         }
 
@@ -64,8 +65,8 @@ public class BrandHandler extends PacketListenerAbstract {
     private String capitalizeFirstLetter(String str) {
         if (str == null || str.isEmpty()) {
             return str;
-        } else {
-            return Character.toUpperCase(str.charAt(0)) + str.substring(1);
         }
+
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
 }
