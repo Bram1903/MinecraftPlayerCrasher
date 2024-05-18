@@ -55,7 +55,9 @@ public class BrandHandler extends PacketListenerAbstract {
     }
 
     private String prettyBrandName(String brand) {
-        if (brand.equalsIgnoreCase("lunarclient")) {
+        String lowerCaseBrand = brand.toLowerCase();
+
+        if (lowerCaseBrand.contains("lunarclient")) {
             return "Lunar Client";
         }
 
