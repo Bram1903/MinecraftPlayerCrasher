@@ -100,8 +100,8 @@ public class TransactionHandler extends PacketListenerAbstract {
         CrashData crashData = crashManager.getCrashData(user.getUUID()).orElse(null);
         if (crashData == null) return;
 
-        String brand = crashManager.getClientBrand(user.getUUID()).orElse("Unknown Brand");
         if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
+            String brand = crashManager.getClientBrand(user.getUUID()).orElse("Unknown Brand");
             adventure.sendComponent(crashData.getCrasher(), ComponentCreator.createFailedCrashComponent(crashData, brand, user.getClientVersion()));
         }
     }
