@@ -27,10 +27,13 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientKeepAlive;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPong;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWindowConfirmation;
+
+import java.util.Optional;
 
 public class TransactionHandler extends PacketListenerAbstract {
     private final CrashManager crashManager;
@@ -102,7 +105,9 @@ public class TransactionHandler extends PacketListenerAbstract {
 
         if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
             String brand = crashManager.getClientBrand(user.getUUID()).orElse("Unknown Brand");
-            adventure.sendComponent(crashData.getCrasher(), ComponentCreator.createFailedCrashComponent(crashData, brand, user.getClientVersion()));
+            String clientVersion = Optional.ofNullable(user.getClientVersion()).map(ClientVersion::getReleaseName).orElse("Unknown Version");
+
+            adventure.sendComponent(crashData.getCrasher(), ComponentCreator.createFailedCrashComponent(crashData, brand, clientVersion));
         }
     }
 }

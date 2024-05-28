@@ -77,7 +77,7 @@ tasks {
         downloadPlugins.from(requiredPlugins)
         downloadPlugins {
             url("https://ci.lucko.me/job/spark/410/artifact/spark-bukkit/build/libs/spark-1.10.65-bukkit.jar")
-            url("https://ci.lucko.me/job/LuckPerms/lastBuild/artifact/bukkit/loader/build/libs/LuckPerms-Bukkit-5.4.128.jar")
+            url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
             url("https://github.com/ViaVersion/ViaVersion/releases/download/4.10.2/ViaVersion-4.10.2.jar")
             url("https://github.com/ViaVersion/ViaBackwards/releases/download/4.10.2/ViaBackwards-4.10.2.jar")
             url("https://github.com/ViaVersion/ViaRewind/releases/download/3.1.2/ViaRewind-3.1.2.jar")

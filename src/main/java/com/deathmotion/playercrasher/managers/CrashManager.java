@@ -26,12 +26,14 @@ import com.deathmotion.playercrasher.util.AdventureCompatUtil;
 import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerKeepAlive;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPing;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowConfirmation;
 import io.github.retrooper.packetevents.util.folia.FoliaScheduler;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -87,7 +89,7 @@ public class CrashManager {
         crashedPlayers.put(target.getUniqueId(), crashData);
 
         crashService.crashPlayer(target, method);
-        sendConnectionPackets(target, transactionId);
+        sendConnectionPackets(target, sender, transactionId);
         checkConnectionPackets(target.getUniqueId());
     }
 
@@ -115,9 +117,14 @@ public class CrashManager {
         clientBrand.remove(uuid);
     }
 
-    private void sendConnectionPackets(Player target, long transactionId) {
+    private void sendConnectionPackets(Player target, CommandSender sender, long transactionId) {
         FoliaScheduler.getAsyncScheduler().runDelayed(plugin, (o) -> {
             User user = PacketEvents.getAPI().getPlayerManager().getUser(target);
+
+            if (user == null) {
+                adventure.sendComponent(sender, Component.text("Failed to send connection packets to the targeted player.", NamedTextColor.RED));
+                return;
+            }
 
             user.sendPacket(new WrapperPlayServerKeepAlive(transactionId));
 
@@ -145,8 +152,11 @@ public class CrashManager {
 
     private void notifyCrashers(CrashData crashData) {
         User user = PacketEvents.getAPI().getPlayerManager().getUser(crashData.getTarget());
+
         String brand = getClientBrand(crashData.getTarget().getUniqueId()).orElse("Unknown Brand");
-        Component notifyComponent = ComponentCreator.createCrashComponent(crashData, brand, user.getClientVersion());
+        String clientVersion = Optional.ofNullable(user.getClientVersion()).map(ClientVersion::getReleaseName).orElse("Unknown Version");
+
+        Component notifyComponent = ComponentCreator.createCrashComponent(crashData, brand, clientVersion);
 
         CommandSender crasher = crashData.getCrasher();
         if (crasher instanceof Player) {

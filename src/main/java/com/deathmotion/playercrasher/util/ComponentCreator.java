@@ -25,7 +25,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 public class ComponentCreator {
-    public static Component createCrashComponent(CrashData crashData, String brand, ClientVersion clientVersion) {
+    public static Component createCrashComponent(CrashData crashData, String brand, String clientVersion) {
         return Component.text()
                 .append(Component.text(crashData.getTarget().getName()))
                 .append(Component.text(" has successfully been crashed!"))
@@ -34,7 +34,7 @@ public class ComponentCreator {
                 .build();
     }
 
-    public static Component createFailedCrashComponent(CrashData crashData, String brand, ClientVersion clientVersion) {
+    public static Component createFailedCrashComponent(CrashData crashData, String brand, String clientVersion) {
         return Component.text()
                 .append(Component.text("Failed to crash "))
                 .append(Component.text(crashData.getTarget().getName()))
@@ -45,7 +45,7 @@ public class ComponentCreator {
     }
 
 
-    private static Component createHoverComponent(CrashData crashData, String brand, ClientVersion clientVersion) {
+    private static Component createHoverComponent(CrashData crashData, String brand, String clientVersion) {
         return Component.text()
                 .append(Component.text("\u25cf"))
                 .append(Component.text(" Crash Information", NamedTextColor.GREEN)
@@ -77,7 +77,7 @@ public class ComponentCreator {
                 .append(Component.text("Client Version", NamedTextColor.BLUE))
                 .append(Component.text(": ", NamedTextColor.GRAY)
                         .decorate(TextDecoration.BOLD))
-                .append(Component.text(clientVersion.getReleaseName(), NamedTextColor.GREEN))
+                .append(Component.text(clientVersion, NamedTextColor.GREEN))
                 .appendNewline()
                 .append(Component.text("Time", NamedTextColor.BLUE))
                 .append(Component.text(": ", NamedTextColor.GRAY)
