@@ -1,26 +1,44 @@
-name: AntiHealthIndicator
+name: PlayerCrasher
 author: Bram
-description: A plugin that prevents hackers and modders from seeing the health of other players.
-website: https://github.com/Bram1903/AntiHealthIndicator
-main: com.deathmotion.antihealthindicator.AHIBukkit
-version: ${version}
+description: Crashes players' clients by sending them funny packets.
+website: https://github.com/Bram1903/MinecraftPlayerCrasher
+main: com.deathmotion.playercrasher.PlayerCrasher
+version: '${version}'
 api-version: '1.13'
 folia-supported: true
 load: POSTWORLD
-commands:
-  AntiHealthIndicator:
-    description: Base command for AntiHealthIndicator.
-    aliases:
-      - ahi
-permissions:
-  AntiHealthIndicator.Notify:
-    description: "This permission allows players to be notified when an update is found."
-    default: op
-  AntiHealthIndicator.Bypass:
-    description: "This permission prevents the player from receiving spoofed data."
-    default: op
-  AntiHealthIndicator.Debug:
-    description: "This permission allows players to see debug messages."
-    default: op
-depend:
+softdepend:
   - packetevents
+commands:
+  PlayerCrasher:
+    description: Base command for PlayerCrasher.
+    permission: PlayerCrasher.Crash
+    permission-message: Unknown command. Type "/help" for help
+    aliases:
+      - pc
+  Crash:
+    description: Crashes a player's client.
+    permission: PlayerCrasher.Crash
+    permission-message: Unknown command. Type "/help" for help
+  CrashInfo:
+    description: Checks the brand and version of a player's client.
+    permission: PlayerCrasher.CrashInfo
+    permission-message: Unknown command. Type "/help" for help
+    aliases:
+      - brand
+permissions:
+  PlayerCrasher.Crash:
+    description: Allows the player to use the /crash command.
+    default: op
+  PlayerCrasher.Bypass:
+    description: Allows the player to bypass a crash.
+    default: op
+  PlayerCrasher.Alerts:
+    description: Allows the player to receive a notification when a player crashes.
+    default: op
+  PlayerCrasher.CrashInfo:
+    description: Allows the player to use the /crashinfo command.
+    default: op
+  PlayerCrasher.UpdateNotify:
+    description: Allows the player to receive a notification when an update is found.
+    default: op
