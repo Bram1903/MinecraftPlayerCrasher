@@ -18,12 +18,15 @@
 
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.*;
 import com.deathmotion.playercrasher.services.MessageService;
 import com.deathmotion.playercrasher.util.PCVersion;
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
+import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +63,10 @@ public abstract class PCPlatform<P> {
      * Called when the platform gets disabled.
      */
     public void commonOnDisable() {
+    }
+
+    public void crashPlayer(@NonNull String senderName, @NonNull UUID senderUUID, boolean console, @NonNull User target, @NonNull CrashMethod crashMethod) {
+        crashManager.crash(senderName, senderUUID, console, target, crashMethod);
     }
 
     /**

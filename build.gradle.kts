@@ -63,7 +63,7 @@ tasks {
         downloadPlugins {
             url("https://ci.lucko.me/job/spark/410/artifact/spark-bukkit/build/libs/spark-1.10.65-bukkit.jar")
             url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
-            url("https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
+            url("https://ci.codemc.io/job/retrooper/job/packetevents/426/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
         }
 
         jvmArgs = jvmArgsExternal
@@ -78,7 +78,7 @@ tasks {
         }
 
         downloadPlugins {
-            url("https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
+            url("https://ci.codemc.io/job/retrooper/job/packetevents/426/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
         }
 
         jvmArgs = jvmArgsExternal
@@ -93,7 +93,7 @@ tasks {
         }
 
         downloadPlugins {
-            url("https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/velocity/build/libs/packetevents-velocity-2.3.1-SNAPSHOT.jar")
+            url("https://ci.codemc.io/job/retrooper/job/packetevents/426/artifact/spigot/build/libs/packetevents-velocity-2.3.1-SNAPSHOT.jar")
         }
     }
 }

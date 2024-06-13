@@ -18,10 +18,13 @@
 
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
+import com.github.retrooper.packetevents.protocol.player.User;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,9 +34,9 @@ import java.util.UUID;
 @Getter
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
-    private final JavaPlugin plugin;
+    private final PCBukkit plugin;
 
-    public BukkitPlayerCrasher(JavaPlugin plugin) {
+    public BukkitPlayerCrasher(PCBukkit plugin) {
         this.plugin = plugin;
     }
 
@@ -66,6 +69,10 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
+    }
+
+    public void crashPlayer(@NonNull String senderName, @NonNull UUID senderUUID, boolean console, @NonNull User target, @NonNull CrashMethod crashMethod) {
+        this.plugin.getPc().crashPlayer(senderName, senderUUID, console, target, crashMethod);
     }
 
     protected void enableBStats() {

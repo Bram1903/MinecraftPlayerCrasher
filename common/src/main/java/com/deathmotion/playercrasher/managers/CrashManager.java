@@ -129,6 +129,7 @@ public class CrashManager<P> {
 
         crashData.setCrasher(sender);
         crashData.setTarget(target);
+        crashData.setClientBrand(getClientBrand(target.getUUID()).orElse("Unknown Brand"));
         crashData.setMethod(crashMethod);
         crashData.setKeepAliveId(transactionId);
         crashedPlayers.putIfAbsent(target.getUUID(), crashData);
