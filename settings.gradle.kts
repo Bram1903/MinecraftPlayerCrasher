@@ -28,3 +28,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PlayerCrasher"
+include(":common")
+include(":platforms:bukkit")
