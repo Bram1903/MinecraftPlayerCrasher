@@ -19,8 +19,8 @@
 package com.deathmotion.playercrasher.services;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.interfaces.CommonSender;
-import com.deathmotion.playercrasher.models.CrashData;
+import com.deathmotion.playercrasher.data.CommonSender;
+import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;

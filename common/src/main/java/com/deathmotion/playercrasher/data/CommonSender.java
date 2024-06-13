@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.interfaces;
+package com.deathmotion.playercrasher.data;
 
 import java.util.UUID;
 

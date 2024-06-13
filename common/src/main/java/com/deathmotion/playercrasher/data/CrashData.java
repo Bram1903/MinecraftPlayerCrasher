@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.models;
+package com.deathmotion.playercrasher.data;
 
 import com.deathmotion.playercrasher.enums.CrashMethod;
-import com.deathmotion.playercrasher.interfaces.CommonSender;
 import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
 import lombok.Setter;

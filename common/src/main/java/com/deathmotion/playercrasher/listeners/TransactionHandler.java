@@ -20,20 +20,16 @@ package com.deathmotion.playercrasher.listeners;
 
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.managers.CrashManager;
-import com.deathmotion.playercrasher.models.CrashData;
+import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.services.MessageService;
-import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientKeepAlive;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPong;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWindowConfirmation;
-
-import java.util.Optional;
 
 public class TransactionHandler<P> extends PacketListenerAbstract {
     private final CrashManager<P> crashManager;
