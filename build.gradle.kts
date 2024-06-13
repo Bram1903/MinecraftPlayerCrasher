@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.5.0"
+version = "2.5.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -14,15 +14,16 @@ java {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/maven-releases/")
-    maven("https://repo.aikar.co/content/groups/aikar/")
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT")
-    compileOnly("com.github.retrooper.packetevents:spigot:2.3.0")
+    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.3.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 }
@@ -59,7 +60,7 @@ tasks {
     val javaVersion = 21
 
     val requiredPlugins = runPaper.downloadPluginsSpec {
-        url("https://ci.codemc.io/job/retrooper/job/packetevents/lastSuccessfulBuild/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
+        url("https://ci.codemc.io/job/retrooper/job/packetevents/426/artifact/spigot/build/libs/packetevents-spigot-2.3.1-SNAPSHOT.jar")
     }
 
     val jvmArgsExternal = listOf(
