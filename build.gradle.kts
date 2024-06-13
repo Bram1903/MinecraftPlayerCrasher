@@ -1,11 +1,12 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("xyz.jpenilla.run-paper") version "2.2.3"
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.run.paper)
 }
 
 group = "com.deathmotion.playercrasher"
-version = "2.5.1-SNAPSHOT"
+description = rootProject.name
+version = "2.5.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -22,25 +23,16 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.3.1-SNAPSHOT")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    compileOnly(libs.paper)
+    compileOnly(libs.packetevents.spigot)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 }
 
 tasks {
-    build {
-        dependsOn("shadowJar")
-    }
-
-    withType<JavaCompile> {
-        options.encoding = "UTF-8"
-        options.release = 8
-    }
-
     shadowJar {
-        minimize()
         archiveFileName.set("${project.name}-${project.version}.jar")
+        archiveClassifier = null
 
         relocate(
             "net.kyori.adventure.text.serializer.gson",
@@ -50,6 +42,26 @@ tasks {
             "net.kyori.adventure.text.serializer.legacy",
             "io.github.retrooper.packetevents.adventure.serializer.legacy"
         )
+    }
+
+    jar {
+        enabled = false
+    }
+
+    build {
+        dependsOn("shadowJar")
+    }
+
+    processResources {
+        inputs.property("version", project.version)
+        filesMatching("plugin.yml") {
+            expand("version" to project.version)
+        }
+    }
+
+    withType<JavaCompile> {
+        options.encoding = "UTF-8"
+        options.release = 8
     }
 
     // 1.8.8 - 1.16.5 = Java 8

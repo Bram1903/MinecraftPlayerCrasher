@@ -1,8 +1,13 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 plugins {
     id("com.gradle.enterprise") version ("3.16.2")
 }
-
-rootProject.name = "PlayerCrasher"
 
 gradleEnterprise {
     if (System.getenv("CI") != null) {
@@ -13,3 +18,13 @@ gradleEnterprise {
         }
     }
 }
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+
+rootProject.name = "PlayerCrasher"
