@@ -19,7 +19,7 @@
 package com.deathmotion.playercrasher.listeners;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.managers.CrashManager;
+import com.deathmotion.playercrasher.managers.UserManager;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -27,10 +27,10 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 
 public class BrandHandler<P> extends PacketListenerAbstract {
 
-    private final CrashManager<P> crashManager;
+    private final UserManager userManager;
 
     public BrandHandler(PCPlatform<P> plugin) {
-        crashManager = plugin.getCrashManager();
+        userManager = plugin.getUserManager();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BrandHandler<P> extends PacketListenerAbstract {
         System.arraycopy(data, 1, minusLength, 0, minusLength.length);
         String brand = new String(minusLength).replace(" (Velocity)", "");
 
-        crashManager.addClientBrand(event.getUser().getUUID(), prettyBrandName(brand));
+        userManager.setClientBrand(event.getUser().getUUID(), prettyBrandName(brand));
     }
 
     private String prettyBrandName(String brand) {

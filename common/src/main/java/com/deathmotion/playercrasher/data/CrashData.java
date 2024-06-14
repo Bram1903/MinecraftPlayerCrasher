@@ -36,7 +36,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 public class CrashData {
 
-    private CommonSender crasher;
+    private CommonUser crasher;
 
     private User target;
 

@@ -18,12 +18,14 @@
 
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.commands.AbstractCrashCommand;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.*;
 import com.deathmotion.playercrasher.services.MessageService;
 import com.deathmotion.playercrasher.util.PCVersion;
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
 import lombok.NonNull;
@@ -40,8 +42,11 @@ public abstract class PCPlatform<P> {
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
 
+    private UserManager userManager;
     private MessageService<P> messageService;
     private CrashManager<P> crashManager;
+
+    private AbstractCrashCommand<P> crashCommand;
 
     public void commonOnInitialize() {
         logManager = new LogManager<>(this);
@@ -52,11 +57,15 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
+        userManager = new UserManager();
+        PacketEvents.getAPI().getEventManager().registerListener(userManager, PacketListenerPriority.LOW);
+
         messageService = new MessageService<>(this);
         crashManager = new CrashManager<>(this);
 
         new PacketManager<>(this);
         new UpdateManager<>(this);
+        crashCommand = new AbstractCrashCommand<>(this);
     }
 
     /**
@@ -65,8 +74,8 @@ public abstract class PCPlatform<P> {
     public void commonOnDisable() {
     }
 
-    public void crashPlayer(@NonNull String senderName, @NonNull UUID senderUUID, boolean console, @NonNull User target, @NonNull CrashMethod crashMethod) {
-        crashManager.crash(senderName, senderUUID, console, target, crashMethod);
+    public void crashPlayer(@NonNull UUID sender, UUID target, String[] args) {
+        crashCommand.execute(sender, target, args);
     }
 
     /**

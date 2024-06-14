@@ -21,7 +21,6 @@ package com.deathmotion.playercrasher.managers;
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.listeners.BrandHandler;
 import com.deathmotion.playercrasher.listeners.TransactionHandler;
-import com.deathmotion.playercrasher.listeners.UserTracker;
 import com.github.retrooper.packetevents.PacketEvents;
 
 public class PacketManager<P> {
@@ -36,6 +35,5 @@ public class PacketManager<P> {
     private void registerPacketListeners() {
         PacketEvents.getAPI().getEventManager().registerListener(new BrandHandler<>(platform));
         PacketEvents.getAPI().getEventManager().registerListener(new TransactionHandler<>(platform));
-        PacketEvents.getAPI().getEventManager().registerListener(new UserTracker<>(platform));
     }
 }

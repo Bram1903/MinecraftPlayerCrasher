@@ -19,15 +19,10 @@
 package com.deathmotion.playercrasher.services;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.data.CommonSender;
+import com.deathmotion.playercrasher.data.CommonUser;
 import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.util.ComponentCreator;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.player.User;
 import net.kyori.adventure.text.Component;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public class MessageService<P> {
 
@@ -38,33 +33,23 @@ public class MessageService<P> {
     }
 
     public void notifyCrashers(CrashData crashData) {
-        CommonSender crasher = crashData.getCrasher();
+        CommonUser crasher = crashData.getCrasher();
         Component notifyComponent = ComponentCreator.createCrashComponent(crashData);
         handleSenderMessage(crasher, notifyComponent);
     }
 
     public void notifyFailedCrash(CrashData crashData) {
-        CommonSender crasher = crashData.getCrasher();
+        CommonUser crasher = crashData.getCrasher();
         Component notifyComponent = ComponentCreator.createFailedCrashComponent(crashData);
         handleSenderMessage(crasher, notifyComponent);
     }
 
-    private void handleSenderMessage(CommonSender sender, Component message) {
+    private void handleSenderMessage(CommonUser sender, Component message) {
         if (sender.isConsole()) {
-            platform.broadcastComponent(message, "PlayerCrasher.Alerts", sender.getUuid());
+            platform.broadcastComponent(message, "PlayerCrasher.Alerts", null);
         }
         else {
-            getUserFromUUID(sender.getUuid()).ifPresent(user -> user.sendMessage(message));
+            platform.broadcastComponent(message, "PlayerCrasher.Alerts", sender.getUuid());
         }
-    }
-
-    private Optional<User> getUserFromUUID(UUID sender) {
-        Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(sender);
-
-        if (channel != null) {
-            return Optional.ofNullable(PacketEvents.getAPI().getProtocolManager().getUser(channel));
-        }
-
-        return Optional.empty();
     }
 }

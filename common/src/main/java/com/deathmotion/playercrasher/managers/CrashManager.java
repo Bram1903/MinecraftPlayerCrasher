@@ -20,7 +20,7 @@ package com.deathmotion.playercrasher.managers;
 
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.enums.CrashMethod;
-import com.deathmotion.playercrasher.data.CommonSender;
+import com.deathmotion.playercrasher.data.CommonUser;
 import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.services.MessageService;
@@ -41,35 +41,31 @@ import java.util.concurrent.TimeUnit;
 public class CrashManager<P> {
 
     private final PCPlatform<P> platform;
+    private final UserManager userManager;
     private final MessageService<P> messageService;
     private final CrashService crashService;
 
     private final boolean useLegacyWindowConfirmation;
 
     private final ConcurrentHashMap<UUID, CrashData> crashedPlayers = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, String> clientBrand = new ConcurrentHashMap<>();
     private final Random random = new Random();
 
     public CrashManager(PCPlatform<P> platform) {
         this.platform = platform;
+        this.userManager = platform.getUserManager();
         this.messageService = platform.getMessageService();
         this.crashService = new CrashService();
 
         this.useLegacyWindowConfirmation = PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17);
     }
 
-    public void crash(@NonNull String senderName, @NonNull UUID senderUUID, boolean console, @NonNull User target, @NonNull CrashMethod crashMethod) {
-        CommonSender commonSender = new CommonSender(senderName, senderUUID, console);
-        CrashData crashData = createCrashData(commonSender, target, crashMethod);
+    public void crash(@NonNull CommonUser sender, @NonNull User target, @NonNull CrashMethod crashMethod) {
+        CrashData crashData = createCrashData(sender, target, crashMethod);
 
         this.platform.getScheduler().runAsyncTask((o) -> {
             crashService.crash(target, crashMethod);
             handleConnectionPackets(crashData);
         });
-    }
-
-    public void addClientBrand(UUID uuid, String brand) {
-        clientBrand.put(uuid, brand);
     }
 
     public boolean isCrashed(UUID uuid) {
@@ -80,16 +76,8 @@ public class CrashManager<P> {
         return Optional.ofNullable(crashedPlayers.get(uuid));
     }
 
-    public Optional<String> getClientBrand(UUID uuid) {
-        return Optional.ofNullable(clientBrand.get(uuid));
-    }
-
     public void removeCrashedPlayer(UUID uuid) {
         crashedPlayers.remove(uuid);
-    }
-
-    public void removeClientBrand(UUID uuid) {
-        clientBrand.remove(uuid);
     }
 
     private void handleConnectionPackets(CrashData crashData) {
@@ -123,13 +111,13 @@ public class CrashManager<P> {
         removeCrashedPlayer(crashData.getTarget().getUUID());
     }
 
-    private CrashData createCrashData(CommonSender sender, User target, CrashMethod crashMethod) {
+    private CrashData createCrashData(CommonUser sender, User target, CrashMethod crashMethod) {
         long transactionId = random.nextInt(1_000_000_000);
         CrashData crashData = new CrashData();
 
         crashData.setCrasher(sender);
         crashData.setTarget(target);
-        crashData.setClientBrand(getClientBrand(target.getUUID()).orElse("Unknown Brand"));
+        crashData.setClientBrand(userManager.getUser(target.getUUID()).getClientBrand());
         crashData.setMethod(crashMethod);
         crashData.setKeepAliveId(transactionId);
         crashedPlayers.putIfAbsent(target.getUUID(), crashData);

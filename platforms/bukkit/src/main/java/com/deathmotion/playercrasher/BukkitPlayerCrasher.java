@@ -28,6 +28,7 @@ import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -69,10 +70,6 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
-    }
-
-    public void crashPlayer(@NonNull String senderName, @NonNull UUID senderUUID, boolean console, @NonNull User target, @NonNull CrashMethod crashMethod) {
-        this.plugin.getPc().crashPlayer(senderName, senderUUID, console, target, crashMethod);
     }
 
     protected void enableBStats() {
