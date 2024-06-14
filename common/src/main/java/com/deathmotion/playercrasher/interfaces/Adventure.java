@@ -16,42 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.data;
+package com.deathmotion.playercrasher.interfaces;
 
-import lombok.Getter;
-import lombok.Setter;
+import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
 
-public class CommonUser {
-    @Getter
-    private final UUID uuid;
+public interface Adventure {
+    void sendMessage(Component message);
+    void sendMessage(Component message, UUID player);
 
-    @Getter
-    private final String name;
+    void sendPermissionMessage(Component message, String permission);
+    void sendExemptedMessage(Component message, UUID exemptedPlayer);
 
-    @Getter
-    private final boolean isConsole;
+    void sendPlayerMessage(Component message);
+    void sendPlayerPermissionMessage(Component message, String permission);
+    void sendPlayerExemptedMessage(Component message, UUID exemptedPlayer);
 
-    @Setter
-    private String clientBrand;
-
-    public CommonUser(UUID uuid, String name, boolean isConsole) {
-        this.uuid = uuid;
-        this.name = name;
-        this.isConsole = isConsole;
-    }
-
-    public String getClientBrand() {
-        if (isConsole) {
-            return "Console";
-        }
-
-        if (clientBrand != null) {
-            return clientBrand;
-        }
-        else {
-            return "Unknown Client";
-        }
-    }
+    void sendConsoleMessage(Component message);
 }

@@ -41,7 +41,6 @@ import java.util.concurrent.TimeUnit;
 public class CrashManager<P> {
 
     private final PCPlatform<P> platform;
-    private final UserManager userManager;
     private final MessageService<P> messageService;
     private final CrashService crashService;
 
@@ -52,7 +51,6 @@ public class CrashManager<P> {
 
     public CrashManager(PCPlatform<P> platform) {
         this.platform = platform;
-        this.userManager = platform.getUserManager();
         this.messageService = platform.getMessageService();
         this.crashService = new CrashService();
 

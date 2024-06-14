@@ -47,7 +47,7 @@ public class CrashCommand implements CommandExecutor, TabExecutor {
             targetUUID = target.getUniqueId();
         }
 
-        plugin.getPc().crashPlayer(sender, targetUUID, args);
+        //plugin.getPc().crashPlayer(sender, targetUUID, args);
         return true;
     }
 

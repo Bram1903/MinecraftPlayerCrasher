@@ -19,18 +19,13 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.commands.AbstractCrashCommand;
-import com.deathmotion.playercrasher.enums.CrashMethod;
+import com.deathmotion.playercrasher.interfaces.Adventure;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.*;
 import com.deathmotion.playercrasher.services.MessageService;
 import com.deathmotion.playercrasher.util.PCVersion;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
 import lombok.NonNull;
-import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -41,8 +36,8 @@ public abstract class PCPlatform<P> {
     protected ConfigManager<P> configManager;
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
+    protected Adventure adventure;
 
-    private UserManager userManager;
     private MessageService<P> messageService;
     private CrashManager<P> crashManager;
 
@@ -57,9 +52,6 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        userManager = new UserManager();
-        PacketEvents.getAPI().getEventManager().registerListener(userManager, PacketListenerPriority.LOW);
-
         messageService = new MessageService<>(this);
         crashManager = new CrashManager<>(this);
 
@@ -76,20 +68,6 @@ public abstract class PCPlatform<P> {
 
     public void crashPlayer(@NonNull UUID sender, UUID target, String[] args) {
         crashCommand.execute(sender, target, args);
-    }
-
-    /**
-     * Sends a broadcast message with a specific component and permission.
-     *
-     * @param component  The component to broadcast.
-     * @param permission The permission required to receive the broadcast. Can be null.
-     */
-    public void broadcastComponent(Component component, @Nullable String permission, @Nullable UUID exempt) {
-        PacketEvents.getAPI().getProtocolManager().getUsers().stream()
-                .filter(user -> user != null && user.getUUID() != null)
-                .filter(user -> permission == null || hasPermission(user.getUUID(), permission))
-                .filter(user -> exempt == null || !user.getUUID().equals(exempt))
-                .forEach(user -> user.sendMessage(component));
     }
 
     /**

@@ -18,17 +18,18 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
-import com.github.retrooper.packetevents.protocol.player.User;
+import com.deathmotion.playercrasher.util.BukkitAdventure;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
-import lombok.NonNull;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -57,6 +58,10 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
     protected void setLogManager(LogManager<JavaPlugin> logManager) {
         this.logManager = logManager;
+    }
+
+    protected void setAdventure(BukkitAudiences adventure) {
+        this.adventure = new BukkitAdventure(adventure);
     }
 
     @Override

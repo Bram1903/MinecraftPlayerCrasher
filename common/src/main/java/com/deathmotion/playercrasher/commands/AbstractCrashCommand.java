@@ -21,8 +21,8 @@ package com.deathmotion.playercrasher.commands;
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.data.CommonUser;
 import com.deathmotion.playercrasher.enums.CrashMethod;
+import com.deathmotion.playercrasher.interfaces.Adventure;
 import com.deathmotion.playercrasher.managers.CrashManager;
-import com.deathmotion.playercrasher.managers.UserManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -34,42 +34,41 @@ import java.util.UUID;
 public class AbstractCrashCommand<P> {
 
     private final PCPlatform<P> platform;
-    private final UserManager userManager;
+    private final Adventure adventure;
     private final CrashManager<?> crashManager;
 
     public AbstractCrashCommand(PCPlatform<P> platform) {
         this.platform = platform;
-        this.userManager = platform.getUserManager();
+        this.adventure = platform.getAdventure();
         this.crashManager = platform.getCrashManager();
     }
 
-    public void execute(UUID senderUUID, UUID target, String[] args) {
-        CommonUser sender = this.userManager.getUser(senderUUID);
+    public void execute(CommonUser sender, UUID target, String[] args) {
         if (sender == null) return;
 
         if (!this.platform.hasPermission(sender.getUuid(), "PlayerCrasher.Crash")) {
-            sender.sendMessage(Component.text("Unknown command. Type \"/help\" for help."));
+            sendMessage(sender, Component.text("You don't have permission to use this command.", NamedTextColor.RED));
             return;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Component.text("Usage: /crash <player> [method]", NamedTextColor.RED));
+            sendMessage(sender, Component.text("Usage: /crash <player> [method]", NamedTextColor.RED));
             return;
         }
 
         User targetUser = getUser(target);
         if (targetUser == null) {
-            sender.sendMessage(Component.text("Player not found.", NamedTextColor.RED));
+            sendMessage(sender, Component.text("Player not found.", NamedTextColor.RED));
             return;
         }
 
         if (sender.getUuid() == targetUser.getUUID()) {
-            sender.sendMessage(Component.text("You can't crash yourself.", NamedTextColor.RED));
+            sendMessage(sender, Component.text("You can't crash yourself.", NamedTextColor.RED));
             return;
         }
 
         if (this.platform.hasPermission(targetUser.getUUID(), "PlayerCrasher.Bypass")) {
-            sender.sendMessage(Component.text("This player is immune to crashing.", NamedTextColor.RED));
+            sendMessage(sender, Component.text("This player is immune to crashing.", NamedTextColor.RED));
             return;
         }
 
@@ -83,7 +82,8 @@ public class AbstractCrashCommand<P> {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                sender.sendMessage(Component.text("Invalid crash method.", NamedTextColor.RED));
+                sendMessage(sender, Component.text("Invalid crash method.", NamedTextColor.RED));
+
                 return;
             }
         }
@@ -92,7 +92,7 @@ public class AbstractCrashCommand<P> {
                 .append(Component.text("Attempting to crash " + targetUser.getName() + "...", NamedTextColor.GREEN))
                 .build();
 
-        sender.sendMessage(crasherComponent);
+        sendMessage(sender, crasherComponent);
         crashManager.crash(sender, targetUser, method);
     }
 
@@ -104,5 +104,13 @@ public class AbstractCrashCommand<P> {
         }
 
         return null;
+    }
+
+    private void sendMessage(CommonUser sender, Component message) {
+        if (sender.isConsole()) {
+            adventure.sendConsoleMessage(message);
+        } else {
+            adventure.sendMessage(message, sender.getUuid());
+        }
     }
 }

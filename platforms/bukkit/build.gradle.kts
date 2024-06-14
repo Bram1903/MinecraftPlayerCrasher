@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
+    implementation(libs.adventure.platform.bukkit)
     compileOnly(libs.paper)
     compileOnly(libs.packetevents.spigot)
 }
