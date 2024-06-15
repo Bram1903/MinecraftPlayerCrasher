@@ -19,7 +19,7 @@
 package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PCBukkit;
-import com.deathmotion.playercrasher.data.CommonUser;
+import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.util.CommandUtil;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -130,12 +130,12 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
         }
     }
 
-    private CommonUser createCommonUser(CommandSender sender) {
+    private CommonSender createCommonUser(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            return new CommonUser(player.getUniqueId(), player.getName(), false);
+            return new CommonSender(player.getUniqueId(), player.getName(), false);
         } else {
-            return new CommonUser(null, "Console", true);
+            return new CommonSender(null, "Console", true);
         }
     }
 }

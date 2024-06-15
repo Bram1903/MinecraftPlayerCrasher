@@ -20,7 +20,7 @@ package com.deathmotion.playercrasher.managers;
 
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.enums.CrashMethod;
-import com.deathmotion.playercrasher.data.CommonUser;
+import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.listeners.UserTracker;
 import com.deathmotion.playercrasher.services.CrashService;
@@ -59,7 +59,7 @@ public class CrashManager<P> {
         this.useLegacyWindowConfirmation = PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17);
     }
 
-    public void crash(@NonNull CommonUser sender, @NonNull User target, @NonNull CrashMethod crashMethod) {
+    public void crash(@NonNull CommonSender sender, @NonNull User target, @NonNull CrashMethod crashMethod) {
         CrashData crashData = createCrashData(sender, target, crashMethod);
 
         this.platform.getScheduler().runAsyncTask((o) -> {
@@ -120,7 +120,7 @@ public class CrashManager<P> {
         removeCrashedPlayer(crashData.getTarget().getUUID());
     }
 
-    private CrashData createCrashData(CommonUser sender, User target, CrashMethod crashMethod) {
+    private CrashData createCrashData(CommonSender sender, User target, CrashMethod crashMethod) {
         long transactionId = random.nextInt(1_000_000_000);
         CrashData crashData = new CrashData();
 

@@ -23,30 +23,24 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-public class CommonUser {
-    @Getter
+@Getter
+public class CommonSender {
     private final UUID uuid;
 
-    @Getter
     private final String name;
 
-    @Getter
     private final boolean isConsole;
 
     @Setter
     private String clientBrand;
 
-    public CommonUser(UUID uuid, String name, boolean isConsole) {
+    public CommonSender(UUID uuid, String name, boolean isConsole) {
         this.uuid = uuid;
         this.name = name;
         this.isConsole = isConsole;
     }
 
-    public CommonUser(UUID uuid, String name) {
+    public CommonSender(UUID uuid, String name) {
         this(uuid, name, false);
-    }
-
-    public String getClientBrand() {
-        return clientBrand;
     }
 }

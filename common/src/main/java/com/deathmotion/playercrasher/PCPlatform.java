@@ -18,7 +18,7 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.data.CommonUser;
+import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.listeners.UserTracker;
@@ -68,7 +68,7 @@ public abstract class PCPlatform<P> {
     public void commonOnDisable() {
     }
 
-    public void crashPlayer(@NonNull CommonUser sender, User target, CrashMethod crashMethod) {
+    public void crashPlayer(@NonNull CommonSender sender, User target, CrashMethod crashMethod) {
         crashManager.crash(sender, target, crashMethod);
     }
 

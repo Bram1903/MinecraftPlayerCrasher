@@ -18,7 +18,7 @@
 
 package com.deathmotion.playercrasher.listeners;
 
-import com.deathmotion.playercrasher.data.CommonUser;
+import com.deathmotion.playercrasher.data.CommonSender;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.UserDisconnectEvent;
 import com.github.retrooper.packetevents.event.UserLoginEvent;
@@ -30,13 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UserTracker implements PacketListener {
 
-    private final ConcurrentHashMap<UUID, CommonUser> users = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, CommonSender> users = new ConcurrentHashMap<>();
 
     @Override
     public void onUserLogin(UserLoginEvent event) {
         User user = event.getUser();
 
-        CommonUser commonUser = new CommonUser(user.getUUID(), user.getName());
+        CommonSender commonUser = new CommonSender(user.getUUID(), user.getName());
         users.putIfAbsent(user.getUUID(), commonUser);
     }
 
@@ -48,12 +48,12 @@ public class UserTracker implements PacketListener {
         users.remove(userUUID);
     }
 
-    public Optional<CommonUser> getUser(UUID uuid) {
+    public Optional<CommonSender> getUser(UUID uuid) {
         return Optional.ofNullable(users.get(uuid));
     }
 
     public String getClientBrand(UUID uuid) {
-        return getUser(uuid).map(CommonUser::getClientBrand).orElse("Unknown Client");
+        return getUser(uuid).map(CommonSender::getClientBrand).orElse("Unknown Client");
     }
 
     public void setClientBrand(UUID uuid, String brand) {
