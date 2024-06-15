@@ -12,6 +12,7 @@ version = "2.5.1-SNAPSHOT"
 dependencies {
     implementation(project(":common"))
     implementation(project(":platforms:bukkit"))
+    implementation(project(":platforms:velocity"))
 }
 
 tasks {

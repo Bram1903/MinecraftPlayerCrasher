@@ -30,3 +30,4 @@ dependencyResolutionManagement {
 rootProject.name = "PlayerCrasher"
 include(":common")
 include(":platforms:bukkit")
+include(":platforms:velocity")

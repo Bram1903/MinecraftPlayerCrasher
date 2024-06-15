@@ -69,7 +69,7 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
             return false;
         }
 
-        if (target == sender) {
+        if (targetPlayer == sender) {
             sendMessages(sender, CommandUtil.selfCrash);
             return false;
         }

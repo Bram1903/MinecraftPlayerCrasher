@@ -1,0 +1,17 @@
+{
+  "id": "playercrasher",
+  "name": "PlayerCrasher",
+  "version": "${version}",
+  "description": "Simple plugin to crash players",
+  "url": "https://github.com/Bram1903/MinecraftPlayerCrasher",
+  "authors": [
+    "Bram"
+  ],
+  "dependencies": [
+    {
+      "id": "packetevents",
+      "optional": false
+    }
+  ],
+  "main": "com.deathmotion.playercrasher.PCVelocity"
+}
