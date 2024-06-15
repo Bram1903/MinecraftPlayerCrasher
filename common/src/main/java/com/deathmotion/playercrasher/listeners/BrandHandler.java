@@ -19,7 +19,6 @@
 package com.deathmotion.playercrasher.listeners;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.managers.UserManager;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -27,10 +26,10 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 
 public class BrandHandler<P> extends PacketListenerAbstract {
 
-    private final UserManager userManager;
+    private final UserTracker userManager;
 
     public BrandHandler(PCPlatform<P> plugin) {
-        userManager = plugin.getUserManager();
+        userManager = plugin.getUserTracker();
     }
 
     @Override

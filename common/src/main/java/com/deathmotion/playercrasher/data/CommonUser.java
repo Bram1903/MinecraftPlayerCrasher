@@ -42,16 +42,11 @@ public class CommonUser {
         this.isConsole = isConsole;
     }
 
-    public String getClientBrand() {
-        if (isConsole) {
-            return "Console";
-        }
+    public CommonUser(UUID uuid, String name) {
+        this(uuid, name, false);
+    }
 
-        if (clientBrand != null) {
-            return clientBrand;
-        }
-        else {
-            return "Unknown Client";
-        }
+    public String getClientBrand() {
+        return clientBrand;
     }
 }

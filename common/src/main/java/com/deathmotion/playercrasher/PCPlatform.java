@@ -18,14 +18,18 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.commands.AbstractCrashCommand;
-import com.deathmotion.playercrasher.interfaces.Adventure;
+import com.deathmotion.playercrasher.data.CommonUser;
+import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
+import com.deathmotion.playercrasher.listeners.UserTracker;
 import com.deathmotion.playercrasher.managers.*;
-import com.deathmotion.playercrasher.services.MessageService;
 import com.deathmotion.playercrasher.util.PCVersion;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
 import lombok.NonNull;
+import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
 
@@ -36,12 +40,9 @@ public abstract class PCPlatform<P> {
     protected ConfigManager<P> configManager;
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
-    protected Adventure adventure;
 
-    private MessageService<P> messageService;
+    private UserTracker userTracker;
     private CrashManager<P> crashManager;
-
-    private AbstractCrashCommand<P> crashCommand;
 
     public void commonOnInitialize() {
         logManager = new LogManager<>(this);
@@ -52,12 +53,13 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        messageService = new MessageService<>(this);
+        userTracker = new UserTracker();
+        PacketEvents.getAPI().getEventManager().registerListener(userTracker, PacketListenerPriority.LOW);
+
         crashManager = new CrashManager<>(this);
 
         new PacketManager<>(this);
         new UpdateManager<>(this);
-        crashCommand = new AbstractCrashCommand<>(this);
     }
 
     /**
@@ -66,8 +68,8 @@ public abstract class PCPlatform<P> {
     public void commonOnDisable() {
     }
 
-    public void crashPlayer(@NonNull UUID sender, UUID target, String[] args) {
-        crashCommand.execute(sender, target, args);
+    public void crashPlayer(@NonNull CommonUser sender, User target, CrashMethod crashMethod) {
+        crashManager.crash(sender, target, crashMethod);
     }
 
     /**
@@ -85,6 +87,8 @@ public abstract class PCPlatform<P> {
      * @return true if the entity has the permission, false otherwise.
      */
     public abstract boolean hasPermission(UUID sender, String permission);
+
+    public abstract void sendConsoleMessage(Component message);
 
     /**
      * Gets the plugin directory.

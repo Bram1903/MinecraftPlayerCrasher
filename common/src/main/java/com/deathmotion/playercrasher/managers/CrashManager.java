@@ -22,8 +22,9 @@ import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.data.CommonUser;
 import com.deathmotion.playercrasher.data.CrashData;
+import com.deathmotion.playercrasher.listeners.UserTracker;
 import com.deathmotion.playercrasher.services.CrashService;
-import com.deathmotion.playercrasher.services.MessageService;
+import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -31,6 +32,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerKe
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPing;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowConfirmation;
 import lombok.NonNull;
+import net.kyori.adventure.text.Component;
 
 import java.util.Optional;
 import java.util.Random;
@@ -41,8 +43,8 @@ import java.util.concurrent.TimeUnit;
 public class CrashManager<P> {
 
     private final PCPlatform<P> platform;
-    private final MessageService<P> messageService;
     private final CrashService crashService;
+    private final UserTracker userTracker;
 
     private final boolean useLegacyWindowConfirmation;
 
@@ -51,8 +53,8 @@ public class CrashManager<P> {
 
     public CrashManager(PCPlatform<P> platform) {
         this.platform = platform;
-        this.messageService = platform.getMessageService();
         this.crashService = new CrashService();
+        this.userTracker = platform.getUserTracker();
 
         this.useLegacyWindowConfirmation = PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17);
     }
@@ -103,7 +105,16 @@ public class CrashManager<P> {
         if (crashData == null) return;
 
         if (!crashData.isKeepAliveConfirmed() || !crashData.isTransactionConfirmed()) {
-            this.messageService.notifyCrashers(crashData);
+            Component message = ComponentCreator.createCrashComponent(crashData);
+
+            if (crashData.getCrasher().isConsole()) {
+                platform.sendConsoleMessage(message);
+            } else {
+                Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(crashData.getCrasher().getUuid());
+                if (channel != null) {
+                    PacketEvents.getAPI().getProtocolManager().getUser(channel).sendMessage(message);
+                }
+            }
         }
 
         removeCrashedPlayer(crashData.getTarget().getUUID());
@@ -115,7 +126,7 @@ public class CrashManager<P> {
 
         crashData.setCrasher(sender);
         crashData.setTarget(target);
-        crashData.setClientBrand(userManager.getUser(target.getUUID()).getClientBrand());
+        crashData.setClientBrand(userTracker.getClientBrand(target.getUUID()));
         crashData.setMethod(crashMethod);
         crashData.setKeepAliveId(transactionId);
         crashedPlayers.putIfAbsent(target.getUUID(), crashData);

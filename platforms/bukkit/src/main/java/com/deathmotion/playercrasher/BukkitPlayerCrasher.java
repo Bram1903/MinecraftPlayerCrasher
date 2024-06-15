@@ -18,18 +18,16 @@
 
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
-import com.deathmotion.playercrasher.util.BukkitAdventure;
+import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -60,16 +58,17 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
         this.logManager = logManager;
     }
 
-    protected void setAdventure(BukkitAudiences adventure) {
-        this.adventure = new BukkitAdventure(adventure);
-    }
-
     @Override
     public boolean hasPermission(UUID sender, String permission) {
         CommandSender commandSender = Bukkit.getPlayer(sender);
         if (commandSender == null) return false;
 
         return commandSender.hasPermission(permission);
+    }
+
+    @Override
+    public void sendConsoleMessage(Component message) {
+        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
     }
 
     @Override
@@ -88,6 +87,6 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     }
 
     protected void registerCommands() {
-        //this.plugin.getCommand("antihealthindicator").setExecutor(new BukkitAHICommand());
+        this.plugin.getCommand("crash").setExecutor(new BukkitCrashCommand(this.plugin));
     }
 }

@@ -19,9 +19,10 @@
 package com.deathmotion.playercrasher.listeners;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.data.CrashData;
-import com.deathmotion.playercrasher.services.MessageService;
+import com.deathmotion.playercrasher.managers.CrashManager;
+import com.deathmotion.playercrasher.util.ComponentCreator;
+import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -30,18 +31,19 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientKeepAlive;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPong;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWindowConfirmation;
+import net.kyori.adventure.text.Component;
 
 public class TransactionHandler<P> extends PacketListenerAbstract {
+    private final PCPlatform<P> platform;
     private final CrashManager<P> crashManager;
-    private final MessageService<P> messageService;
 
     private final PacketTypeCommon keepAlive = PacketType.Play.Client.KEEP_ALIVE;
     private final PacketTypeCommon pong = PacketType.Play.Client.PONG;
     private final PacketTypeCommon transaction = PacketType.Play.Client.WINDOW_CONFIRMATION;
 
     public TransactionHandler(PCPlatform<P> plugin) {
+        this.platform = plugin;
         this.crashManager = plugin.getCrashManager();
-        this.messageService = plugin.getMessageService();
     }
 
     @Override
@@ -100,7 +102,16 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
         if (crashData == null) return;
 
         if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
-            messageService.notifyFailedCrash(crashData);
+            Component message = ComponentCreator.createFailedCrashComponent(crashData);
+
+            if (crashData.getCrasher().isConsole()) {
+                platform.sendConsoleMessage(message);
+            } else {
+                Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(crashData.getCrasher().getUuid());
+                if (channel != null) {
+                    PacketEvents.getAPI().getProtocolManager().getUser(channel).sendMessage(message);
+                }
+            }
         }
     }
 }

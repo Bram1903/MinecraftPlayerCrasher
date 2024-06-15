@@ -21,7 +21,6 @@ package com.deathmotion.playercrasher;
 import com.deathmotion.playercrasher.schedulers.BukkitScheduler;
 import com.deathmotion.playercrasher.schedulers.FoliaScheduler;
 import com.deathmotion.playercrasher.util.BukkitLogManager;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PCBukkit extends JavaPlugin {
@@ -47,7 +46,6 @@ public class PCBukkit extends JavaPlugin {
         pc.setScheduler(isFolia() ? new FoliaScheduler(this) : new BukkitScheduler(this));
 
         pc.setLogManager(new BukkitLogManager(this));
-        pc.setAdventure(BukkitAudiences.create(this));
 
         pc.commonOnEnable();
         pc.registerCommands();
