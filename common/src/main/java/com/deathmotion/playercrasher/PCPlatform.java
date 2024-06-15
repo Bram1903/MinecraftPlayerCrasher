@@ -21,11 +21,11 @@ package com.deathmotion.playercrasher;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import com.deathmotion.playercrasher.listeners.UserTracker;
+import com.deathmotion.playercrasher.listeners.BrandHandler;
+import com.deathmotion.playercrasher.listeners.TransactionHandler;
 import com.deathmotion.playercrasher.managers.*;
 import com.deathmotion.playercrasher.util.PCVersion;
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.protocol.player.User;
 import lombok.Getter;
 import lombok.NonNull;
@@ -41,7 +41,7 @@ public abstract class PCPlatform<P> {
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
 
-    private UserTracker userTracker;
+    private BrandHandler brandHandler;
     private CrashManager<P> crashManager;
 
     public void commonOnInitialize() {
@@ -53,12 +53,12 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        userTracker = new UserTracker();
-        PacketEvents.getAPI().getEventManager().registerListener(userTracker, PacketListenerPriority.LOW);
+        brandHandler = new BrandHandler();
+        PacketEvents.getAPI().getEventManager().registerListener(brandHandler);
 
         crashManager = new CrashManager<>(this);
+        PacketEvents.getAPI().getEventManager().registerListener(new TransactionHandler<>(this));
 
-        new PacketManager<>(this);
         new UpdateManager<>(this);
     }
 

@@ -22,7 +22,7 @@ import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.data.CrashData;
-import com.deathmotion.playercrasher.listeners.UserTracker;
+import com.deathmotion.playercrasher.listeners.BrandHandler;
 import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.util.ComponentCreator;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -43,8 +43,8 @@ import java.util.concurrent.TimeUnit;
 public class CrashManager<P> {
 
     private final PCPlatform<P> platform;
+    private final BrandHandler brandHandler;
     private final CrashService crashService;
-    private final UserTracker userTracker;
 
     private final boolean useLegacyWindowConfirmation;
 
@@ -54,7 +54,7 @@ public class CrashManager<P> {
     public CrashManager(PCPlatform<P> platform) {
         this.platform = platform;
         this.crashService = new CrashService();
-        this.userTracker = platform.getUserTracker();
+        this.brandHandler = platform.getBrandHandler();
 
         this.useLegacyWindowConfirmation = PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17);
     }
@@ -126,7 +126,7 @@ public class CrashManager<P> {
 
         crashData.setCrasher(sender);
         crashData.setTarget(target);
-        crashData.setClientBrand(userTracker.getClientBrand(target.getUUID()));
+        crashData.setClientBrand(brandHandler.getClientBrand(target.getUUID()));
         crashData.setMethod(crashMethod);
         crashData.setKeepAliveId(transactionId);
         crashedPlayers.putIfAbsent(target.getUUID(), crashData);

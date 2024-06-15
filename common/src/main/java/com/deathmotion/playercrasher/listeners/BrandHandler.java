@@ -18,19 +18,21 @@
 
 package com.deathmotion.playercrasher.listeners;
 
-import com.deathmotion.playercrasher.PCPlatform;
+import com.deathmotion.playercrasher.data.CommonSender;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.UserDisconnectEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
 
-public class BrandHandler<P> extends PacketListenerAbstract {
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-    private final UserTracker userManager;
+public class BrandHandler extends PacketListenerAbstract {
 
-    public BrandHandler(PCPlatform<P> plugin) {
-        userManager = plugin.getUserTracker();
-    }
+    private final ConcurrentHashMap<UUID, CommonSender> users = new ConcurrentHashMap<>();
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
@@ -50,7 +52,27 @@ public class BrandHandler<P> extends PacketListenerAbstract {
         System.arraycopy(data, 1, minusLength, 0, minusLength.length);
         String brand = new String(minusLength).replace(" (Velocity)", "");
 
-        userManager.setClientBrand(event.getUser().getUUID(), prettyBrandName(brand));
+        User user = event.getUser();
+        CommonSender commonSender = new CommonSender(user.getUUID(), user.getName());
+        commonSender.setClientBrand(prettyBrandName(brand));
+
+        users.putIfAbsent(user.getUUID(), commonSender);
+    }
+
+    @Override
+    public void onUserDisconnect(UserDisconnectEvent event) {
+        UUID userUUID = event.getUser().getUUID();
+        if (userUUID == null) return;
+
+        users.remove(userUUID);
+    }
+
+    public Optional<CommonSender> getUser(UUID uuid) {
+        return Optional.ofNullable(users.get(uuid));
+    }
+
+    public String getClientBrand(UUID uuid) {
+        return getUser(uuid).map(CommonSender::getClientBrand).orElse("Unknown Client");
     }
 
     private String prettyBrandName(String brand) {
