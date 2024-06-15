@@ -95,7 +95,6 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
             }
         }
 
-
         sendMessages(sender, CommandUtil.crashSent(target.getName()));
         plugin.getPc().crashPlayer(createCommonUser(sender), target, method);
 

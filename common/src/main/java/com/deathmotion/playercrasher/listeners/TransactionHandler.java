@@ -106,12 +106,12 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
 
             if (crashData.getCrasher().isConsole()) {
                 platform.sendConsoleMessage(message);
-            } else {
-                Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(crashData.getCrasher().getUuid());
-                if (channel != null) {
-                    PacketEvents.getAPI().getProtocolManager().getUser(channel).sendMessage(message);
-                }
             }
+
+            PacketEvents.getAPI().getProtocolManager().getUsers()
+                    .stream()
+                    .filter(userStream -> platform.hasPermission(userStream.getUUID(), "PlayerCrasher.Notify"))
+                    .forEach(userStream -> user.sendMessage(message));
         }
     }
 }

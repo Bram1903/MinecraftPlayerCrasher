@@ -34,6 +34,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWi
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -109,12 +110,12 @@ public class CrashManager<P> {
 
             if (crashData.getCrasher().isConsole()) {
                 platform.sendConsoleMessage(message);
-            } else {
-                Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(crashData.getCrasher().getUuid());
-                if (channel != null) {
-                    PacketEvents.getAPI().getProtocolManager().getUser(channel).sendMessage(message);
-                }
             }
+
+            PacketEvents.getAPI().getProtocolManager().getUsers()
+                    .stream()
+                    .filter(user -> platform.hasPermission(user.getUUID(), "PlayerCrasher.Notify"))
+                    .forEach(user -> user.sendMessage(message));
         }
 
         removeCrashedPlayer(crashData.getTarget().getUUID());
