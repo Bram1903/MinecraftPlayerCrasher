@@ -34,7 +34,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWi
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 
-import java.util.Collection;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;

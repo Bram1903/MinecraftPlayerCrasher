@@ -37,16 +37,16 @@ public class PCVelocity {
     private final Logger logger;
     private final VelocityPlayerCrasher pc;
 
-    public VelocityPlayerCrasher getPc() {
-        return this.pc;
-    }
-
     @Inject
     public PCVelocity(ProxyServer server, @DataDirectory Path dataDirectory, Logger logger) {
         this.server = server;
         this.dataDirectory = dataDirectory;
         this.logger = logger;
         this.pc = new VelocityPlayerCrasher(server, dataDirectory);
+    }
+
+    public VelocityPlayerCrasher getPc() {
+        return this.pc;
     }
 
     @Subscribe
