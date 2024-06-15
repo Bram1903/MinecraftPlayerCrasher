@@ -45,7 +45,6 @@ public class BrandHandler extends PacketListenerAbstract {
         if (!channelName.equalsIgnoreCase("minecraft:brand") && !channelName.equals("MC|Brand")) return;
 
         byte[] data = packet.getData();
-
         if (data.length > 64 || data.length == 0) return;
 
         byte[] minusLength = new byte[data.length - 1];

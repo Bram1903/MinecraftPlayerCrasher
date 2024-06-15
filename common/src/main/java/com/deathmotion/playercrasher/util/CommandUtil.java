@@ -20,33 +20,23 @@ package com.deathmotion.playercrasher.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-
-import java.util.regex.Pattern;
 
 public class CommandUtil {
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
-
     public static final Component noPermission = Component.text()
             .append(Component.text("Unknown command. Type \"/help\" for help.", NamedTextColor.RED))
             .build();
-
     public static final Component invalidCommand = Component.text()
             .append(Component.text("Usage: /crash <player> [method]", NamedTextColor.RED))
             .build();
-
     public static final Component playerNotFound = Component.text()
             .append(Component.text("Player not found.", NamedTextColor.RED))
             .build();
-
     public static final Component selfCrash = Component.text()
             .append(Component.text("You can't crash yourself.", NamedTextColor.RED))
             .build();
-
     public static final Component playerBypass = Component.text()
             .append(Component.text("This player is immune to crashing.", NamedTextColor.RED))
             .build();
-
     public static final Component invalidMethod = Component.text()
             .append(Component.text("Invalid crash method.", NamedTextColor.RED))
             .build();
@@ -55,9 +45,5 @@ public class CommandUtil {
         return Component.text()
                 .append(Component.text("Attempting to crash " + username + "...", NamedTextColor.GREEN))
                 .build();
-    }
-
-    public static String createLegacyMessage(Component component) {
-        return STRIP_COLOR_PATTERN.matcher(LegacyComponentSerializer.legacyAmpersand().serialize(component)).replaceAll("").trim();
     }
 }

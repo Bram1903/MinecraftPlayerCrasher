@@ -19,9 +19,9 @@
 package com.deathmotion.playercrasher.managers;
 
 import com.deathmotion.playercrasher.PCPlatform;
-import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.data.CrashData;
+import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.listeners.BrandHandler;
 import com.deathmotion.playercrasher.services.CrashService;
 import com.deathmotion.playercrasher.util.ComponentCreator;
