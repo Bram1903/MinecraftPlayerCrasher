@@ -20,6 +20,7 @@ package com.deathmotion.playercrasher.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 public class CommandUtil {
     public static final Component noPermission = Component.text()
@@ -40,10 +41,49 @@ public class CommandUtil {
     public static final Component invalidMethod = Component.text()
             .append(Component.text("Invalid crash method.", NamedTextColor.RED))
             .build();
+    public static final Component specifyPlayer = Component.text()
+            .append(Component.text("You must specify a player when running this from the console.", NamedTextColor.RED))
+            .build();
+    public static final Component noPersonalBrand = Component.text()
+            .append(Component.text("We haven't been able to retrieve your client brand.", NamedTextColor.RED))
+            .build();
 
     public static Component crashSent(String username) {
         return Component.text()
                 .append(Component.text("Attempting to crash " + username + "...", NamedTextColor.GREEN))
                 .build();
+    }
+
+    public static Component personalBrand(String brand, String version) {
+        return Component.text()
+                .append(Component.text("You are running ", NamedTextColor.GRAY))
+                .append(Component.text(brand, NamedTextColor.GOLD)
+                        .decorate(TextDecoration.BOLD))
+                .append(Component.text(" on Minecraft version ", NamedTextColor.GRAY))
+                .append(Component.text(version, NamedTextColor.GOLD)
+                        .decorate(TextDecoration.BOLD))
+                .append(Component.text(".", NamedTextColor.GRAY))
+                .build();
+    }
+
+    public static Component playerNoBrand(String username) {
+        return Component.text()
+                .append(Component.text("We haven't been able to retrieve the client brand of " + username + ".", NamedTextColor.RED))
+                .build();
+    }
+
+    public static Component playerBrand(String username, String brand, String version) {
+        return Component.text()
+                .append(Component.text(username, NamedTextColor.GOLD)
+                        .decorate(TextDecoration.BOLD))
+                .append(Component.text(" is running ", NamedTextColor.GRAY))
+                .append(Component.text(brand, NamedTextColor.GOLD)
+                        .decorate(TextDecoration.BOLD))
+                .append(Component.text(" on Minecraft version ", NamedTextColor.GRAY))
+                .append(Component.text(version, NamedTextColor.GOLD)
+                        .decorate(TextDecoration.BOLD))
+                .append(Component.text(".", NamedTextColor.GRAY))
+                .build();
+
     }
 }
