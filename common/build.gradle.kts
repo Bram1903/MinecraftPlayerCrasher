@@ -1,5 +1,5 @@
 plugins {
-    antihealthindicator.`java-conventions`
+    playercrasher.`java-conventions`
     `java-library`
 }
 

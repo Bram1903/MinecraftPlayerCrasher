@@ -16,23 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.data;
+package com.deathmotion.playercrasher;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.deathmotion.playercrasher.schedulers.BungeeScheduler;
+import net.md_5.bungee.api.plugin.Plugin;
 
-@Getter
-@Setter
-public class Settings {
-    private boolean Debug = false;
+public final class PCBungee extends Plugin {
+    private final BungeePlayerCrasher pc = new BungeePlayerCrasher(this);
 
-    private UpdateChecker UpdateChecker = new UpdateChecker();
+    public BungeePlayerCrasher getPc() {
+        return this.pc;
+    }
 
-    @Getter
-    @Setter
-    public static class UpdateChecker {
-        private boolean Enabled = true;
-        private boolean PrintToConsole = true;
-        private boolean NotifyInGame = true;
+    @Override
+    public void onEnable() {
+        pc.commonOnInitialize();
+
+        pc.setScheduler(new BungeeScheduler(this));
+        pc.commonOnEnable();
+
+        pc.registerCommands();
+        pc.enableBStats();
+    }
+
+    @Override
+    public void onDisable() {
+        pc.commonOnDisable();
     }
 }

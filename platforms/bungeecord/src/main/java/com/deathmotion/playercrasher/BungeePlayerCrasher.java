@@ -18,30 +18,29 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
+import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import com.deathmotion.playercrasher.managers.LogManager;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.UUID;
 
 @Getter
-public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
+public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
-    private final PCBukkit plugin;
+    private final PCBungee plugin;
 
-    public BukkitPlayerCrasher(PCBukkit plugin) {
+    public BungeePlayerCrasher(PCBungee plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public JavaPlugin getPlatform() {
+    public Plugin getPlatform() {
         return this.plugin;
     }
 
@@ -54,21 +53,17 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
         this.scheduler = scheduler;
     }
 
-    protected void setLogManager(LogManager<JavaPlugin> logManager) {
-        this.logManager = logManager;
-    }
-
     @Override
     public boolean hasPermission(UUID sender, String permission) {
-        CommandSender commandSender = Bukkit.getPlayer(sender);
-        if (commandSender == null) return false;
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+        if (player == null) return false;
 
-        return commandSender.hasPermission(permission);
+        return player.hasPermission(permission);
     }
 
     @Override
     public void sendConsoleMessage(Component message) {
-        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+        ProxyServer.getInstance().getConsole().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
     }
 
     @Override
@@ -87,6 +82,6 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     }
 
     protected void registerCommands() {
-        this.plugin.getCommand("crash").setExecutor(new BukkitCrashCommand(this.plugin));
+        new BungeeCrashCommand(this.plugin);
     }
 }

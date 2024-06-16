@@ -18,34 +18,34 @@
 
 package com.deathmotion.playercrasher.schedulers;
 
-import com.deathmotion.playercrasher.PCBukkit;
+import com.deathmotion.playercrasher.PCBungee;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import org.bukkit.Bukkit;
+import net.md_5.bungee.api.ProxyServer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public final class FoliaScheduler implements Scheduler {
+public final class BungeeScheduler implements Scheduler {
 
-    private final PCBukkit plugin;
+    private final PCBungee plugin;
 
-    public FoliaScheduler(PCBukkit plugin) {
+    public BungeeScheduler(PCBungee plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void runAsyncTask(Consumer<Object> task) {
-        Bukkit.getAsyncScheduler().runNow(plugin, (o) -> task.accept(null));
+        ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> task.accept(null));
     }
 
     @Override
     public void runAsyncTaskDelayed(Consumer<Object> task, long delay, TimeUnit timeUnit) {
-        Bukkit.getAsyncScheduler().runDelayed(plugin, (o) -> task.accept(null), delay, timeUnit);
+        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> task.accept(null), delay, timeUnit);
     }
 
     @Override
     public void runAsyncTaskAtFixedRate(@NotNull Consumer<Object> task, long delay, long period, @NotNull TimeUnit timeUnit) {
-        Bukkit.getAsyncScheduler().runAtFixedRate(plugin, (o) -> task.accept(null), delay, period, timeUnit);
+        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> task.accept(null), delay, period, timeUnit);
     }
 }

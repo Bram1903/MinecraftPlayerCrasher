@@ -1,5 +1,5 @@
 plugins {
-    antihealthindicator.`java-conventions`
+    playercrasher.`java-conventions`
     alias(libs.plugins.shadow)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.run.velocity)
@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":platforms:bukkit"))
     implementation(project(":platforms:velocity"))
+    implementation(project(":platforms:bungeecord"))
 }
 
 tasks {
