@@ -71,7 +71,7 @@ public abstract class PCPlatform<P> {
     public void commonOnDisable() {
     }
 
-    public void crashPlayer(@NonNull CommonSender sender, User target, CrashMethod crashMethod) {
+    public void crashPlayer(@NonNull CommonSender sender, @NonNull User target, @NonNull CrashMethod crashMethod) {
         crashManager.crash(sender, target, crashMethod);
     }
 
