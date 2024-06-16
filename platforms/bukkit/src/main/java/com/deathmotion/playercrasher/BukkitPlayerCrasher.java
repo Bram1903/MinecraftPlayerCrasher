@@ -19,6 +19,7 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
+import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
@@ -87,6 +88,7 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     }
 
     protected void registerCommands() {
-        this.plugin.getCommand("crash").setExecutor(new BukkitCrashCommand(this.plugin));
+        new BukkitCrashCommand(this.plugin);
+        new BukkitCrashInfoCommand(this.plugin);
     }
 }

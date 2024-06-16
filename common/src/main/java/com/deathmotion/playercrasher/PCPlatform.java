@@ -75,6 +75,10 @@ public abstract class PCPlatform<P> {
         crashManager.crash(sender, target, crashMethod);
     }
 
+    public String getClientBrand(UUID uuid) {
+        return brandHandler.getClientBrand(uuid);
+    }
+
     /**
      * Gets the platform.
      *
