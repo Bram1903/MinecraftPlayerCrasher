@@ -18,58 +18,56 @@
 
 package com.deathmotion.playercrasher.commands;
 
-import com.deathmotion.playercrasher.PCBukkit;
+import com.deathmotion.playercrasher.PCBungee;
+import com.deathmotion.playercrasher.Util.MessageSender;
 import com.deathmotion.playercrasher.util.CommandUtil;
-import com.deathmotion.playercrasher.util.MessageSender;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
-public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
-    private final PCBukkit plugin;
+public class BungeeCrashInfoCommand extends Command implements TabExecutor {
 
-    public BukkitCrashInfoCommand(PCBukkit plugin) {
+    private final PCBungee plugin;
+
+    public BungeeCrashInfoCommand(PCBungee plugin) {
+        super("CrashInfo", "PlayerCrasher.CrashInfo", "brand");
+
         this.plugin = plugin;
-        plugin.getCommand("CrashInfo").setExecutor(this);
+        plugin.getProxy().getPluginManager().registerCommand(plugin, this);
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
             MessageSender.sendMessages(sender, CommandUtil.noPermission);
-            return false;
+            return;
         }
 
         if (args.length == 0) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof ProxiedPlayer)) {
                 sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(CommandUtil.specifyPlayer));
-                return false;
+                return;
             } else {
                 User user = PacketEvents.getAPI().getPlayerManager().getUser(sender);
                 String clientBrand = plugin.getPc().getClientBrand(user.getUUID());
 
                 user.sendMessage(CommandUtil.personalBrand(clientBrand, user.getClientVersion().getReleaseName()));
-                return true;
+                return;
             }
         }
 
-        Player playerToCheck = Bukkit.getPlayer(args[0]);
+        ProxiedPlayer playerToCheck = plugin.getProxy().getPlayer(args[0]);
 
         if (playerToCheck == null) {
             MessageSender.sendMessages(sender, CommandUtil.playerNotFound);
-            return false;
+            return;
         }
 
         User userToCheck = PacketEvents.getAPI().getPlayerManager().getUser(playerToCheck);
@@ -77,11 +75,10 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         ClientVersion clientVersion = userToCheck.getClientVersion();
 
         MessageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
-        return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        return plugin.getProxy().getPlayers().stream().map(ProxiedPlayer::getName).collect(Collectors.toList());
     }
 }

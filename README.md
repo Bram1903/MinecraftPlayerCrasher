@@ -50,8 +50,8 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - `Particle`
 - `Position`
 
-
 ## Commands
+
 - `/pc` - Displays the plugin's version and author.
 - `/crash (player) [Method]` - Crashes the specified player's game.
 - `/crashinfo [player]` - Displays the client brand and version of the specified player.

@@ -19,6 +19,7 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
+import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
@@ -83,5 +84,6 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
     protected void registerCommands() {
         new BungeeCrashCommand(this.plugin);
+        new BungeeCrashInfoCommand(this.plugin);
     }
 }

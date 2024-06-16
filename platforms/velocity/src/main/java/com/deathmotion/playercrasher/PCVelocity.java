@@ -19,6 +19,7 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.commands.VelocityCrashCommand;
+import com.deathmotion.playercrasher.commands.VelocityCrashInfoCommand;
 import com.deathmotion.playercrasher.schedulers.VelocityScheduler;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -78,5 +79,6 @@ public class PCVelocity {
 
     private void registerCommands() {
         new VelocityCrashCommand(this);
+        new VelocityCrashInfoCommand(this);
     }
 }

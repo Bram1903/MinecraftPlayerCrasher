@@ -24,7 +24,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public class CommandUtil {
     public static final Component noPermission = Component.text()
-            .append(Component.text("Unknown command. Type \"/help\" for help.", NamedTextColor.RED))
+            .append(Component.text("Unknown command. Type \"/help\" for help.", NamedTextColor.WHITE))
             .build();
     public static final Component invalidCommand = Component.text()
             .append(Component.text("Usage: /crash <player> [method]", NamedTextColor.RED))
