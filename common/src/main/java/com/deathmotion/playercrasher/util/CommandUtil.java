@@ -54,6 +54,14 @@ public class CommandUtil {
                 .build();
     }
 
+    public static Component crashInProgress(String username) {
+        return Component.text()
+                .append(Component.text("A crash attempt is already in progress for " + username + ".", NamedTextColor.RED))
+                .hoverEvent(Component.text("Once the player confirms both transaction packets or when successfully crashed, you can try again.", NamedTextColor.GRAY)
+                        .decorate(TextDecoration.ITALIC))
+                .build();
+    }
+
     public static Component personalBrand(String brand, String version) {
         return Component.text()
                 .append(Component.text("You are running ", NamedTextColor.GRAY))

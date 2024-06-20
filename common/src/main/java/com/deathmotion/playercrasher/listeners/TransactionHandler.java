@@ -53,9 +53,7 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
         if (packetType != keepAlive && packetType != pong && packetType != transaction) return;
 
         User user = event.getUser();
-
-        if (!crashManager.isCrashed(user.getUUID())) return;
-        CrashData crashData = crashManager.getCrashData(user.getUUID()).orElse(null);
+        CrashData crashData = crashManager.getCrashData(user.getUUID());
         if (crashData == null) return;
 
         if (packetType == keepAlive) {
@@ -72,7 +70,7 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
         if (crashData.getKeepAliveId() != packet.getId()) return;
 
         crashData.setKeepAliveConfirmed(true);
-        connectionUpdate(event.getUser());
+        connectionUpdate(event.getUser(), crashData);
 
         event.setCancelled(true);
     }
@@ -82,7 +80,7 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
         if (crashData.getKeepAliveId() != packet.getId()) return;
 
         crashData.setTransactionConfirmed(true);
-        connectionUpdate(event.getUser());
+        connectionUpdate(event.getUser(), crashData);
 
         event.setCancelled(true);
     }
@@ -92,26 +90,17 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
         if (!packet.isAccepted()) return;
 
         crashData.setTransactionConfirmed(true);
-        connectionUpdate(event.getUser());
+        connectionUpdate(event.getUser(), crashData);
 
         event.setCancelled(true);
     }
 
-    private void connectionUpdate(User user) {
-        CrashData crashData = crashManager.getCrashData(user.getUUID()).orElse(null);
-        if (crashData == null) return;
+    private void connectionUpdate(User user, CrashData crashData) {
+        if (!crashData.isKeepAliveConfirmed() || !crashData.isTransactionConfirmed()) return;
 
-        if (crashData.isKeepAliveConfirmed() && crashData.isTransactionConfirmed()) {
-            Component message = ComponentCreator.createFailedCrashComponent(crashData);
+        crashManager.removeCrashedPlayer(user.getUUID());
 
-            if (crashData.getCrasher().isConsole()) {
-                platform.sendConsoleMessage(message);
-            }
-
-            PacketEvents.getAPI().getProtocolManager().getUsers()
-                    .stream()
-                    .filter(userStream -> platform.hasPermission(userStream.getUUID(), "PlayerCrasher.Notify"))
-                    .forEach(userStream -> user.sendMessage(message));
-        }
+        Component message = ComponentCreator.createFailedCrashComponent(crashData);
+        crashManager.broadcastCrashMessage(crashData.getCrasher(), message);
     }
 }
