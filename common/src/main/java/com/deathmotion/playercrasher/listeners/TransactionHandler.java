@@ -22,7 +22,6 @@ import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.data.CrashData;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.util.ComponentCreator;
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;

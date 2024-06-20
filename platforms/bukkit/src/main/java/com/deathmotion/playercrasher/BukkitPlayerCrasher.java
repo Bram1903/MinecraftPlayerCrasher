@@ -22,8 +22,6 @@ import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
@@ -38,15 +36,33 @@ import java.util.regex.Pattern;
 @Getter
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
-    private final PCBukkit plugin;
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
 
-    public final boolean useAdventure;
+    private final PCBukkit plugin;
+    private final boolean useAdventure;
 
     public BukkitPlayerCrasher(PCBukkit plugin) {
         this.plugin = plugin;
 
         useAdventure = checkAdventureCompatibility();
+    }
+
+    private static boolean checkAdventureCompatibility() {
+        try {
+            Class.forName("io.papermc.paper.adventure.PaperAdventure");
+            return true;
+        } catch (ClassNotFoundException e) {
+            // ignored exception
+        }
+
+        try {
+            Class.forName("net.kyori.adventure.platform.bukkit.BukkitAudience ");
+            return true;
+        } catch (ClassNotFoundException e) {
+            // ignored exception
+        }
+
+        return false;
     }
 
     @Override
@@ -103,14 +119,5 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     protected void registerCommands() {
         new BukkitCrashCommand(this.plugin);
         new BukkitCrashInfoCommand(this.plugin);
-    }
-
-    private static boolean checkAdventureCompatibility() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
 }
