@@ -22,9 +22,9 @@ import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
+import com.deathmotion.playercrasher.util.MessageSender;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -33,16 +33,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-@Getter
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
+    public final MessageSender messageSender;
 
     private final PCBukkit plugin;
     private final boolean useAdventure;
 
     public BukkitPlayerCrasher(PCBukkit plugin) {
         this.plugin = plugin;
+        this.messageSender = new MessageSender(plugin);
 
         useAdventure = checkAdventureCompatibility();
     }

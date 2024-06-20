@@ -39,43 +39,46 @@ import java.util.List;
 public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
 
     private final PCBukkit plugin;
+    private final MessageSender messageSender;
 
     public BukkitCrashCommand(PCBukkit plugin) {
         this.plugin = plugin;
+        this.messageSender = plugin.getPc().messageSender;
+
         plugin.getCommand("Crash").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            MessageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.noPermission);
             return false;
         }
 
         if (args.length == 0) {
-            MessageSender.sendMessages(sender, CommandUtil.invalidCommand);
+            messageSender.sendMessages(sender, CommandUtil.invalidCommand);
             return false;
         }
 
         Player targetPlayer = plugin.getServer().getPlayer(args[0]);
         if (targetPlayer == null) {
-            MessageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return false;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            MessageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return false;
         }
 
         if (targetPlayer == sender) {
-            MessageSender.sendMessages(sender, CommandUtil.selfCrash);
+            messageSender.sendMessages(sender, CommandUtil.selfCrash);
             return false;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            MessageSender.sendMessages(sender, CommandUtil.playerBypass);
+            messageSender.sendMessages(sender, CommandUtil.playerBypass);
             return false;
         }
 
@@ -90,12 +93,12 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                MessageSender.sendMessages(sender, CommandUtil.invalidMethod);
+                messageSender.sendMessages(sender, CommandUtil.invalidMethod);
                 return false;
             }
         }
 
-        MessageSender.sendMessages(sender, CommandUtil.crashSent(target.getName()));
+        messageSender.sendMessages(sender, CommandUtil.crashSent(target.getName()));
         plugin.getPc().crashPlayer(createCommonUser(sender), target, method);
 
         return true;

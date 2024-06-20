@@ -24,7 +24,6 @@ import com.deathmotion.playercrasher.util.MessageSender;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
-import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,22 +38,25 @@ import java.util.stream.Collectors;
 
 public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
     private final PCBukkit plugin;
+    private final MessageSender messageSender;
 
     public BukkitCrashInfoCommand(PCBukkit plugin) {
         this.plugin = plugin;
+        this.messageSender = plugin.getPc().messageSender;
+
         plugin.getCommand("CrashInfo").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
-            MessageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.noPermission);
             return false;
         }
 
         if (args.length == 0) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(CommandUtil.specifyPlayer));
+                plugin.getPc().sendConsoleMessage(CommandUtil.specifyPlayer);
                 return false;
             } else {
                 User user = PacketEvents.getAPI().getPlayerManager().getUser(sender);
@@ -68,7 +70,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         Player playerToCheck = Bukkit.getPlayer(args[0]);
 
         if (playerToCheck == null) {
-            MessageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return false;
         }
 
@@ -76,7 +78,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         String clientBrand = plugin.getPc().getClientBrand(userToCheck.getUUID());
         ClientVersion clientVersion = userToCheck.getClientVersion();
 
-        MessageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
+        messageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
         return true;
     }
 

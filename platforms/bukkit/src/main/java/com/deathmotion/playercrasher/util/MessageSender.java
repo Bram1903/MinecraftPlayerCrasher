@@ -18,19 +18,25 @@
 
 package com.deathmotion.playercrasher.util;
 
+import com.deathmotion.playercrasher.PCBukkit;
 import com.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MessageSender {
 
-    public static void sendMessages(CommandSender sender, Component message) {
+    private final PCBukkit plugin;
+
+    public MessageSender(PCBukkit plugin) {
+        this.plugin = plugin;
+    }
+
+    public void sendMessages(CommandSender sender, Component message) {
         if (sender instanceof Player) {
             PacketEvents.getAPI().getPlayerManager().getUser(sender).sendMessage(message);
         } else {
-            sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+            plugin.getPc().sendConsoleMessage(message);
         }
     }
 }

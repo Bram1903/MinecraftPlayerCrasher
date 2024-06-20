@@ -76,7 +76,7 @@ public class CrashManager<P> extends PacketListenerAbstract {
     }
 
     public CrashData getCrashData(UUID uuid) {
-        return crashedPlayers.get(uuid);
+        return crashedPlayers.computeIfAbsent(uuid, k -> null);
     }
 
     public void removeCrashedPlayer(UUID uuid) {
