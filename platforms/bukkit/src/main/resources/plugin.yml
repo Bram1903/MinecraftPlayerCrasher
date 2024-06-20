@@ -20,6 +20,9 @@ commands:
     description: Crashes a player's client.
     permission: PlayerCrasher.Crash
     permission-message: Unknown command. Type "/help" for help
+    aliases:
+      - crashplayer
+      - bomb
   CrashInfo:
     description: Checks the brand and version of a player's client.
     permission: PlayerCrasher.CrashInfo
