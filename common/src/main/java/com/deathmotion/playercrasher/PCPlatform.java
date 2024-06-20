@@ -60,6 +60,7 @@ public abstract class PCPlatform<P> {
         PacketEvents.getAPI().getEventManager().registerListener(brandHandler);
 
         crashManager = new CrashManager<>(this);
+        PacketEvents.getAPI().getEventManager().registerListener(crashManager);
         PacketEvents.getAPI().getEventManager().registerListener(new TransactionHandler<>(this));
 
         new UpdateManager<>(this);
