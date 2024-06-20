@@ -18,26 +18,30 @@
 
 package com.deathmotion.playercrasher;
 
+import com.deathmotion.playercrasher.Util.MessageSender;
 import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
 import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
-@Getter
+
 public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
+    public final MessageSender messageSender;
     private final PCBungee plugin;
 
     public BungeePlayerCrasher(PCBungee plugin) {
         this.plugin = plugin;
+        this.messageSender = new MessageSender(plugin);
     }
 
     @Override
@@ -64,7 +68,8 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
     @Override
     public void sendConsoleMessage(Component message) {
-        ProxyServer.getInstance().getConsole().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+        String legacyMessage = STRIP_COLOR_PATTERN.matcher(LegacyComponentSerializer.legacyAmpersand().serialize(message)).replaceAll("").trim();
+        ProxyServer.getInstance().getConsole().sendMessage(legacyMessage);
     }
 
     @Override

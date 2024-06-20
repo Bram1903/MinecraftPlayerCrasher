@@ -24,7 +24,6 @@ import com.deathmotion.playercrasher.util.CommandUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
-import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -35,24 +34,26 @@ import java.util.stream.Collectors;
 public class BungeeCrashInfoCommand extends Command implements TabExecutor {
 
     private final PCBungee plugin;
+    private final MessageSender messageSender;
 
     public BungeeCrashInfoCommand(PCBungee plugin) {
         super("CrashInfo", "PlayerCrasher.CrashInfo", "brand");
 
         this.plugin = plugin;
+        this.messageSender = plugin.getPc().messageSender;
         plugin.getProxy().getPluginManager().registerCommand(plugin, this);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
-            MessageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.noPermission);
             return;
         }
 
         if (args.length == 0) {
             if (!(sender instanceof ProxiedPlayer)) {
-                sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(CommandUtil.specifyPlayer));
+                plugin.getPc().sendConsoleMessage(CommandUtil.specifyPlayer);
                 return;
             } else {
                 User user = PacketEvents.getAPI().getPlayerManager().getUser(sender);
@@ -66,7 +67,7 @@ public class BungeeCrashInfoCommand extends Command implements TabExecutor {
         ProxiedPlayer playerToCheck = plugin.getProxy().getPlayer(args[0]);
 
         if (playerToCheck == null) {
-            MessageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return;
         }
 
@@ -74,7 +75,7 @@ public class BungeeCrashInfoCommand extends Command implements TabExecutor {
         String clientBrand = plugin.getPc().getClientBrand(userToCheck.getUUID());
         ClientVersion clientVersion = userToCheck.getClientVersion();
 
-        MessageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
+        messageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
     }
 
     @Override

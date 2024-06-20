@@ -19,14 +19,13 @@
 package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PCBungee;
+import com.deathmotion.playercrasher.Util.MessageSender;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.util.CommandUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
-import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -38,45 +37,47 @@ import java.util.List;
 public class BungeeCrashCommand extends Command implements TabExecutor {
 
     private final PCBungee plugin;
+    private final MessageSender messageSender;
 
     public BungeeCrashCommand(PCBungee plugin) {
         super("Crash", "PlayerCrasher.Crash", "");
 
         this.plugin = plugin;
+        this.messageSender = plugin.getPc().messageSender;
         plugin.getProxy().getPluginManager().registerCommand(plugin, this);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.noPermission);
             return;
         }
 
         if (args.length == 0) {
-            sendMessages(sender, CommandUtil.invalidCommand);
+            messageSender.sendMessages(sender, CommandUtil.invalidCommand);
             return;
         }
 
         ProxiedPlayer targetPlayer = plugin.getProxy().getPlayer(args[0]);
         if (targetPlayer == null) {
-            sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
             return;
         }
 
         if (targetPlayer == sender) {
-            sendMessages(sender, CommandUtil.selfCrash);
+            messageSender.sendMessages(sender, CommandUtil.selfCrash);
             return;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            sendMessages(sender, CommandUtil.playerBypass);
+            messageSender.sendMessages(sender, CommandUtil.playerBypass);
             return;
         }
 
@@ -91,12 +92,12 @@ public class BungeeCrashCommand extends Command implements TabExecutor {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                sendMessages(sender, CommandUtil.invalidMethod);
+                messageSender.sendMessages(sender, CommandUtil.invalidMethod);
                 return;
             }
         }
 
-        sendMessages(sender, CommandUtil.crashSent(target.getName()));
+        messageSender.sendMessages(sender, CommandUtil.crashSent(target.getName()));
         plugin.getPc().crashPlayer(createCommonUser(sender), target, method);
     }
 
@@ -118,14 +119,6 @@ public class BungeeCrashCommand extends Command implements TabExecutor {
         }
 
         return suggestions;
-    }
-
-    private void sendMessages(CommandSender sender, Component message) {
-        if (sender instanceof ProxiedPlayer) {
-            PacketEvents.getAPI().getPlayerManager().getUser(sender).sendMessage(message);
-        } else {
-            sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
-        }
     }
 
     private CommonSender createCommonUser(CommandSender sender) {

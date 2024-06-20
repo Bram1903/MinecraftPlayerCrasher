@@ -18,19 +18,25 @@
 
 package com.deathmotion.playercrasher.Util;
 
+import com.deathmotion.playercrasher.PCBungee;
 import com.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class MessageSender {
 
-    public static void sendMessages(CommandSender sender, Component message) {
+    private final PCBungee plugin;
+
+    public MessageSender(PCBungee plugin) {
+        this.plugin = plugin;
+    }
+
+    public void sendMessages(CommandSender sender, Component message) {
         if (sender instanceof ProxiedPlayer) {
             PacketEvents.getAPI().getPlayerManager().getUser(sender).sendMessage(message);
         } else {
-            sender.sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+            plugin.getPc().sendConsoleMessage(message);
         }
     }
 }
