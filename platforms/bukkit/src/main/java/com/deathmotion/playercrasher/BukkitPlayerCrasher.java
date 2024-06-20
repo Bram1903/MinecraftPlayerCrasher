@@ -56,7 +56,7 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
         }
 
         try {
-            Class.forName("net.kyori.adventure.platform.bukkit.BukkitAudience ");
+            Class.forName("net.kyori.adventure.platform.bukkit.BukkitAudience");
             return true;
         } catch (ClassNotFoundException e) {
             // ignored exception
