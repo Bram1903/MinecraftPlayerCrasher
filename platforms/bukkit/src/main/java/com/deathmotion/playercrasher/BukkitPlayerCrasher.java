@@ -22,6 +22,8 @@ import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.managers.LogManager;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
 import lombok.Getter;
@@ -31,14 +33,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Getter
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
     private final PCBukkit plugin;
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
+
+    public final boolean useAdventure;
 
     public BukkitPlayerCrasher(PCBukkit plugin) {
         this.plugin = plugin;
+
+        useAdventure = checkAdventureCompatibility();
     }
 
     @Override
@@ -69,7 +77,12 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
     @Override
     public void sendConsoleMessage(Component message) {
-        Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
+        if (useAdventure) {
+            Bukkit.getConsoleSender().sendMessage(message);
+        } else {
+            String legacyMessage = STRIP_COLOR_PATTERN.matcher(LegacyComponentSerializer.legacyAmpersand().serialize(message)).replaceAll("").trim();
+            Bukkit.getConsoleSender().sendMessage(legacyMessage);
+        }
     }
 
     @Override
@@ -90,5 +103,14 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     protected void registerCommands() {
         new BukkitCrashCommand(this.plugin);
         new BukkitCrashInfoCommand(this.plugin);
+    }
+
+    private static boolean checkAdventureCompatibility() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }
