@@ -97,8 +97,7 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
         if (useAdventure) {
             Bukkit.getConsoleSender().sendMessage(message);
         } else {
-            String legacyMessage = STRIP_COLOR_PATTERN.matcher(LegacyComponentSerializer.legacyAmpersand().serialize(message)).replaceAll("").trim();
-            Bukkit.getConsoleSender().sendMessage(legacyMessage);
+            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
         }
     }
 
