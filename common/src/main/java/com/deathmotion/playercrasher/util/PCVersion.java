@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  */
 public class PCVersion implements Comparable<PCVersion> {
 
-    public static final PCVersion UNKNOWN = new PCVersion(0, 0, 0);
+    private static final PCVersion UNKNOWN = new PCVersion(0, 0, 0);
 
     private final int major;
     private final int minor;
@@ -96,7 +96,7 @@ public class PCVersion implements Comparable<PCVersion> {
         Optional<PCVersion> version = Optional.ofNullable(PCPlatform.class.getPackage().getImplementationVersion()).map(PCVersion::fromString);
         if (!version.isPresent()) {
             Logger logger = Logger.getLogger(PCPlatform.class.getName());
-            logger.warning("[playercrasher-version] Failed to retrieve the PlayerCrasher version from the package implementation version. Are you using a using a custom build?");
+            logger.warning("[playercrasher-version] Failed to retrieve the PlayerCrasher version from the package implementation version.");
         }
 
         return version.orElse(UNKNOWN);

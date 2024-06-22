@@ -21,6 +21,7 @@ package com.deathmotion.playercrasher;
 import com.deathmotion.playercrasher.Util.MessageSender;
 import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
 import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
+import com.deathmotion.playercrasher.commands.BungeePCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
@@ -68,8 +69,7 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
     @Override
     public void sendConsoleMessage(Component message) {
-        String legacyMessage = STRIP_COLOR_PATTERN.matcher(LegacyComponentSerializer.legacyAmpersand().serialize(message)).replaceAll("").trim();
-        ProxyServer.getInstance().getConsole().sendMessage(legacyMessage);
+        ProxyServer.getInstance().getConsole().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
     }
 
     @Override
@@ -88,6 +88,7 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
     }
 
     protected void registerCommands() {
+        new BungeePCCommand(this.plugin);
         new BungeeCrashCommand(this.plugin);
         new BungeeCrashInfoCommand(this.plugin);
     }

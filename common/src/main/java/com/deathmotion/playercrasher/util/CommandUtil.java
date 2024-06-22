@@ -18,7 +18,11 @@
 
 package com.deathmotion.playercrasher.util;
 
+
+import com.deathmotion.playercrasher.data.Constants;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
@@ -47,6 +51,25 @@ public class CommandUtil {
     public static final Component noPersonalBrand = Component.text()
             .append(Component.text("We haven't been able to retrieve your client brand.", NamedTextColor.RED))
             .build();
+    private static final PCVersion version = PCVersion.createFromPackageVersion();
+
+    private static Component createColoredText(String text, NamedTextColor color, boolean bold) {
+        return Component.text(text, color).decoration(TextDecoration.BOLD, bold);
+    }
+
+    public static Component createPCCommandComponent() {
+        return Component.text()
+                .append(createColoredText("\u25cf", NamedTextColor.GREEN, true))
+                .append(createColoredText(" Running ", NamedTextColor.GRAY, false))
+                .append(createColoredText("AntiHealthIndicator", NamedTextColor.GREEN, true))
+                .append(createColoredText(" v" + version.toString(), NamedTextColor.GREEN, true))
+                .append(createColoredText(" by ", NamedTextColor.GRAY, false))
+                .append(createColoredText("Bram", NamedTextColor.GREEN, true))
+                .hoverEvent(HoverEvent.showText(createColoredText("Open Github Page!", NamedTextColor.GREEN, true)
+                        .decorate(TextDecoration.UNDERLINED)))
+                .clickEvent(ClickEvent.openUrl(Constants.GITHUB_URL))
+                .build();
+    }
 
     public static Component crashSent(String username) {
         return Component.text()

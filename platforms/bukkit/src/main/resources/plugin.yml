@@ -12,8 +12,6 @@ depend:
 commands:
   PlayerCrasher:
     description: Base command for PlayerCrasher.
-    permission: PlayerCrasher.Crash
-    permission-message: Unknown command. Type "/help" for help
     aliases:
       - pc
   Crash:
