@@ -23,12 +23,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
- * Represents an PlayerCrasher version using Semantic Versioning.
+ * Represents a PlayerCrasher version using Semantic Versioning.
  * Supports version comparison, cloning, and provides a string representation.
+ * Snapshots will always resolve to a newer version than the non-snapshot version if major, minor, and patch are the same.
  */
 public class PCVersion implements Comparable<PCVersion> {
+
+    public static final PCVersion UNKNOWN = new PCVersion(0, 0, 0);
 
     private final int major;
     private final int minor;
@@ -67,18 +71,20 @@ public class PCVersion implements Comparable<PCVersion> {
      * @param version the version string (e.g., "1.8.9-SNAPSHOT").
      * @throws IllegalArgumentException if the version string format is incorrect.
      */
-    public PCVersion(@NotNull final String version) {
-        this.snapshot = version.endsWith("-SNAPSHOT");
+    public static PCVersion fromString(@NotNull final String version) {
         String versionWithoutSnapshot = version.replace("-SNAPSHOT", "");
         String[] parts = versionWithoutSnapshot.split("\\.");
 
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("Version string must be in the format 'major.minor.patch[-SNAPSHOT]'");
+        if (parts.length < 2 || parts.length > 3) {
+            throw new IllegalArgumentException("Version string must be in the format 'major.minor[.patch][-SNAPSHOT]' found '" + version + "' instead.");
         }
 
-        this.major = Integer.parseInt(parts[0]);
-        this.minor = Integer.parseInt(parts[1]);
-        this.patch = Integer.parseInt(parts[2]);
+        int major = Integer.parseInt(parts[0]);
+        int minor = Integer.parseInt(parts[1]);
+        int patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+        boolean snapshot = version.contains("-SNAPSHOT");
+
+        return new PCVersion(major, minor, patch, snapshot);
     }
 
     /**
@@ -87,8 +93,13 @@ public class PCVersion implements Comparable<PCVersion> {
      * @return a {@link PCVersion} instance.
      */
     public static PCVersion createFromPackageVersion() {
-        String version = Optional.ofNullable(PCPlatform.class.getPackage().getImplementationVersion()).orElse("0.0.0");
-        return new PCVersion(version);
+        Optional<PCVersion> version = Optional.ofNullable(PCPlatform.class.getPackage().getImplementationVersion()).map(PCVersion::fromString);
+        if (!version.isPresent()) {
+            Logger logger = Logger.getLogger(PCPlatform.class.getName());
+            logger.warning("[playercrasher-version] Failed to retrieve the PlayerCrasher version from the package implementation version. Are you using a using a custom build?");
+        }
+
+        return version.orElse(UNKNOWN);
     }
 
     /**

@@ -58,7 +58,7 @@ public class UpdateManager<P> {
         platform.getScheduler().runAsyncTask((o) -> {
             try {
                 PCVersion localVersion = platform.getVersion();
-                PCVersion newVersion = new PCVersion(getLatestGitHubVersion());
+                PCVersion newVersion = PCVersion.fromString(getLatestGitHubVersion());
 
                 compareVersions(localVersion, newVersion);
             } catch (Exception ex) {
