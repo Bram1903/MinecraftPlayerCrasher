@@ -61,7 +61,7 @@ public class CommandUtil {
         return Component.text()
                 .append(createColoredText("\u25cf", NamedTextColor.GREEN, true))
                 .append(createColoredText(" Running ", NamedTextColor.GRAY, false))
-                .append(createColoredText("AntiHealthIndicator", NamedTextColor.GREEN, true))
+                .append(createColoredText("PlayerCrasher", NamedTextColor.GREEN, true))
                 .append(createColoredText(" v" + version.toString(), NamedTextColor.GREEN, true))
                 .append(createColoredText(" by ", NamedTextColor.GRAY, false))
                 .append(createColoredText("Bram", NamedTextColor.GREEN, true))
