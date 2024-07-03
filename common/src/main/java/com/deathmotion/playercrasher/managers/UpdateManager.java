@@ -93,7 +93,7 @@ public class UpdateManager<P> {
 
     private void notifyUpdateAvailable(PCVersion currentVersion, PCVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.BLUE)
+            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Update available! ", NamedTextColor.BLUE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.GOLD))
@@ -107,7 +107,7 @@ public class UpdateManager<P> {
 
     private void notifyOnDevBuild(PCVersion currentVersion, PCVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.BLUE)
+            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Development build detected. ", NamedTextColor.WHITE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.AQUA))
