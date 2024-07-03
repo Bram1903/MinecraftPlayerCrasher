@@ -24,9 +24,9 @@ import com.deathmotion.playercrasher.data.Settings;
 import com.deathmotion.playercrasher.listeners.UpdateNotifier;
 import com.deathmotion.playercrasher.util.PCVersion;
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.util.ColorUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.io.BufferedReader;
@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.CompletableFuture;
 
 public class UpdateManager<P> {
     private final PCPlatform<P> platform;
@@ -45,29 +46,29 @@ public class UpdateManager<P> {
         this.settings = platform.getConfigManager().getSettings();
         this.logManager = platform.getLogManager();
 
-        initializeUpdateCheck();
-    }
-
-    private void initializeUpdateCheck() {
-        if (!settings.getUpdateChecker().isEnabled()) return;
-
-        checkForUpdate();
+        if (settings.getUpdateChecker().isEnabled()) {
+            checkForUpdate();
+        }
     }
 
     public void checkForUpdate() {
-        platform.getScheduler().runAsyncTask((o) -> {
+        CompletableFuture.runAsync(() -> {
             try {
                 PCVersion localVersion = platform.getVersion();
-                PCVersion newVersion = PCVersion.fromString(getLatestGitHubVersion());
+                PCVersion latestVersion = fetchLatestGitHubVersion();
 
-                compareVersions(localVersion, newVersion);
+                if (latestVersion != null) {
+                    handleVersionComparison(localVersion, latestVersion);
+                } else {
+                    logManager.warn("Unable to fetch the latest version from GitHub.");
+                }
             } catch (Exception ex) {
-                logManager.warn("Failed to check for updates. " + (ex.getCause() != null ? ex.getCause().getClass().getName() + ": " + ex.getCause().getMessage() : ex.getMessage()));
+                logManager.warn("Failed to check for updates: " + ex.getMessage());
             }
         });
     }
 
-    private String getLatestGitHubVersion() {
+    private PCVersion fetchLatestGitHubVersion() {
         try {
             URLConnection connection = new URL(Constants.GITHUB_API_URL).openConnection();
             connection.addRequestProperty("User-Agent", "Mozilla/4.0");
@@ -75,39 +76,44 @@ public class UpdateManager<P> {
             String jsonResponse = reader.readLine();
             reader.close();
             JsonObject jsonObject = new Gson().fromJson(jsonResponse, JsonObject.class);
-
-            return jsonObject.get("tag_name").getAsString().replaceFirst("^[vV]", "");
+            return PCVersion.fromString(jsonObject.get("tag_name").getAsString().replaceFirst("^[vV]", ""));
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to parse PlayerCrasher version!", e);
+            logManager.warn("Failed to parse PlayerCrasher version! Version API: " + e.getMessage());
+            return null;
         }
     }
 
-    private void compareVersions(PCVersion localVersion, PCVersion newVersion) {
-        if (localVersion.isOlderThan(newVersion)) {
-            if (settings.getUpdateChecker().isPrintToConsole()) {
-                logManager.warn("There is an update available for PlayerCrasher! Your build: ("
-                        + ColorUtil.toString(NamedTextColor.YELLOW) + localVersion
-                        + ColorUtil.toString(NamedTextColor.WHITE) + ") | Latest released build: ("
-                        + ColorUtil.toString(NamedTextColor.GREEN) + newVersion
-                        + ColorUtil.toString(NamedTextColor.WHITE) + ")");
-            }
-            if (settings.getUpdateChecker().isNotifyInGame()) {
-                PacketEvents.getAPI().getEventManager().registerListener(new UpdateNotifier<>(platform, newVersion));
-            }
-        } else if (localVersion.isNewerThan(newVersion)) {
-            if (settings.getUpdateChecker().isPrintToConsole()) {
-                logManager.info("You are on a dev or pre released build of PlayerCrasher. Your build: ("
-                        + ColorUtil.toString(NamedTextColor.AQUA) + localVersion
-                        + ColorUtil.toString(NamedTextColor.WHITE) + ") | Latest released build: ("
-                        + ColorUtil.toString(NamedTextColor.DARK_AQUA) + newVersion
-                        + ColorUtil.toString(NamedTextColor.WHITE) + ")");
-            }
-        } else if (localVersion.equals(newVersion)) {
-            return;
-        } else {
-            if (settings.getUpdateChecker().isPrintToConsole()) {
-                logManager.warn("Failed to check for updates. Your build: (" + localVersion + ")");
-            }
+    private void handleVersionComparison(PCVersion localVersion, PCVersion latestVersion) {
+        if (localVersion.isOlderThan(latestVersion)) {
+            notifyUpdateAvailable(localVersion, latestVersion);
+        } else if (localVersion.isNewerThan(latestVersion)) {
+            notifyOnDevBuild(localVersion, latestVersion);
         }
     }
+
+    private void notifyUpdateAvailable(PCVersion currentVersion, PCVersion newVersion) {
+        if (settings.getUpdateChecker().isPrintToConsole()) {
+            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.BLUE)
+                    .append(Component.text("Update available! ", NamedTextColor.BLUE))
+                    .append(Component.text("Current version: ", NamedTextColor.WHITE))
+                    .append(Component.text(currentVersion.toString(), NamedTextColor.GOLD))
+                    .append(Component.text(" | New version: ", NamedTextColor.WHITE))
+                    .append(Component.text(newVersion.toString(), NamedTextColor.DARK_PURPLE)));
+        }
+        if (settings.getUpdateChecker().isNotifyInGame()) {
+            PacketEvents.getAPI().getEventManager().registerListener(new UpdateNotifier<>(platform, newVersion));
+        }
+    }
+
+    private void notifyOnDevBuild(PCVersion currentVersion, PCVersion newVersion) {
+        if (settings.getUpdateChecker().isPrintToConsole()) {
+            platform.sendConsoleMessage(Component.text("[PlayerCrasher] ", NamedTextColor.BLUE)
+                    .append(Component.text("Development build detected. ", NamedTextColor.WHITE))
+                    .append(Component.text("Current version: ", NamedTextColor.WHITE))
+                    .append(Component.text(currentVersion.toString(), NamedTextColor.AQUA))
+                    .append(Component.text(" | Latest stable version: ", NamedTextColor.WHITE))
+                    .append(Component.text(newVersion.toString(), NamedTextColor.DARK_AQUA)));
+        }
+    }
+
 }
