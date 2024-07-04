@@ -20,7 +20,6 @@ package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.schedulers.BukkitScheduler;
 import com.deathmotion.playercrasher.schedulers.FoliaScheduler;
-import com.deathmotion.playercrasher.util.BukkitLogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PCBukkit extends JavaPlugin {
@@ -44,8 +43,6 @@ public class PCBukkit extends JavaPlugin {
         pc.commonOnInitialize();
 
         pc.setScheduler(isFolia() ? new FoliaScheduler(this) : new BukkitScheduler(this));
-
-        pc.setLogManager(new BukkitLogManager(this));
 
         pc.commonOnEnable();
         pc.registerCommands();
