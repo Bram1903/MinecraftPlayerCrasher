@@ -52,13 +52,13 @@ public class VelocityCrashInfoCommand implements SimpleCommand {
         String[] args = invocation.arguments();
 
         if (!source.hasPermission("PlayerCrasher.Crash")) {
-            source.sendMessage(CommandUtil.noPermission);
+            source.sendMessage(CommandUtil.NO_PERMISSION);
             return;
         }
 
         if (args.length == 0) {
             if (!(source instanceof Player)) {
-                source.sendMessage(CommandUtil.specifyPlayer);
+                source.sendMessage(CommandUtil.SPECIFY_PLAYER);
                 return;
             } else {
                 User user = PacketEvents.getAPI().getPlayerManager().getUser(source);
@@ -71,7 +71,7 @@ public class VelocityCrashInfoCommand implements SimpleCommand {
 
         Player playerToCheck = proxy.getPlayer(args[0]).orElse(null);
         if (playerToCheck == null) {
-            source.sendMessage(CommandUtil.playerNotFound);
+            source.sendMessage(CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 

@@ -50,34 +50,34 @@ public class BungeeCrashCommand extends Command implements TabExecutor {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            messageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return;
         }
 
         if (args.length == 0) {
-            messageSender.sendMessages(sender, CommandUtil.invalidCommand);
+            messageSender.sendMessages(sender, CommandUtil.INVALID_COMMAND);
             return;
         }
 
         ProxiedPlayer targetPlayer = plugin.getProxy().getPlayer(args[0]);
         if (targetPlayer == null) {
-            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 
         if (targetPlayer == sender) {
-            messageSender.sendMessages(sender, CommandUtil.selfCrash);
+            messageSender.sendMessages(sender, CommandUtil.SELF_CRASH);
             return;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            messageSender.sendMessages(sender, CommandUtil.playerBypass);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_BYPASS);
             return;
         }
 
@@ -92,7 +92,7 @@ public class BungeeCrashCommand extends Command implements TabExecutor {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                messageSender.sendMessages(sender, CommandUtil.invalidMethod);
+                messageSender.sendMessages(sender, CommandUtil.INVALID_METHOD);
                 return;
             }
         }

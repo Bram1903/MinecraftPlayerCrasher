@@ -27,31 +27,28 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 public class CommandUtil {
-    public static final Component noPermission = Component.text()
+    public static final Component NO_PERMISSION = Component.text()
             .append(Component.text("Unknown command. Type \"/help\" for help.", NamedTextColor.WHITE))
             .build();
-    public static final Component invalidCommand = Component.text()
+    public static final Component INVALID_COMMAND = Component.text()
             .append(Component.text("Usage: /crash <player> [method]", NamedTextColor.RED))
             .build();
-    public static final Component playerNotFound = Component.text()
+    public static final Component PLAYER_NOT_FOUND = Component.text()
             .append(Component.text("Player not found.", NamedTextColor.RED))
             .build();
-    public static final Component selfCrash = Component.text()
+    public static final Component SELF_CRASH = Component.text()
             .append(Component.text("You can't crash yourself.", NamedTextColor.RED))
             .build();
-    public static final Component playerBypass = Component.text()
+    public static final Component PLAYER_BYPASS = Component.text()
             .append(Component.text("This player is immune to crashing.", NamedTextColor.RED))
             .build();
-    public static final Component invalidMethod = Component.text()
+    public static final Component INVALID_METHOD = Component.text()
             .append(Component.text("Invalid crash method.", NamedTextColor.RED))
             .build();
-    public static final Component specifyPlayer = Component.text()
+    public static final Component SPECIFY_PLAYER = Component.text()
             .append(Component.text("You must specify a player when running this from the console.", NamedTextColor.RED))
             .build();
-    public static final Component noPersonalBrand = Component.text()
-            .append(Component.text("We haven't been able to retrieve your client brand.", NamedTextColor.RED))
-            .build();
-    private static final PCVersion version = PCVersion.createFromPackageVersion();
+    private static final PCVersion VERSION = PCVersion.createFromPackageVersion();
 
     private static Component createColoredText(String text, NamedTextColor color, boolean bold) {
         return Component.text(text, color).decoration(TextDecoration.BOLD, bold);
@@ -62,10 +59,10 @@ public class CommandUtil {
                 .append(createColoredText("\u25cf", NamedTextColor.GREEN, true))
                 .append(createColoredText(" Running ", NamedTextColor.GRAY, false))
                 .append(createColoredText("PlayerCrasher", NamedTextColor.GREEN, true))
-                .append(createColoredText(" v" + version.toString(), NamedTextColor.GREEN, true))
+                .append(createColoredText(" v" + VERSION.toString(), NamedTextColor.GREEN, true))
                 .append(createColoredText(" by ", NamedTextColor.GRAY, false))
                 .append(createColoredText("Bram", NamedTextColor.GREEN, true))
-                .hoverEvent(HoverEvent.showText(createColoredText("Open Github Page!", NamedTextColor.GREEN, true)
+                .hoverEvent(HoverEvent.showText(createColoredText("Open GitHub Page!", NamedTextColor.GREEN, true)
                         .decorate(TextDecoration.UNDERLINED)))
                 .clickEvent(ClickEvent.openUrl(Constants.GITHUB_URL))
                 .build();
@@ -80,7 +77,7 @@ public class CommandUtil {
     public static Component crashInProgress(String username) {
         return Component.text()
                 .append(Component.text("A crash attempt is already in progress for " + username + ".", NamedTextColor.RED))
-                .hoverEvent(Component.text("Once the player confirms both transaction packets or when successfully crashed, you can try again.", NamedTextColor.GRAY)
+                .hoverEvent(Component.text("Once the player confirms both transaction packets or is successfully crashed, you can try again.", NamedTextColor.GRAY)
                         .decorate(TextDecoration.ITALIC))
                 .build();
     }
@@ -97,12 +94,6 @@ public class CommandUtil {
                 .build();
     }
 
-    public static Component playerNoBrand(String username) {
-        return Component.text()
-                .append(Component.text("We haven't been able to retrieve the client brand of " + username + ".", NamedTextColor.RED))
-                .build();
-    }
-
     public static Component playerBrand(String username, String brand, String version) {
         return Component.text()
                 .append(Component.text(username, NamedTextColor.GOLD)
@@ -115,6 +106,5 @@ public class CommandUtil {
                         .decorate(TextDecoration.BOLD))
                 .append(Component.text(".", NamedTextColor.GRAY))
                 .build();
-
     }
 }

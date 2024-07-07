@@ -50,13 +50,13 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
-            messageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return false;
         }
 
         if (args.length == 0) {
             if (!(sender instanceof Player)) {
-                plugin.getPc().sendConsoleMessage(CommandUtil.specifyPlayer);
+                plugin.getPc().sendConsoleMessage(CommandUtil.SPECIFY_PLAYER);
                 return false;
             } else {
                 User user = PacketEvents.getAPI().getPlayerManager().getUser(sender);
@@ -70,7 +70,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         Player playerToCheck = Bukkit.getPlayer(args[0]);
 
         if (playerToCheck == null) {
-            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 

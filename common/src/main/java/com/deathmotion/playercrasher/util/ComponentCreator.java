@@ -27,7 +27,7 @@ public class ComponentCreator {
     public static Component createCrashComponent(CrashData crashData) {
         return Component.text()
                 .append(Component.text(crashData.getTarget().getName()))
-                .append(Component.text(" has successfully been crashed!"))
+                .append(Component.text(" has been crashed!"))
                 .color(NamedTextColor.GREEN)
                 .hoverEvent(createHoverComponent(crashData))
                 .build();

@@ -54,34 +54,34 @@ public class VelocityCrashCommand implements SimpleCommand {
         String[] args = invocation.arguments();
 
         if (!source.hasPermission("PlayerCrasher.Crash")) {
-            source.sendMessage(CommandUtil.noPermission);
+            source.sendMessage(CommandUtil.NO_PERMISSION);
             return;
         }
 
         if (args.length == 0) {
-            source.sendMessage(CommandUtil.invalidCommand);
+            source.sendMessage(CommandUtil.INVALID_COMMAND);
             return;
         }
 
         Player targetPlayer = proxy.getPlayer(args[0]).orElse(null);
         if (targetPlayer == null) {
-            source.sendMessage(CommandUtil.playerNotFound);
+            source.sendMessage(CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            source.sendMessage(CommandUtil.playerNotFound);
+            source.sendMessage(CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 
         if (targetPlayer == source) {
-            source.sendMessage(CommandUtil.selfCrash);
+            source.sendMessage(CommandUtil.SELF_CRASH);
             return;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            source.sendMessage(CommandUtil.playerBypass);
+            source.sendMessage(CommandUtil.PLAYER_BYPASS);
             return;
         }
 

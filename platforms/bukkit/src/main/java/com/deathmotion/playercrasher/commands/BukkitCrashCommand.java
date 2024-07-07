@@ -51,34 +51,34 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            messageSender.sendMessages(sender, CommandUtil.noPermission);
+            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return false;
         }
 
         if (args.length == 0) {
-            messageSender.sendMessages(sender, CommandUtil.invalidCommand);
+            messageSender.sendMessages(sender, CommandUtil.INVALID_COMMAND);
             return false;
         }
 
         Player targetPlayer = plugin.getServer().getPlayer(args[0]);
         if (targetPlayer == null) {
-            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            messageSender.sendMessages(sender, CommandUtil.playerNotFound);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 
         if (targetPlayer == sender) {
-            messageSender.sendMessages(sender, CommandUtil.selfCrash);
+            messageSender.sendMessages(sender, CommandUtil.SELF_CRASH);
             return false;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            messageSender.sendMessages(sender, CommandUtil.playerBypass);
+            messageSender.sendMessages(sender, CommandUtil.PLAYER_BYPASS);
             return false;
         }
 
@@ -93,7 +93,7 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                messageSender.sendMessages(sender, CommandUtil.invalidMethod);
+                messageSender.sendMessages(sender, CommandUtil.INVALID_METHOD);
                 return false;
             }
         }
