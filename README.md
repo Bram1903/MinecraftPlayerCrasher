@@ -1,28 +1,48 @@
-[![Build](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/gradle.yml/badge.svg)](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/gradle.yml)
-[![CodeQL](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml/badge.svg)](https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml)
-![GitHub Release](https://img.shields.io/github/release/Bram1903/MinecraftPlayerCrasher.svg)
+<div align="center">
+  <h1>PlayerCrasher</h1>
+  <img alt="Build" src="https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/gradle.yml/badge.svg">
+  <img alt="CodeQL" src="https://github.com/Bram1903/MinecraftPlayerCrasher/actions/workflows/codeql.yml/badge.svg">
+  <img alt="GitHub Release" src="https://img.shields.io/github/release/Bram1903/MinecraftPlayerCrasher.svg">
+  <br>
+  <a href="https://modrinth.com/plugin/playercrasher"><img alt="Modrinth" src="https://img.shields.io/badge/-Modrinth-green?style=for-the-badge&logo=Modrinth"></a>
+  <a href="https://ahi.deathmotion.com/"><img alt="Discord" src="https://img.shields.io/badge/-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"></a>
+</div>
 
-[![Modrinth](https://img.shields.io/badge/-Modrinth-green?style=for-the-badge&logo=Modrinth)](https://modrinth.com/plugin/playercrasher)
-
-# Minecraft Player Crasher Plugin
+## Overview
 
 An easy-to-use Minecraft plugin that enables the crashing of a player's game through the use of a command.
 
-<img src="docs/showcase/img.png" alt="alt text" height="520">
-
 ### Requires PacketEvents
 
-The plugin doesn't shade PacketEvents anymore because of performance considerations,
-so you will need to install the latest version of PacketEvents on your server.
+Ensure the [PacketEvents](https://modrinth.com/plugin/packetevents) library is installed on your server.
 
-[PacketEvents on Modrinth](https://modrinth.com/plugin/packetevents)
+## Table of Contents
 
-## Supported Versions
+- [Overview](#overview)
+    - [Requires PacketEvents](#requires-packetevents)
+- [Showcase](#showcase)
+- [Supported Platforms & Versions](#supported-platforms--versions)
+- [Spoofers](#spoofers)
+- [Commands](#commands)
+- [Permission Nodes](#permission-nodes)
+- [Installation](#installation)
+- [Compiling From Source](#compiling-from-source)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+- [Credits](#credits)
+- [License](#license)
 
-This plugin supports every Minecraft version from 1.8.8 to 1.20.6.
-Besides that, the plugin also supports Spigot, Paper, and Folia.
+## Showcase
 
-Technically, it should also work on any Spigot or Paper fork, but I can't guarantee that statement.
+![Demo](docs/showcase/img.png)
+
+## Supported Platforms & Versions
+
+| Platform                           | Supported Versions |
+|------------------------------------|--------------------|
+| Bukkit (Spigot, Paper, Folia etc.) | 1.8.8 - 1.20.6     |
+| Velocity                           | Latest Major       |
+| BungeeCord (or any forks)          | Latest Major       |
 
 ## Features
 
@@ -35,7 +55,6 @@ Technically, it should also work on any Spigot or Paper fork, but I can't guaran
 - **Configurable** - The plugin is highly configurable, allowing you to adjust the settings to your liking.
 - **Update Checker** - The plugin automatically checks for updates on startup.
   If a new version is available, a message will be sent to the console.
-- **Permission Bypass** - The bypass permission  (`PlayerCrasher.Bypass`), prevents a player from being crashed.
 
 ## Usage/Examples
 
@@ -66,41 +85,37 @@ Players that are OP (Operators) have these permissions by default.
 - `PlayerCrasher.CrashInfo` - Allows the player to use the /crashinfo command.
 - `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
 
-## Installation Guide
+## Installation
 
-1. [Download the latest release](https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest) from the release
-   page.
-
-2. Move the downloaded plugin to the plugins directory of your server.
-
-3. Restart your server for the changes to be implemented.
-
-4. Adjust the presets in the `config.yml` file to match your preferences. (Restart required)
-
-5. You're good to go!
+1. **Prerequisites**: Install [PacketEvents](https://modrinth.com/plugin/packetevents).
+2. **Download**: Get the latest release from
+   the [GitHub release page](https://github.com/Bram1903/MinecraftPlayerCrasher/releases/latest).
+3. **Installation**: Move the downloaded plugin to your server's plugins directory.
+4. **Configuration**: Customize settings in `config.yml`.
+5. **Restart**: Restart the server for changes to take effect.
 
 ## Compiling From Source
 
 ### Prerequisites
 
-- Java Development Kit (JDK) version 17 or higher
+- Java Development Kit (JDK) version 21 or higher
+- [Git](https://git-scm.com/downloads)
 
-### Steps:
+### Steps
 
 1. **Clone the Repository**:
-   Clone the repository containing the MinecraftPlayerCrasher source code to your local machine using Git:
    ```bash
    git clone https://github.com/Bram1903/MinecraftPlayerCrasher.git
    ```
 
 2. **Navigate to Project Directory**:
-   Change your current directory to the root directory of the cloned project:
    ```bash
    cd MinecraftPlayerCrasher
    ```
 
 3. **Compile the Source Code**:
-   Use the Gradle wrapper to compile the source code and generate the plugin JAR file:
+   Use the Gradle wrapper to compile and generate the plugin JAR file:
+
    <details>
    <summary><strong>Linux / macOS</strong></summary>
 
@@ -115,6 +130,12 @@ Players that are OP (Operators) have these permissions by default.
    .\gradlew build
    ```
    </details>
+
+## Credits
+
+Special thanks to:
+
+- **[@Retrooper](https://github.com/retrooper)**: Author of [PacketEvents](https://github.com/retrooper/packetevents).
 
 ## License
 
