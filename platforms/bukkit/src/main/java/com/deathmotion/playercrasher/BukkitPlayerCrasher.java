@@ -22,7 +22,6 @@ import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BukkitPCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import com.deathmotion.playercrasher.managers.LogManager;
 import com.deathmotion.playercrasher.util.MessageSender;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.Metrics;
@@ -32,11 +31,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
     public final MessageSender messageSender;
 
     private final PCBukkit plugin;
@@ -79,10 +76,6 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
     protected void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
-    }
-
-    protected void setLogManager(LogManager<JavaPlugin> logManager) {
-        this.logManager = logManager;
     }
 
     @Override

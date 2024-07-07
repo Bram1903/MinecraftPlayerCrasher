@@ -19,20 +19,10 @@
 package com.deathmotion.playercrasher;
 
 import com.deathmotion.playercrasher.schedulers.BukkitScheduler;
-import com.deathmotion.playercrasher.schedulers.FoliaScheduler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PCBukkit extends JavaPlugin {
     private final BukkitPlayerCrasher pc = new BukkitPlayerCrasher(this);
-
-    private static boolean isFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
 
     public BukkitPlayerCrasher getPc() {
         return this.pc;
@@ -42,7 +32,7 @@ public class PCBukkit extends JavaPlugin {
     public void onEnable() {
         pc.commonOnInitialize();
 
-        pc.setScheduler(isFolia() ? new FoliaScheduler(this) : new BukkitScheduler(this));
+        pc.setScheduler(new BukkitScheduler(this));
 
         pc.commonOnEnable();
         pc.registerCommands();
