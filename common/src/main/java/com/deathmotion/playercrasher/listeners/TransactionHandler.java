@@ -33,7 +33,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWi
 import net.kyori.adventure.text.Component;
 
 public class TransactionHandler<P> extends PacketListenerAbstract {
-    private final PCPlatform<P> platform;
     private final CrashManager<P> crashManager;
 
     private final PacketTypeCommon keepAlive = PacketType.Play.Client.KEEP_ALIVE;
@@ -41,7 +40,6 @@ public class TransactionHandler<P> extends PacketListenerAbstract {
     private final PacketTypeCommon transaction = PacketType.Play.Client.WINDOW_CONFIRMATION;
 
     public TransactionHandler(PCPlatform<P> plugin) {
-        this.platform = plugin;
         this.crashManager = plugin.getCrashManager();
     }
 
