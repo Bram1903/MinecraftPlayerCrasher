@@ -21,7 +21,7 @@ package com.deathmotion.playercrasher;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import com.deathmotion.playercrasher.listeners.BrandHandler;
+import com.deathmotion.playercrasher.listeners.UserTracker;
 import com.deathmotion.playercrasher.listeners.TransactionHandler;
 import com.deathmotion.playercrasher.managers.ConfigManager;
 import com.deathmotion.playercrasher.managers.CrashManager;
@@ -44,7 +44,7 @@ public abstract class PCPlatform<P> {
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
 
-    private BrandHandler brandHandler;
+    private UserTracker userTracker;
     private CrashManager<P> crashManager;
 
     public void commonOnInitialize() {
@@ -56,8 +56,8 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        brandHandler = new BrandHandler();
-        PacketEvents.getAPI().getEventManager().registerListener(brandHandler);
+        userTracker = new UserTracker();
+        PacketEvents.getAPI().getEventManager().registerListener(userTracker);
 
         crashManager = new CrashManager<>(this);
         PacketEvents.getAPI().getEventManager().registerListener(crashManager);
@@ -77,7 +77,7 @@ public abstract class PCPlatform<P> {
     }
 
     public String getClientBrand(UUID uuid) {
-        return brandHandler.getClientBrand(uuid);
+        return userTracker.getClientBrand(uuid);
     }
 
     /**

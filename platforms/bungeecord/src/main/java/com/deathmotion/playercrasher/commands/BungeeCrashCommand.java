@@ -124,9 +124,18 @@ public class BungeeCrashCommand extends Command implements TabExecutor {
     private CommonSender createCommonUser(CommandSender sender) {
         if (sender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) sender;
-            return new CommonSender(player.getUniqueId(), player.getName(), false);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(player.getUniqueId());
+            commonSender.setName(player.getName());
+
+            return commonSender;
         } else {
-            return new CommonSender(null, "Console", true);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(null);
+            commonSender.setName("Console");
+            commonSender.setConsole(true);
+
+            return commonSender;
         }
     }
 }

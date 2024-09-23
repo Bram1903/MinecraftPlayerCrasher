@@ -22,17 +22,27 @@ import com.deathmotion.playercrasher.data.CommonSender;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.UserDisconnectEvent;
+import com.github.retrooper.packetevents.event.UserLoginEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BrandHandler extends PacketListenerAbstract {
+public class UserTracker extends PacketListenerAbstract {
 
     private final ConcurrentHashMap<UUID, CommonSender> users = new ConcurrentHashMap<>();
+
+    @Override
+    public void onUserLogin(UserLoginEvent event) {
+        User user = event.getUser();
+        if (user.getUUID() == null) return;
+
+        createOrUpdateCommonSender(user, null);
+    }
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
@@ -51,11 +61,8 @@ public class BrandHandler extends PacketListenerAbstract {
         System.arraycopy(data, 1, minusLength, 0, minusLength.length);
         String brand = new String(minusLength).replace(" (Velocity)", "");
 
-        User user = event.getUser();
-        CommonSender commonSender = new CommonSender(user.getUUID(), user.getName());
-        commonSender.setClientBrand(prettyBrandName(brand));
-
-        users.putIfAbsent(user.getUUID(), commonSender);
+        if (brand.isEmpty()) brand = "Unknown";
+        createOrUpdateCommonSender(event.getUser(), brand);
     }
 
     @Override
@@ -71,24 +78,21 @@ public class BrandHandler extends PacketListenerAbstract {
     }
 
     public String getClientBrand(UUID uuid) {
-        return getUser(uuid).map(CommonSender::getClientBrand).orElse("Unknown Client");
+        return getUser(uuid).map(CommonSender::getClientBrand).orElse("Unknown");
     }
 
-    private String prettyBrandName(String brand) {
-        String lowerCaseBrand = brand.toLowerCase();
+    private void createOrUpdateCommonSender(User user, @Nullable String brand) {
+        UUID userUUID = user.getUUID();
+        users.compute(userUUID, (uuid, existing) -> {
+            String clientBrand = (existing != null && existing.getClientBrand() != null)
+                    ? existing.getClientBrand() // Keep existing brand if it's not null
+                    : (brand != null ? brand : "Unknown"); // Use provided brand or default to "Unknown"
 
-        if (lowerCaseBrand.contains("lunarclient")) {
-            return "Lunar Client";
-        }
-
-        return capitalizeFirstLetter(brand);
-    }
-
-    private String capitalizeFirstLetter(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-
-        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(userUUID);
+            commonSender.setName(user.getName());
+            commonSender.setClientBrand(clientBrand);
+            return commonSender;
+        });
     }
 }

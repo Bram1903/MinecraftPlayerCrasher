@@ -127,9 +127,18 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
     private CommonSender createCommonUser(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            return new CommonSender(player.getUniqueId(), player.getName(), false);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(player.getUniqueId());
+            commonSender.setName(player.getName());
+
+            return commonSender;
         } else {
-            return new CommonSender(null, "Console", true);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(null);
+            commonSender.setName("Console");
+            commonSender.setConsole(true);
+
+            return commonSender;
         }
     }
 }

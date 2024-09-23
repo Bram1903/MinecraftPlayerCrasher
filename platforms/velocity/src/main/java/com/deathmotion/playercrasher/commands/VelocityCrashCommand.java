@@ -135,9 +135,18 @@ public class VelocityCrashCommand implements SimpleCommand {
     private CommonSender createCommonUser(CommandSource sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            return new CommonSender(player.getUniqueId(), player.getUsername(), false);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(player.getUniqueId());
+            commonSender.setName(player.getUsername());
+
+            return commonSender;
         } else {
-            return new CommonSender(null, "Console", true);
+            CommonSender commonSender = new CommonSender();
+            commonSender.setUuid(null);
+            commonSender.setName("Console");
+            commonSender.setConsole(true);
+
+            return commonSender;
         }
     }
 }
