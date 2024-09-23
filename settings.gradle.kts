@@ -20,14 +20,6 @@ gradleEnterprise {
     }
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("libs.versions.toml"))
-        }
-    }
-}
-
 rootProject.name = "PlayerCrasher"
 include(":common")
 include(":platforms:bukkit")
