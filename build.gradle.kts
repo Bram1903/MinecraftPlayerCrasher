@@ -7,7 +7,7 @@ plugins {
 
 group = "com.deathmotion.playercrasher"
 description = "A plugin that prevents hackers and modders from seeing the health of other players."
-version = "3.0.1-SNAPSHOT"
+version = "3.0.1"
 
 dependencies {
     implementation(project(":common"))
