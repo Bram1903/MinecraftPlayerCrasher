@@ -18,7 +18,7 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.Util.MessageSender;
+import com.deathmotion.playercrasher.util.MessageSender;
 import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
 import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BungeePCCommand;
@@ -31,12 +31,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
-
 
 public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)&[0-9A-FK-ORX]|\\u25cf");
     public final MessageSender messageSender;
     private final PCBungee plugin;
 

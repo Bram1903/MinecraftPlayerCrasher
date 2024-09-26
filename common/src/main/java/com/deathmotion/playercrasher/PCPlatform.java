@@ -96,6 +96,11 @@ public abstract class PCPlatform<P> {
      */
     public abstract boolean hasPermission(UUID sender, String permission);
 
+    /**
+     * Sends a message to the console.
+     *
+     * @param message The message to send.
+     */
     public abstract void sendConsoleMessage(Component message);
 
     /**

@@ -19,7 +19,7 @@
 package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PCBungee;
-import com.deathmotion.playercrasher.Util.MessageSender;
+import com.deathmotion.playercrasher.util.MessageSender;
 import com.deathmotion.playercrasher.util.CommandUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.Util;
+package com.deathmotion.playercrasher.util;
 
 import com.deathmotion.playercrasher.PCBungee;
 import com.github.retrooper.packetevents.PacketEvents;
