@@ -84,6 +84,7 @@ Players that are OP (Operators) have these permissions by default.
 - `PlayerCrasher.Alerts` Makes the player receive alerts when a player is being crashed by another player.
 - `PlayerCrasher.CrashInfo` - Allows the player to use the /crashinfo command.
 - `PlayerCrasher.UpdateNotify` Makes the player receive an update notification when a new version is available.
+- `PlayerCrasher.Debug` Allows the player to see debug messages in-game.
 
 ## Installation
 

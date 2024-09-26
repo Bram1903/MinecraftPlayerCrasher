@@ -8,7 +8,7 @@
 #                   |___/
 
 debug:
-  # If enabled, the plugin will print debug messages to players with the permission "AntiHealthIndicator.Debug".
+  # If enabled, the plugin will print debug messages to players with the permission "PlayerCrasher.Debug".
   enabled: false
 
 # This option determines whether the plugin will check for an update on startup.
