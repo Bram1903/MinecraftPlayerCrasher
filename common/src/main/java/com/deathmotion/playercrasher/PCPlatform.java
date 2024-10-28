@@ -27,6 +27,7 @@ import com.deathmotion.playercrasher.managers.ConfigManager;
 import com.deathmotion.playercrasher.managers.CrashManager;
 import com.deathmotion.playercrasher.managers.LogManager;
 import com.deathmotion.playercrasher.managers.UpdateManager;
+import com.deathmotion.playercrasher.services.MessageService;
 import com.deathmotion.playercrasher.util.PCVersion;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -44,6 +45,7 @@ public abstract class PCPlatform<P> {
     protected LogManager<P> logManager;
     protected Scheduler scheduler;
 
+    protected MessageService<P> messageService;
     private UserTracker userTracker;
     private CrashManager<P> crashManager;
 
@@ -56,6 +58,8 @@ public abstract class PCPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
+        messageService = new MessageService<>(this);
+
         userTracker = new UserTracker();
         PacketEvents.getAPI().getEventManager().registerListener(userTracker);
 

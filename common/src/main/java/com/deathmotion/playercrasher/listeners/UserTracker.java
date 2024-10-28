@@ -18,31 +18,18 @@
 
 package com.deathmotion.playercrasher.listeners;
 
-import com.deathmotion.playercrasher.data.CommonSender;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.UserDisconnectEvent;
-import com.github.retrooper.packetevents.event.UserLoginEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserTracker extends PacketListenerAbstract {
 
-    private final ConcurrentHashMap<UUID, CommonSender> users = new ConcurrentHashMap<>();
-
-    @Override
-    public void onUserLogin(UserLoginEvent event) {
-        User user = event.getUser();
-        if (user.getUUID() == null) return;
-
-        createOrUpdateCommonSender(user, null);
-    }
+    private final ConcurrentHashMap<UUID, String> clientBrands = new ConcurrentHashMap<>();
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
@@ -62,7 +49,7 @@ public class UserTracker extends PacketListenerAbstract {
         String brand = new String(minusLength).replace(" (Velocity)", "");
 
         if (brand.isEmpty()) brand = "Unknown";
-        createOrUpdateCommonSender(event.getUser(), brand);
+        clientBrands.put(event.getUser().getUUID(), brand);
     }
 
     @Override
@@ -70,29 +57,10 @@ public class UserTracker extends PacketListenerAbstract {
         UUID userUUID = event.getUser().getUUID();
         if (userUUID == null) return;
 
-        users.remove(userUUID);
-    }
-
-    public Optional<CommonSender> getUser(UUID uuid) {
-        return Optional.ofNullable(users.get(uuid));
+        clientBrands.remove(userUUID);
     }
 
     public String getClientBrand(UUID uuid) {
-        return getUser(uuid).map(CommonSender::getClientBrand).orElse("Unknown");
-    }
-
-    private void createOrUpdateCommonSender(User user, @Nullable String brand) {
-        UUID userUUID = user.getUUID();
-        users.compute(userUUID, (uuid, existing) -> {
-            String clientBrand = (existing != null && existing.getClientBrand() != null)
-                    ? existing.getClientBrand() // Keep existing brand if it's not null
-                    : (brand != null ? brand : "Unknown"); // Use provided brand or default to "Unknown"
-
-            CommonSender commonSender = new CommonSender();
-            commonSender.setUuid(userUUID);
-            commonSender.setName(user.getName());
-            commonSender.setClientBrand(clientBrand);
-            return commonSender;
-        });
+        return clientBrands.getOrDefault(uuid, "Unknown");
     }
 }

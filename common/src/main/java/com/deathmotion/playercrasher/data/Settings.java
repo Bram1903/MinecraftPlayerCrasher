@@ -24,6 +24,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Settings {
+    private String Prefix = "&6⚡ ";
+
     private boolean Debug = false;
 
     private UpdateChecker UpdateChecker = new UpdateChecker();

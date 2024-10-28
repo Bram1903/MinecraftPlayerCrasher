@@ -7,6 +7,9 @@
 #                    __/ |
 #                   |___/
 
+# Prefix: Sets the message prefix for the plugin.
+prefix: '&6⚡ '
+
 debug:
   # If enabled, the plugin will print debug messages to players with the permission "PlayerCrasher.Debug".
   enabled: false

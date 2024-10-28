@@ -16,23 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.managers;/*
- * This file is part of MinecraftPlayerCrasher - https://github.com/Bram1903/MinecraftPlayerCrasher
- * Copyright (C) 2024 Bram and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+package com.deathmotion.playercrasher.managers;
 
 import com.deathmotion.playercrasher.PCPlatform;
 import com.deathmotion.playercrasher.data.Settings;
@@ -101,10 +85,16 @@ public class ConfigManager<P> {
 
 
     private void setConfigOptions(Map<String, Object> yamlData, Settings settings) {
+        settings.setPrefix(getString(yamlData, "prefix", "&6⚡ "));
         settings.setDebug(getBoolean(yamlData, "debug.enabled", false));
         settings.getUpdateChecker().setEnabled(getBoolean(yamlData, "update-checker.enabled", true));
         settings.getUpdateChecker().setPrintToConsole(getBoolean(yamlData, "update-checker.print-to-console", true));
         settings.getUpdateChecker().setNotifyInGame(getBoolean(yamlData, "update-checker.notify-in-game", true));
+    }
+
+    private String getString(Map<String, Object> yamlData, String key, String defaultValue) {
+        Object value = findNestedValue(yamlData, key.split("\\."), defaultValue);
+        return value instanceof String ? (String) value : defaultValue;
     }
 
     private boolean getBoolean(Map<String, Object> yamlData, String key, boolean defaultValue) {

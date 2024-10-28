@@ -1,9 +1,9 @@
 /*
- * This file is part of PlayerCrasher - https://github.com/Bram1903/MinecraftPlayerCrasher
+ * This file is part of AntiHealthIndicator - https://github.com/Bram1903/AntiHealthIndicator
  * Copyright (C) 2024 Bram and contributors
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ *  it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -16,21 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.playercrasher.data;
+package com.deathmotion.playercrasher.commands;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.deathmotion.playercrasher.data.CommonUser;
 
-import java.util.UUID;
+import java.util.List;
 
-@Getter
-@Setter
-public class CommonSender {
-    private UUID uuid;
+public interface SubCommand<P> {
+    void execute(CommonUser<P> sender, String[] args);
 
-    private String name;
-
-    private boolean isConsole;
-
-    private String clientBrand;
+    List<String> onTabComplete(CommonUser<P> sender, String[] args);
 }

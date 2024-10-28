@@ -23,7 +23,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-public class ComponentCreator {
+public class ComponentCreator<P> {
     public static Component createCrashComponent(CrashData crashData) {
         return Component.text()
                 .append(Component.text(crashData.getTarget().getName()))
@@ -43,7 +43,7 @@ public class ComponentCreator {
                 .build();
     }
 
-    private static Component createHoverComponent(CrashData crashData) {
+    private static Component createHoverComponent(CrashData<P> crashData) {
         return Component.text()
                 .append(Component.text("\u25cf"))
                 .append(Component.text(" Crash Information", NamedTextColor.GREEN)
