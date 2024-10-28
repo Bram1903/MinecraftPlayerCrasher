@@ -24,11 +24,12 @@ import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BungeePCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
-import io.github.retrooper.packetevents.bstats.Metrics;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.SimplePie;
 
 import java.util.UUID;
 
@@ -77,8 +78,8 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
     protected void enableBStats() {
         try {
             Metrics metrics = new Metrics(this.plugin, 16190);
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_platform", () -> "Bukkit"));
+            metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
+            metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "BungeeCord"));
         } catch (Exception e) {
             this.plugin.getLogger().warning("Something went wrong while enabling bStats.\n" + e.getMessage());
         }

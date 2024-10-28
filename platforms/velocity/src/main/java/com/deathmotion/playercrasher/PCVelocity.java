@@ -28,22 +28,20 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import io.github.retrooper.packetevents.bstats.Metrics;
-import org.slf4j.Logger;
+import org.bstats.charts.SimplePie;
+import org.bstats.velocity.Metrics;
 
 import java.nio.file.Path;
 
 public class PCVelocity {
     private final ProxyServer server;
-    private final Path dataDirectory;
-    private final Logger logger;
+    private final Metrics.Factory metricsFactory;
     private final VelocityPlayerCrasher pc;
 
     @Inject
-    public PCVelocity(ProxyServer server, @DataDirectory Path dataDirectory, Logger logger) {
+    public PCVelocity(ProxyServer server, @DataDirectory Path dataDirectory, Metrics.Factory metricsFactory) {
         this.server = server;
-        this.dataDirectory = dataDirectory;
-        this.logger = logger;
+        this.metricsFactory = metricsFactory;
         this.pc = new VelocityPlayerCrasher(server, dataDirectory);
     }
 
@@ -69,13 +67,9 @@ public class PCVelocity {
     }
 
     private void enableBStats() {
-        try {
-            Metrics metrics = Metrics.createInstance(this, this.pc.getPlatform(), logger, dataDirectory, 16190);
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_platform", () -> "Bukkit"));
-        } catch (Exception e) {
-            this.logger.warn("Something went wrong while enabling bStats.\n{}", e.getMessage());
-        }
+        Metrics metrics = metricsFactory.make(this, 16190);
+        metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
+        metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "Velocity"));
     }
 
     private void registerCommands() {
