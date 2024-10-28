@@ -24,8 +24,9 @@ import com.deathmotion.playercrasher.commands.BukkitPCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import com.deathmotion.playercrasher.util.MessageSender;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
-import io.github.retrooper.packetevents.bstats.Metrics;
 import net.kyori.adventure.text.Component;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -103,8 +104,8 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     protected void enableBStats() {
         try {
             Metrics metrics = new Metrics(this.plugin, 16190);
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
-            metrics.addCustomChart(new Metrics.SimplePie("playercrasher_platform", () -> "Bukkit"));
+            metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
+            metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "Bukkit"));
         } catch (Exception e) {
             this.plugin.getLogger().warning("Something went wrong while enabling bStats.\n" + e.getMessage());
         }
