@@ -24,12 +24,12 @@ import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BungeePCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
+import io.github.retrooper.packetevents.bstats.bungeecord.Metrics;
+import io.github.retrooper.packetevents.bstats.charts.SimplePie;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.bstats.bungeecord.Metrics;
-import org.bstats.charts.SimplePie;
 
 import java.util.UUID;
 
