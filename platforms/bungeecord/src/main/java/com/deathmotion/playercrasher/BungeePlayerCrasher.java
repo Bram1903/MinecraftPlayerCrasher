@@ -18,7 +18,7 @@
 
 package com.deathmotion.playercrasher;
 
-import com.deathmotion.playercrasher.util.MessageSender;
+import com.deathmotion.playercrasher.util.BungeeMessageSender;
 import com.deathmotion.playercrasher.commands.BungeeCrashCommand;
 import com.deathmotion.playercrasher.commands.BungeeCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BungeePCCommand;
@@ -35,12 +35,12 @@ import java.util.UUID;
 
 public class BungeePlayerCrasher extends PCPlatform<Plugin> {
 
-    public final MessageSender messageSender;
     private final PCBungee plugin;
+    public final BungeeMessageSender bungeeMessageSender;
 
     public BungeePlayerCrasher(PCBungee plugin) {
         this.plugin = plugin;
-        this.messageSender = new MessageSender(plugin);
+        this.bungeeMessageSender = new BungeeMessageSender(plugin);
     }
 
     @Override
@@ -76,13 +76,9 @@ public class BungeePlayerCrasher extends PCPlatform<Plugin> {
     }
 
     protected void enableBStats() {
-        try {
-            Metrics metrics = new Metrics(this.plugin, 16190);
-            metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
-            metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "BungeeCord"));
-        } catch (Exception e) {
-            this.plugin.getLogger().warning("Something went wrong while enabling bStats.\n" + e.getMessage());
-        }
+        Metrics metrics = new Metrics(this.plugin, 16190);
+        metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
+        metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "BungeeCord"));
     }
 
     protected void registerCommands() {

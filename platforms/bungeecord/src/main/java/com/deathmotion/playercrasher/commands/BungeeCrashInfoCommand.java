@@ -19,7 +19,7 @@
 package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PCBungee;
-import com.deathmotion.playercrasher.util.MessageSender;
+import com.deathmotion.playercrasher.util.BungeeMessageSender;
 import com.deathmotion.playercrasher.util.CommandUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -34,20 +34,20 @@ import java.util.stream.Collectors;
 public class BungeeCrashInfoCommand extends Command implements TabExecutor {
 
     private final PCBungee plugin;
-    private final MessageSender messageSender;
+    private final BungeeMessageSender bungeeMessageSender;
 
     public BungeeCrashInfoCommand(PCBungee plugin) {
         super("CrashInfo", "PlayerCrasher.CrashInfo", "brand");
 
         this.plugin = plugin;
-        this.messageSender = plugin.getPc().messageSender;
+        this.bungeeMessageSender = plugin.getPc().bungeeMessageSender;
         plugin.getProxy().getPluginManager().registerCommand(plugin, this);
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
-            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
+            bungeeMessageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return;
         }
 
@@ -66,7 +66,7 @@ public class BungeeCrashInfoCommand extends Command implements TabExecutor {
         ProxiedPlayer playerToCheck = plugin.getProxy().getPlayer(args[0]);
 
         if (playerToCheck == null) {
-            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
+            bungeeMessageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return;
         }
 
@@ -74,7 +74,7 @@ public class BungeeCrashInfoCommand extends Command implements TabExecutor {
         String clientBrand = plugin.getPc().getClientBrand(userToCheck.getUUID());
         ClientVersion clientVersion = userToCheck.getClientVersion();
 
-        messageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
+        bungeeMessageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
     }
 
     @Override

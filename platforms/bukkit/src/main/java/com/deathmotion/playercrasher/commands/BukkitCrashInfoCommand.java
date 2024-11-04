@@ -20,7 +20,7 @@ package com.deathmotion.playercrasher.commands;
 
 import com.deathmotion.playercrasher.PCBukkit;
 import com.deathmotion.playercrasher.util.CommandUtil;
-import com.deathmotion.playercrasher.util.MessageSender;
+import com.deathmotion.playercrasher.util.BukkitMessageSender;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -38,11 +38,11 @@ import java.util.stream.Collectors;
 
 public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
     private final PCBukkit plugin;
-    private final MessageSender messageSender;
+    private final BukkitMessageSender bukkitMessageSender;
 
     public BukkitCrashInfoCommand(PCBukkit plugin) {
         this.plugin = plugin;
-        this.messageSender = plugin.getPc().messageSender;
+        this.bukkitMessageSender = plugin.getPc().bukkitMessageSender;
 
         plugin.getCommand("CrashInfo").setExecutor(this);
     }
@@ -50,7 +50,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.CrashInfo")) {
-            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return false;
         }
 
@@ -70,7 +70,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         Player playerToCheck = Bukkit.getPlayer(args[0]);
 
         if (playerToCheck == null) {
-            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 
@@ -78,7 +78,7 @@ public class BukkitCrashInfoCommand implements CommandExecutor, TabCompleter {
         String clientBrand = plugin.getPc().getClientBrand(userToCheck.getUUID());
         ClientVersion clientVersion = userToCheck.getClientVersion();
 
-        messageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
+        bukkitMessageSender.sendMessages(sender, CommandUtil.playerBrand(playerToCheck.getName(), clientBrand, clientVersion.getReleaseName()));
         return true;
     }
 

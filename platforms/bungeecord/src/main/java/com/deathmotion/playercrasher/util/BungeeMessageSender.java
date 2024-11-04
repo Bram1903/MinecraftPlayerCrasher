@@ -18,22 +18,22 @@
 
 package com.deathmotion.playercrasher.util;
 
-import com.deathmotion.playercrasher.PCBukkit;
+import com.deathmotion.playercrasher.PCBungee;
 import com.github.retrooper.packetevents.PacketEvents;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class MessageSender {
+public class BungeeMessageSender {
 
-    private final PCBukkit plugin;
+    private final PCBungee plugin;
 
-    public MessageSender(PCBukkit plugin) {
+    public BungeeMessageSender(PCBungee plugin) {
         this.plugin = plugin;
     }
 
     public void sendMessages(CommandSender sender, Component message) {
-        if (sender instanceof Player) {
+        if (sender instanceof ProxiedPlayer) {
             PacketEvents.getAPI().getPlayerManager().getUser(sender).sendMessage(message);
         } else {
             plugin.getPc().sendConsoleMessage(message);

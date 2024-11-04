@@ -22,7 +22,7 @@ import com.deathmotion.playercrasher.commands.BukkitCrashCommand;
 import com.deathmotion.playercrasher.commands.BukkitCrashInfoCommand;
 import com.deathmotion.playercrasher.commands.BukkitPCCommand;
 import com.deathmotion.playercrasher.interfaces.Scheduler;
-import com.deathmotion.playercrasher.util.MessageSender;
+import com.deathmotion.playercrasher.util.BukkitMessageSender;
 import io.github.retrooper.packetevents.adventure.serializer.legacy.LegacyComponentSerializer;
 import io.github.retrooper.packetevents.bstats.bukkit.Metrics;
 import io.github.retrooper.packetevents.bstats.charts.SimplePie;
@@ -35,14 +35,14 @@ import java.util.UUID;
 
 public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
 
-    public final MessageSender messageSender;
+    public final BukkitMessageSender bukkitMessageSender;
 
     private final PCBukkit plugin;
     private final boolean useAdventure;
 
     public BukkitPlayerCrasher(PCBukkit plugin) {
         this.plugin = plugin;
-        this.messageSender = new MessageSender(plugin);
+        this.bukkitMessageSender = new BukkitMessageSender(plugin);
 
         useAdventure = checkAdventureCompatibility();
     }
@@ -102,13 +102,9 @@ public class BukkitPlayerCrasher extends PCPlatform<JavaPlugin> {
     }
 
     protected void enableBStats() {
-        try {
-            Metrics metrics = new Metrics(this.plugin, 16190);
-            metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
-            metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "Bukkit"));
-        } catch (Exception e) {
-            this.plugin.getLogger().warning("Something went wrong while enabling bStats.\n" + e.getMessage());
-        }
+        Metrics metrics = new Metrics(this.plugin, 16190);
+        metrics.addCustomChart(new SimplePie("playercrasher_version", () -> PCPlatform.class.getPackage().getImplementationVersion()));
+        metrics.addCustomChart(new SimplePie("playercrasher_platform", () -> "Bukkit"));
     }
 
     protected void registerCommands() {

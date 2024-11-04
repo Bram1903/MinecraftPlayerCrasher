@@ -22,7 +22,7 @@ import com.deathmotion.playercrasher.PCBukkit;
 import com.deathmotion.playercrasher.data.CommonSender;
 import com.deathmotion.playercrasher.enums.CrashMethod;
 import com.deathmotion.playercrasher.util.CommandUtil;
-import com.deathmotion.playercrasher.util.MessageSender;
+import com.deathmotion.playercrasher.util.BukkitMessageSender;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -39,11 +39,11 @@ import java.util.List;
 public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
 
     private final PCBukkit plugin;
-    private final MessageSender messageSender;
+    private final BukkitMessageSender bukkitMessageSender;
 
     public BukkitCrashCommand(PCBukkit plugin) {
         this.plugin = plugin;
-        this.messageSender = plugin.getPc().messageSender;
+        this.bukkitMessageSender = plugin.getPc().bukkitMessageSender;
 
         plugin.getCommand("Crash").setExecutor(this);
     }
@@ -51,34 +51,34 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("PlayerCrasher.Crash")) {
-            messageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.NO_PERMISSION);
             return false;
         }
 
         if (args.length == 0) {
-            messageSender.sendMessages(sender, CommandUtil.INVALID_COMMAND);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.INVALID_COMMAND);
             return false;
         }
 
         Player targetPlayer = plugin.getServer().getPlayer(args[0]);
         if (targetPlayer == null) {
-            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 
         User target = PacketEvents.getAPI().getPlayerManager().getUser(targetPlayer);
         if (target == null) {
-            messageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.PLAYER_NOT_FOUND);
             return false;
         }
 
         if (targetPlayer == sender) {
-            messageSender.sendMessages(sender, CommandUtil.SELF_CRASH);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.SELF_CRASH);
             return false;
         }
 
         if (targetPlayer.hasPermission("PlayerCrasher.Bypass")) {
-            messageSender.sendMessages(sender, CommandUtil.PLAYER_BYPASS);
+            bukkitMessageSender.sendMessages(sender, CommandUtil.PLAYER_BYPASS);
             return false;
         }
 
@@ -93,12 +93,12 @@ public class BukkitCrashCommand implements CommandExecutor, TabExecutor {
             try {
                 method = CrashMethod.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException e) {
-                messageSender.sendMessages(sender, CommandUtil.INVALID_METHOD);
+                bukkitMessageSender.sendMessages(sender, CommandUtil.INVALID_METHOD);
                 return false;
             }
         }
 
-        messageSender.sendMessages(sender, CommandUtil.crashSent(target.getName()));
+        bukkitMessageSender.sendMessages(sender, CommandUtil.crashSent(target.getName()));
         plugin.getPc().crashPlayer(createCommonUser(sender), target, method);
 
         return true;
