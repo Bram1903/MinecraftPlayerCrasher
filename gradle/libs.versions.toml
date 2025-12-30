@@ -1,13 +1,13 @@
 [versions]
-adventure = "4.16.0"
-packetevents = "2.6.0"
-paper = "1.21-R0.1-SNAPSHOT"
-velocity = "3.3.0-SNAPSHOT"
-bungeecord = "1.21-R0.1-SNAPSHOT"
+adventure = "4.25.0"
+packetevents = "2.11.1"
+paper = "1.21.10-R0.1-SNAPSHOT"
+velocity = "3.4.0-SNAPSHOT"
+bungeecord = "1.21-R0.2-SNAPSHOT"
 snakeyaml = "2.2"
-run-paper = "2.3.0"
-lombok = "1.18.30"
-shadow = "8.3.0"
+run-paper = "3.0.2"
+lombok = "1.18.42"
+shadow = "9.2.2"
 
 [libraries]
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
